@@ -1,0 +1,3 @@
+<template>
+	{{data.design}}
+</template>

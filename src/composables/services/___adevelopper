@@ -1,0 +1,22 @@
+init()	Initialise la page selon page_type, sections, user, etc.
+setPage(param)	Gère l'affichage selon le type de page dynamique (home, cart, product, etc.)
+openPreviewProduct(product)	Ouvre la modale d'aperçu produit (DOM manipulation)
+closePreviewProduct()	Ferme la modale d'aperçu produit (DOM manipulation)
+expressCheckout(event)	Lance checkout rapide depuis la page produit
+selectColor(option, color, id, $event)	Interaction utilisateur + changement image produit
+changeSelectedImage(image, event)	Change image principale produit (DOM direct)
+changeSelectedImageCarousel(event, index, id, video)	Slide dans carrousel d'images produits
+searchCall()	Redirige utilisateur vers /search?products=...
+searchCall_h_9()	Pareil que searchCall (autre champ de recherche)
+quitsearch()	Vide les résultats de recherche en UI
+toggleAttribute(id, attr, category_id)	Clic sur un filtre, met à jour liste produits
+resetFilterProducts(category_id)	Réinitialiser tous les filtres produits
+fetchProducts(page, category_id)	Cherche produits filtrés avec API + met à jour la vue
+initializeFiltersFromURL()	À l'ouverture : initialise les filtres selon URL
+enableNext(index)	Avance dans la sélection d'attributs produits
+makeNextToDefault(index)	Réinitialise l'attribut suivant
+isEnabled(option_id)	Retourne si une option est active
+getYoutubeEmbedUrl(url)	Transforme URL YouTube en iframe embed
+buildAttributs()	Prépare les attributs produits pour la sélection (multi niveau)
+regroupDeclinaisonsPerColor(product)	Regroupe déclinaisons par couleur pour affichage
+getNextAttributs(next_option_id)	Retourne les options valides suivantes selon choix utilisateur

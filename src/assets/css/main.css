@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+
+.container {
+  @apply w-full px-[15px] mx-auto sm:max-w-[540px] md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1140px];
+}
+
+.container-medium {
+  @apply w-full max-w-full px-[10px] mx-auto xl:max-w-[1420px];
+}
+
+.container-fluid {
+  @apply w-full mx-auto px-[15px];
+}
+
+.header-container{
+  @apply w-full px-[15px] mx-auto max-w-[1140px];
+}
+
+.no-padding {
+  @apply px-0;
+}
+
+.default-container {
+  @apply mx-auto max-w-7xl px-6 lg:px-8
+}
+
+.responsive {
+  @apply md:flex md:flex-row 
+}
+
+body{
+  font-family: var(--font-family);
+  background-color: var(--body-bg);
+  font-size: var(--font-size);
+  line-height: var(--line-hight);
+}
+
+/* Sticky Header Styles - Cannot be replicated with Tailwind */
+.sticky-header {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-100%);
+  animation: slideDownSticky 0.4s ease-out forwards;
+}
+
+/* Sticky header animation */
+@keyframes slideDownSticky {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.product-price {
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  flex-flow: wrap;
+  font-weight: var(--product-block-price-font-weight);
+  font-size: var(--product-block-price-font-size);
+  line-height: 23px;
+  color: var(--product-block-price-color);
+}
+
+.new-price {
+  color: var(--product-block-price-color,#000000);
+}
+
+
+.old-price {
+  color: var(--product-block-old-price-color,#6a7282);
+  text-decoration: line-through;
+  font-size: var(--product-block-old-price-font-size);
+}
+
+.waiting {
+  height: 250px;
+  width: 100%;
+  padding: 5px;
+  border-radius: 6px;
+  border: 2px solid #fff;
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background: #f6f7f8;
+  background: linear-gradient(to right, #eee 8%, #ddd 18%, #eee 33%);
+  background-size: 800px 104px;
+  position: relative;
+  display: block !important;
+}
+
+@keyframes placeHolderShimmer{0% {
+  background-position: -468px 0;
+}
+
+100% {
+  background-position: 468px 0;
+}}
+
+a,button{
+  cursor: pointer;
+}
