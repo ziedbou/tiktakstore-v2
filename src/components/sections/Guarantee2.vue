@@ -24,7 +24,7 @@
               <img 
                 v-if="data.values.icon_1?.image_thumb" 
                 class="icon w-10 h-10" 
-                :src="data.values.icon_1.image_thumb" 
+                :src="imghttps(data.values.icon_1.image_thumb)" 
                 alt=""
               >
               <i v-else class="icon-rocket text-3xl"></i>
@@ -43,7 +43,7 @@
               <img 
                 v-if="data.values.icon_2?.image_thumb" 
                 class="icon w-10 h-10" 
-                :src="data.values.icon_2.image_thumb" 
+                :src="imghttps(data.values.icon_2.image_thumb)" 
                 alt=""
               >
               <i v-else class="icon-rotate-left text-3xl"></i>
@@ -62,7 +62,7 @@
               <img 
                 v-if="data.values.icon_3?.image_thumb" 
                 class="icon w-10 h-10" 
-                :src="data.values.icon_3.image_thumb" 
+                :src="imghttps(data.values.icon_3.image_thumb)" 
                 alt=""
               >
               <i v-else class="icon-life-ring text-3xl"></i>
@@ -79,6 +79,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 const props = defineProps({
   data: {
     type: Object,

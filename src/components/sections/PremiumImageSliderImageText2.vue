@@ -24,7 +24,7 @@
               :class="{ active: index === 0 }"
               :data-id="`item_${index+1}`"
             >
-              <img :alt="child.title || ''" :src="child.image_2.image" />
+              <img :alt="child.title || ''" :src="imghttps(child.image_2.image)" />
             </div>
           </div>
         </div>
@@ -52,11 +52,11 @@
                     </svg>
                   </div>
                   <video autoplay loop muted playsinline preload="none" ref="videos">
-                    <source :src="child.video" type="video/mp4" />
+                    <source :src="imghttps(child.video)" type="video/mp4" />
                   </video>
                 </template>
                 <template v-else>
-                  <img :alt="child.title || ''" :src="child.image_1.image" />
+                  <img :alt="child.title || ''" :src="imghttps(child.image_1.image)" />
                 </template>
               </div>
             </div>
@@ -71,7 +71,7 @@
                 <img 
                   :alt="child.title || ''" 
                   loading="lazy" 
-                  :src="child.video ? child.image_2.image_thumb : child.image_1.image_thumb" 
+                  :src="child.video ? imghttps(child.image_2.image_thumb) : imghttps(child.image_1.image_thumb)" 
                 />
               </div>
             </div>
@@ -89,6 +89,7 @@ import { EffectFade, Thumbs } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/thumbs';
+import { imghttps } from '~/composables/services/helpers';
 
 const props = defineProps({
   data: {

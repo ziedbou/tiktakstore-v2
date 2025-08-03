@@ -6,7 +6,7 @@
       :to="getProductLink(product)"
       :class="[image_full ? 'p-0' : 'p-2 pb-0', 'relative flex']"
     >
-      <img
+      <NuxtImg
         :src="imghttps(product.photo)"
         :alt="product.name"
         :style="{
@@ -14,21 +14,17 @@
             ? '0'
             : 'var(--product-card-border-radius, 5px)',
         }"
-        class="aspect-square w-full object-cover group-hover:opacity-75"
+        class="aspect-square w-full object-cover"
       />
-      <Tags
+      <OutOfStockTag
         :product="product"
-        :outOfStockTagClass="image_full ? 'top-2.5 left-2.5' : 'top-4 left-4'"
-        :promoTagClass="
-          image_full ? 'bottom-2.5 right-2.5' : 'bottom-2 right-4'
-        "
+        :extraClass="`absolute ${image_full ? 'top-2.5 left-2.5' : 'top-1 left-1'}`"
       />
-      <button
-        @click.prevent="openQuickView"
-        class="z-10 absolute left-3 md:-translate-x-1/2 md:left-1/2 bottom-3 md:-bottom-10 md:group-hover:bottom-[15%] md:opacity-0 md:group-hover:opacity-100 opacity-100 bg-white bg-opacity-90 hover:bg-opacity-100 text-gray-800 font-semibold h-10 w-10 flex items-center justify-center rounded-full shadow-md transition-all duration-300 hover:scale-105"
-      >
-        <ArrowsPointingOutIcon class="w-4 h-4" />
-      </button>
+        <ProductCardButtons
+        :product-id="product.id"
+        @quick-view="openQuickView"
+      />
+
     </NuxtLink>
     <div class="text-center p-2">
       <h3 class="text-md font-medium text-gray-900">
@@ -36,14 +32,14 @@
           {{ product.name }}
         </NuxtLink>
       </h3>
-      <div class="mt-3 flex flex-col items-center">
+      <div class="mt-1 flex flex-col items-center">
         <div class="flex items-center">
           <StarIcon
             v-for="rating in [0, 1, 2, 3, 4]"
             :key="rating"
             :class="[
               product.seo_stars > rating ? 'text-yellow-400' : 'text-gray-200',
-              'size-5 shrink-0',
+              'size-4',
             ]"
             aria-hidden="true"
           />
@@ -52,12 +48,15 @@
           {{ product.seo_reviews }} reviews
         </p>
       </div>
-      <p class="mt-4 text-gray-900 flex items-center justify-center gap-2">
-        <span>{{ getPrice(product) }} {{ /*company.currency*/ "TND" }}</span>
-        <span v-if="product.discount" class="line-through text-sm text-gray-400"
-          >{{ product.price }} {{ /*company.currency*/ "TND" }}</span
-        >
-      </p>
+      <p
+        class="text-sm font-medium flex justify-center items-center gap-2 mt-2"
+      >
+      <span v-if="product.discount" class="old-price !text-sm"
+      >{{ product.price }} 
+        </span>
+        <span class="new-price text-base">{{ getPrice(product) }} {{ companyData.currency }}</span>
+        </p>
+        <PromoTag :product="product" />
     </div>
   </div>
   <!-- Quick View Modal -->
@@ -75,9 +74,13 @@ import {
   getPrice,
   imghttps,
 } from "~/composables/services/helpers";
-import Tags from "./product-tags/Tags.vue";
-import { ArrowsPointingOutIcon } from "@heroicons/vue/24/outline";
 import ProductQuickViewModal from "~/components/ProductQuickViewModal.vue";
+import { useCompanyData } from "~/composables/useCompanyData";
+import ProductCardButtons from "./ProductCardButtons.vue";
+import OutOfStockTag from "./product-tags/OutOfStockTag.vue";
+import PromoTag from "./product-tags/PromoTag.vue";
+
+const { companyData } = useCompanyData()
 
 const props = defineProps({
   product: {

@@ -16,7 +16,7 @@
         <p>{{ data.values.title }}</p>
       </div>
 
-      <img class="tech-hero__image tech-hero__image--mobile" :src="data.values.product_image.image">
+      <img class="tech-hero__image tech-hero__image--mobile" :src="imghttps(data.values.product_image.image)">
 
       <a href="" class="tech-hero__button">
         {{ data.values.btn_text }}
@@ -28,7 +28,7 @@
           :key="index"
           class="tech-hero__icon"
         >
-          <img :src="item.icon.image" class="tech-hero__icon-image" alt="">
+          <img :src="imghttps(item.icon.image)" class="tech-hero__icon-image" alt="">
           <span class="tech-hero__icon-title">
             {{ item.text }}
           </span>
@@ -36,11 +36,13 @@
       </div>
     </div>
 
-    <img class="tech-hero__image tech-hero__image--desktop" :src="data.values.product_image.image">
+    <img class="tech-hero__image tech-hero__image--desktop" :src="imghttps(data.values.product_image.image)">
   </div>
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

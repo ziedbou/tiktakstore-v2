@@ -7,12 +7,12 @@ export const useSelectedMultipleVariants = () => {
   // console.log('useSelectedMultipleVariants initialized');
 
   const initializeQuantity = (quantity) => {
-    console.log(`initializeQuantity called with quantity: ${JSON.stringify(quantity, null, 2)}`);
+    // console.log(`initializeQuantity called with quantity: ${JSON.stringify(quantity, null, 2)}`);
     if (!selectedVariants.value[quantity]) {
       selectedVariants.value[quantity] = Array.from({ length: quantity }, () => getSelectedVariant() || null);
-      console.log(`Initialized variants for quantity ${JSON.stringify(quantity, null, 2)}: ${JSON.stringify(selectedVariants.value[quantity], null, 2)}`);
+      // console.log(`Initialized variants for quantity ${JSON.stringify(quantity, null, 2)}: ${JSON.stringify(selectedVariants.value[quantity], null, 2)}`);
     }
-    console.log(`Current selectedVariants: ${JSON.stringify(selectedVariants.value, null, 2)}`);
+    // console.log(`Current selectedVariants: ${JSON.stringify(selectedVariants.value, null, 2)}`);
   };
 
   const setMultipleVariant = (quantity, index, variant) => {

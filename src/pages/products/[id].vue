@@ -47,7 +47,7 @@
             <h2 class="sr-only">Images</h2>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
-              <img v-for="image in product.images" :key="image.id" :src="image.imageSrc" :alt="image.imageAlt" :class="[image.primary ? 'lg:col-span-2 lg:row-span-2' : 'hidden lg:block', 'rounded-lg']" />
+              <img v-for="image in product.images" :key="image.id" :src="imghttps(image.imageSrc)" :alt="image.imageAlt" :class="[image.primary ? 'lg:col-span-2 lg:row-span-2' : 'hidden lg:block', 'rounded-lg']" />
             </div>
           </div>
 
@@ -130,6 +130,7 @@ import { ref } from 'vue'
 import { StarIcon } from '@heroicons/vue/20/solid'
 import { RadioGroup, RadioGroupOption } from '@headlessui/vue'
 import { CurrencyDollarIcon, GlobeAmericasIcon } from '@heroicons/vue/24/outline'
+import { imghttps } from '~/composables/services/helpers'
 
 const product = {
   name: 'Basic Tee',

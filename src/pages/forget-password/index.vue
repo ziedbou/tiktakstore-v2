@@ -12,7 +12,7 @@
         alt="Your Company"
       />
       <h2
-        class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
+        class="mt-10 text-center text-2xl/9 font-medium tracking-tight text-gray-900"
       >
         Réinitialiser le mot de passe du compte
       </h2>
@@ -49,7 +49,7 @@
               id="email"
               autocomplete="email"
               required
-              class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color-hover)] sm:text-sm/6"
             />
           </div>
         </div>
@@ -58,7 +58,7 @@
           <button
             type="submit"
             :disabled="isLoading"
-            class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-400 disabled:cursor-not-allowed"
+            class="flex w-full justify-center px-3 py-2.5 text-sm/6 font-medium  focus-visible:outline-2 focus-visible:outline-offset-2 btn-primary-solid disabled:cursor-not-allowed"
           >
             <span v-if="!isLoading">Envoyer</span>
             <span v-else>Envoi en cours...</span>
@@ -70,7 +70,7 @@
         Vous avez déjà un compte ?
         <NuxtLink
           to="/login"
-          class="font-semibold text-indigo-600 hover:text-indigo-500"
+          class="font-medium text-[var(--btn-primary-outline-color)] hover:text-[var(--btn-primary-outline-color-hover)]"
           >Se connecter</NuxtLink
         >
       </p>

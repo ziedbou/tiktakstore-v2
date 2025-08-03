@@ -1,13 +1,16 @@
 <template>
+  <template v-if="product.has_associtation" >
+    <ProductAssociation :product="product"/>
+  </template>
   <div v-if="attributes.length > 0 && product.declinaison" class="space-y-6">
     <div class="choices-product space-y-6">
       <!-- Dynamic Attribute Selection -->
       <div
         v-for="(attribute, index) in attributes"
         :key="attribute.productoption"
-        class="option mb-6"
+        class="option mb-10 md:mb-6"
       >
-        <h3 class="text-sm font-medium text-gray-600 mb-3">
+        <h3 class="font-medium text-gray-600 md:mb-4 mb-7 ">
           <span v-if="selectedOptions[attribute.productoption]" class="flex items-center gap-1">
             <span class="font-medium text-gray-700">{{ attribute.label }}:</span>
             <span class="font-bold text-gray-900">{{ selectedOptions[attribute.productoption].name }}</span>
@@ -25,8 +28,9 @@
             type="button"
             class="w-10 h-12 sm:w-14 sm:h-18 rounded-sm transition-all duration-200 relative"
             :class="{
-              'ring-2 ring-indigo-600 ring-offset-2': selectedOptions[attribute.productoption]?.id === option.id,
+              'ring-2 ring-[var(--btn-primary-outline-border-color-hover)] ring-offset-2': selectedOptions[attribute.productoption]?.id === option.id,
               'opacity-50 !cursor-not-allowed border-gray-300': !isOptionAvailable(attribute.productoption, option.id),
+              '!w-10 !h-10 !sm:w-12 !sm:h-12': attribute.displaytype === 'colors',
             }"
             :style="attribute.displaytype === 'colors' ? { backgroundColor: option.value } : {}"
             :title="`Select ${option.name}`"
@@ -36,7 +40,7 @@
           >
             <img
               v-if="attribute.displaytype === 'images' && option.image"
-              :src="option.image"
+              :src="imghttps(option.image)"
               :alt="option.name"
               class="w-full h-full object-cover rounded-sm"
               loading="lazy"
@@ -46,7 +50,7 @@
         <!-- Button or Dropdown Variants -->
         <div
           v-else
-          class="grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6"
+          class="flex flex-row flex-wrap gap-3"
         >
           <template v-if="attribute.displaytype === 'dropdown'">
             <select
@@ -70,10 +74,10 @@
               type="button"
               class="flex items-center justify-center rounded-md border px-3 py-3 text-sm font-medium uppercase transition-all duration-200"
               :class="{
-                'border-transparent bg-indigo-600 text-white hover:bg-indigo-700': selectedOptions[attribute.productoption]?.id === option.id,
+                'border-transparent bg-[var(--btn-primary-solid-background)] text-[var(--btn-primary-solid-color)] focus:bg-[var(--btn-primary-solid-background-hover)]': selectedOptions[attribute.productoption]?.id === option.id,
                 'border-gray-200 bg-white text-gray-900 hover:bg-gray-50': selectedOptions[attribute.productoption]?.id !== option.id,
-                'focus:ring-2 ring-indigo-600 ring-offset-2': true,
-                'opacity-50 !cursor-not-allowed bg-gray-100 line-through text-gray-400 border-gray-300': !isOptionAvailable(attribute.productoption, option.id),
+                'focus:ring-2 ring-[var(--btn-primary-solid-background-hover)] ring-offset-2': true,
+                'opacity-50 !cursor-not-allowed bg-gray-100 text-gray-400 border-gray-300 relative not-available-x': !isOptionAvailable(attribute.productoption, option.id),
               }"
               :title="`Select ${option.name}`"
               :aria-label="`Select ${attribute.label} ${option.name}`"
@@ -91,6 +95,8 @@
 <script setup>
 import { computed, ref } from 'vue';
 import { useSelectedVariant } from '@/composables/useSelectedVariants.js';
+import { imghttps } from '~/composables/services/helpers';
+import ProductAssociation from './productAssociation.vue';
 
 // Props
 const props = defineProps({
@@ -160,6 +166,8 @@ const initializeSelectedVariant = () => {
 // Run initialization
 initializeSelectedVariant();
 
+const attributes_names = ref([]);
+
 // Computed properties for attributes
 const attributes = computed(() => {
   const attrMap = new Map();
@@ -168,7 +176,7 @@ const attributes = computed(() => {
       if (!attrMap.has(attr.productoption)) {
         attrMap.set(attr.productoption, {
           productoption: attr.productoption,
-          label: attr.is_color ? 'Color' : attr.name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+          label: attr.productoption_name,
           displaytype: attr.displaytype,
           options: [],
         });
@@ -184,6 +192,9 @@ const attributes = computed(() => {
       }
     });
   });
+
+  attributes_names.value = Array.from(attrMap.values()).map(attr => (attr.label))
+  // console.log('-Attributes:', Array.from(attrMap.values()).map(attr => (attr.label)));
   return Array.from(attrMap.values()).map(attr => ({
     ...attr,
     options: attr.options.sort((a, b) => a.name.localeCompare(b.name)),
@@ -199,6 +210,13 @@ const isOptionAvailable = computed(() => (productoption, optionId) => {
       dec._attributs.some((attr) => attr.productoption === parseInt(key) && attr.id === opt.id)
     )
   );
+});
+const { updateAttributesNames } = useAttributesName()
+watch(attributes_names , (newValue) => {
+  if (newValue.length > 0) {
+    // console.log('Attributes names updated55:', newValue);
+    updateAttributesNames(newValue);
+  }
 });
 
 // Methods
@@ -227,3 +245,16 @@ const updateSelectedVariant = () => {
   setSelectedVariant(variant);
 };
 </script>
+
+<style scoped>
+.not-available-x::before {
+  content: '|';
+  position: absolute;
+  transform: rotate(25deg) !important;
+  transform-origin: center center;
+ 
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: rgba(239, 0, 0, 0.735);
+}
+</style>

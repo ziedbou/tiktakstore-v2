@@ -12,10 +12,13 @@ export function useCompanyData() {
     isLoading.value = true
     error.value = null
     
+    const config = useRuntimeConfig();
+    const baseURL = config.public.baseURL;
+  
     try {
       const [identifier, type] = getSlugOrServer(host)
       // console.log("identifier",host)
-      const ENDPOINT_API = process.env.BASE_URL + 'get-store/'
+      const ENDPOINT_API = baseURL + 'get-store/'
       const fullApi = `${ENDPOINT_API}?${type}=${identifier}`
       // console.log("fullApi", fullApi)
       const { data, error: fetchError } = await useFetch(fullApi)

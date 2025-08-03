@@ -22,7 +22,7 @@
       <div class="ingredients-column ingredients-column-top">
         <div class="ingredients-item" v-if="data.values.img1">
           <div class="ingredients-item-image">
-            <img :src="data.values.img1.image" alt="" />
+            <img :src="imghttps(data.values.img1.image)" alt="" />
           </div>
           <p class="ingredients-item-title">{{ data.values.nm1 }}</p>
           <p class="ingredients-item-text">{{ data.values.desc1 }}</p>
@@ -32,7 +32,7 @@
       <div class="ingredients-column ingredients-column-bottom">
         <div class="ingredients-item" v-if="data.values.img4">
           <div class="ingredients-item-image">
-            <img :src="data.values.img4.image" alt="" />
+            <img :src="imghttps(data.values.img4.image)" alt="" />
           </div>
           <p class="ingredients-item-title">{{ data.values.nm4 }}</p>
           <p class="ingredients-item-text">{{ data.values.desc4 }}</p>
@@ -42,7 +42,7 @@
       <div class="ingredients-column ingredients-column-left">
         <div class="ingredients-item" v-if="data.values.img6">
           <div class="ingredients-item-image">
-            <img :src="data.values.img6.image" alt="" />
+            <img :src="imghttps(data.values.img6.image)" alt="" />
           </div>
           <p class="ingredients-item-title">{{ data.values.nm6 }}</p>
           <p class="ingredients-item-text">{{ data.values.desc6 }}</p>
@@ -50,7 +50,7 @@
 
         <div class="ingredients-item" v-if="data.values.img5">
           <div class="ingredients-item-image">
-            <img :src="data.values.img5.image" alt="" />
+            <img :src="imghttps(data.values.img5.image)" alt="" />
           </div>
           <p class="ingredients-item-title">{{ data.values.nm5 }}</p>
           <p class="ingredients-item-text">{{ data.values.desc5 }}</p>
@@ -58,13 +58,13 @@
       </div>
 
       <div class="ingredients-image">
-        <img :src="data.values.main_img.image" alt="" />
+        <img :src="imghttps(data.values.main_img.image)" alt="" />
       </div>
 
       <div class="ingredients-column ingredients-column-right">
         <div class="ingredients-item" v-if="data.values.img2">
           <div class="ingredients-item-image">
-            <img :src="data.values.img2.image" alt="" />
+            <img :src="imghttps(data.values.img2.image)" alt="" />
           </div>
           <p class="ingredients-item-title">{{ data.values.nm2 }}</p>
           <p class="ingredients-item-text">{{ data.values.desc2 }}</p>
@@ -72,7 +72,7 @@
 
         <div class="ingredients-item" v-if="data.values.img3">
           <div class="ingredients-item-image">
-            <img :src="data.values.img3.image" alt="" />
+            <img :src="imghttps(data.values.img3.image)" alt="" />
           </div>
           <p class="ingredients-item-title">{{ data.values.nm3 }}</p>
           <p class="ingredients-item-text">{{ data.values.desc3 }}</p>
@@ -83,6 +83,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   key: String,
   data: Object,

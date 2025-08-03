@@ -2,15 +2,20 @@
 /* -------------------- GET SLUG OR SERVER -------------------- */
 
 export function getSlugOrServer(url) {
-    let host = url.split('://')[1]?.split(':')[0] || url;
-    host = host.replace('www.', '');
-    if (!host.includes('tiktak-store')) {
-      return [host.split("/")[0], 'server'];
-    } else {
-      const slug = host.split('.')[0];
-      return [slug, 'slug'];
-    }
+  let host = url.split('://')[1]?.split(':')[0] || url;
+  host = host.replace('www.', '');
+  // Extract the main domain part before any port or path
+  const domain = host.split('/')[0];
+  // Check for tiktak-store or tiktak-preview in the domain
+  if (domain.includes('tiktak-store') || domain.includes('tiktak-preview')) {
+    // Extract the slug before the first dot
+    const slug = domain.split('.')[0];
+    return [slug, 'slug'];
+  } else {
+    const slug = domain.split('shop.')[1]
+    return [slug, 'server'];
   }
+}
 
 /* -------------------- General Utilities -------------------- */
 export function generateRange(size) {
@@ -20,7 +25,7 @@ export function generateRange(size) {
 export function imghttps(value) {
     if (!value) return '';
     if (value.includes('localhost')) return value;
-    return value.replace('http:', 'https:').replace('api.tiktakpro.com', 'api.tiktak.space');
+    return value.replace('http:', 'https:').replace('api.tiktakpro.com', 'api.tiktak.space').replace('api.tiktak.space','cdn.cloudtiktak.com');
 }
 
 export function formatDate(date) {
@@ -236,4 +241,36 @@ export function displayLoading() {
 export function hideLoading() {
     const loader = document.getElementById('loading-wrapper');
     if (loader) loader.remove();
+}
+
+export function socialMedia(url, platform) {
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        switch (platform) {
+            case 'facebook':
+                url = 'https://www.facebook.com/' + url;
+                break;
+            case 'whatsapp':
+                url = 'https://wa.me/' + url;
+                break;
+            case 'twitter':
+                url = 'https://twitter.com/' + url;
+                break;
+            case 'instagram':
+                url = 'https://www.instagram.com/' + url;
+                break;
+            case 'youtube':
+                url = 'https://www.youtube.com/@' + url;
+                break;
+            case 'linkedin':
+                url = 'https://www.linkedin.com/in/' + url;
+                break;
+            case 'snapchat':
+                url = 'http://www.snapchat.com/add/' + url;
+                break;
+            case 'tiktok':
+                url = 'https://www.tiktok.com/@' + url;
+                break;
+        }
+    }
+    return "sdfsd";
 }

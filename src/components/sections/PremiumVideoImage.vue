@@ -18,7 +18,7 @@
     <div class="grid">
       <div class="media">
         <div class="secondary-media">         
-          <img :src="data.values.image.image" alt="" loading="lazy">
+          <img :src="imghttps(data.values.image.image)" alt="" loading="lazy">
         </div>
         <video 
           playsinline
@@ -29,7 +29,7 @@
           @loadeddata="showFirstFrame"
           :poster="data.values.poster || ''"
         >
-          <source :src="data.values.video" type="video/mp4">
+          <source :src="imghttps(data.values.video)" type="video/mp4">
         </video>
       </div>
       <div class="content">
@@ -44,6 +44,7 @@
 
 <script setup>
 import { onMounted } from 'vue';
+import { imghttps } from '~/composables/services/helpers';
 
 defineProps({
   data: {

@@ -10,7 +10,7 @@
         >
           <!-- Image -->
           <img
-            :src="child.image.image"
+            :src="imghttps(child.image.image)"
             :alt="child.image.alt || ''"
             loading="lazy"
             class="w-full h-full object-cover aspect-[3/4] transition-transform duration-300 group-hover:scale-105"
@@ -48,6 +48,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

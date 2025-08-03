@@ -2,128 +2,88 @@
   <!-- Header Top Section -->
   <div class="header-top bg-white text-black border-b border-gray-200" style="background-color: var(--header-top-bg, #ffffff); color: var(--header-top-color, #000000);">
     <div class="header-container">
-      <!-- Desktop View -->
-      <div class="hidden md:flex justify-between items-center py-1.5 max-sm:flex-col max-sm:gap-2 max-sm:text-center">
-        <!-- Left Side: Contact Info -->
-        <div class="flex items-center space-x-4">
+            <div class="flex items-center justify-between py-1.5">
+        <!-- Left Side: Phone Number - Always Visible -->
+        <div class="flex items-center space-x-4 flex-shrink-0">
           <NuxtLink v-if="companyData?.phone && showPhone" :to="`tel:${companyData.phone}`" class="phone-link flex items-center px-2 py-1 rounded-full transition-all duration-300">
             <Icon name="ph:phone" class="w-3.5 h-3.5 mr-1.5" />
             <span class="text-xs">{{ companyData.phone }}</span>
           </NuxtLink>
         </div>
-        
-        <!-- Right Side: Navigation Links and Social Media -->
-        <div class="flex items-center gap-2">
-          <!-- Navigation Links -->
-          <div v-if="showNavLinks" class="flex items-center space-x-3 mr-4">
-            <NuxtLink to="/page/about" class="top-nav-link flex items-center px-2 py-1 rounded-full transition-all duration-300">
-              <Icon name="ph:info" class="w-3.5 h-3.5 mr-1" />
-              <span class="text-xs">À propos de nous</span>
-            </NuxtLink>
-            <NuxtLink to="/contact" class="top-nav-link flex items-center px-2 py-1 rounded-full transition-all duration-300">
-              <Icon name="ph:envelope" class="w-3.5 h-3.5 mr-1" />
-              <span class="text-xs">Contactez-nous</span>
-            </NuxtLink>
-            <NuxtLink to="/login" class="top-nav-link flex items-center px-2 py-1 rounded-full transition-all duration-300">
-              <Icon name="ph:sign-in" class="w-3.5 h-3.5 mr-1" />
-              <span class="text-xs">Se connecter</span>
-            </NuxtLink>
-          </div>
-          
-          <!-- Social Media Links -->
-          <div v-if="showSocialMedia" class="flex items-center gap-2">
-            <NuxtLink v-if="storeInfo?.contact_settings?.facebook" :to="`https://facebook.com/${storeInfo.contact_settings.facebook}`" class="social-link w-6 h-6 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
-              <Icon name="ri:facebook-fill" class="w-3.5 h-3.5" />
-            </NuxtLink>
-            <NuxtLink v-if="companyData?.phone" :to="`https://wa.me/${companyData.phone.replace(/[^0-9]/g, '')}`" class="social-link w-6 h-6 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
-              <Icon name="ri:whatsapp-fill" class="w-3.5 h-3.5" />
-            </NuxtLink>
-            <NuxtLink v-if="storeInfo?.contact_settings?.instagram" :to="`https://instagram.com/${storeInfo.contact_settings.instagram}`" class="social-link w-6 h-6 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
-              <Icon name="ri:instagram-fill" class="w-3.5 h-3.5" />
-            </NuxtLink>
-            <NuxtLink v-if="storeInfo?.contact_settings?.tiktok" :to="`https://tiktok.com/@${storeInfo.contact_settings.tiktok}`" class="social-link w-6 h-6 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
-              <Icon name="ri:tiktok-fill" class="w-3.5 h-3.5" />
-            </NuxtLink>
-            <NuxtLink v-if="storeInfo?.contact_settings?.youtube" :to="`https://youtube.com/@${storeInfo.contact_settings.youtube}`" class="social-link w-6 h-6 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
-              <Icon name="ri:youtube-fill" class="w-3.5 h-3.5" />
-            </NuxtLink>
-          </div>
+
+        <!-- Center: Marquee Text - Takes available space -->
+        <div class="flex-1 flex justify-center min-w-0">
+          <TopBarMarquee v-if="showMarquee" :texts="marqueeTexts" :is-standalone="isMarqueeStandalone" />
         </div>
-      </div>
-
-      <!-- Mobile Accordion View -->
-      <div class="md:hidden py-2">
-        <button 
-          @click="toggleContactsAccordion" 
-          class="contact-accordion-btn duration-300 flex items-center justify-end transition-all w-full"
-        >
-          <span class="text-xs font-medium">{{ getAccordionTitle() }}</span>
-          <Icon 
-            name="ph:caret-down" 
-            :class="[isContactsOpen ? 'rotate-180' : 'rotate-0', 'w-3 h-3 ml-1.5 transition-transform duration-300']"
-          />
-        </button>
         
-        <!-- Accordion Content -->
-        <div 
-          v-if="isContactsOpen" 
-          class="contact-accordion-content mt-3 pb-3 animate-slide-down bg-white rounded-lg border border-gray-100 shadow-sm"
-        >
-          <div class="px-4 space-y-4">
-            <!-- Navigation Links Section -->
-            <div v-if="showNavLinks" class="border-b border-gray-200 pb-4">
-              <div class="text-center mb-3">
-                <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Menu rapide</span>
-              </div>
-              <div class="space-y-2">
-                <NuxtLink to="/page/about" class="top-nav-link-mobile flex items-center justify-center px-3 py-2 rounded-lg transition-all duration-300">
-                  <Icon name="ph:info" class="w-4 h-4 mr-2" />
-                  <span class="text-sm">À propos de nous</span>
-                </NuxtLink>
-                <NuxtLink to="/contact" class="top-nav-link-mobile flex items-center justify-center px-3 py-2 rounded-lg transition-all duration-300">
-                  <Icon name="ph:envelope" class="w-4 h-4 mr-2" />
-                  <span class="text-sm">Contactez-nous</span>
-                </NuxtLink>
-                <NuxtLink to="/login" class="top-nav-link-mobile flex items-center justify-center px-3 py-2 rounded-lg transition-all duration-300">
-                  <Icon name="ph:sign-in" class="w-4 h-4 mr-2" />
-                  <span class="text-sm">Se connecter</span>
+        <!-- Right Side: Navigation Links and Social Media - Always at right -->
+        <div class="flex items-center gap-2 flex-shrink-0 max-w-fit">
+                      <!-- Desktop: Show all links and social icons directly -->
+            <div class="hidden md:flex items-center gap-1">
+              <!-- Navigation Links -->
+              <div v-if="showNavLinks" class="flex items-center space-x-2 mr-2">
+                <NuxtLink 
+                  v-for="link in staticLinks" 
+                  :key="link.url"
+                  :to="link.url" 
+                  class="top-nav-link flex items-center px-2 py-1 rounded-full transition-all duration-300"
+                >
+                  <span class="text-xs">{{ link.label }}</span>
                 </NuxtLink>
               </div>
-            </div>
-
-            <!-- Phone Number -->
-            <div v-if="companyData?.phone && showPhone" class="flex items-center justify-center border-b border-gray-200 py-4">
-              <NuxtLink :to="`tel:${companyData.phone}`" class="phone-group flex items-center space-x-3 group transition-all duration-300">
-                <div class="phone-icon-mobile flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center">
-                  <Icon name="ph:phone-bold" class="w-4.5 h-4.5" />
-                </div>
-                <span class="phone-link-mobile text-sm font-medium">
-                  {{ companyData.phone }}
-                </span>
+              
+              <!-- Social Media Links -->
+              <div v-if="showSocialMedia" class="flex items-center gap-1">
+              <NuxtLink v-if="storeInfo?.contact_settings?.facebook" :to="storeInfo.contact_settings.facebook" class="social-link w-6 h-6 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
+                <Icon name="ri:facebook-fill" class="w-3.5 h-3.5" />
+              </NuxtLink>
+              <NuxtLink v-if="storeInfo.contact_settings.whatsapp" :to="`https://wa.me/${storeInfo.contact_settings.whatsapp}`" class="social-link w-6 h-6 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
+                <Icon name="ri:whatsapp-fill" class="w-3.5 h-3.5" />
+              </NuxtLink>
+              <NuxtLink v-if="storeInfo?.contact_settings?.instagram" :to="storeInfo.contact_settings.instagram" class="social-link w-6 h-6 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
+                <Icon name="ri:instagram-fill" class="w-3.5 h-3.5" />
+              </NuxtLink>
+              <NuxtLink v-if="storeInfo?.contact_settings?.tiktok" :to="storeInfo.contact_settings.tiktok" class="social-link w-6 h-6 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
+                <Icon name="ri:tiktok-fill" class="w-3.5 h-3.5" />
+              </NuxtLink>
+              <NuxtLink v-if="storeInfo?.contact_settings?.youtube" :to="storeInfo.contact_settings.youtube" class="social-link w-6 h-6 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
+                <Icon name="ri:youtube-fill" class="w-3.5 h-3.5" />
               </NuxtLink>
             </div>
+          </div>
 
-            <!-- Social Media Links Grid -->
-            <div v-if="showSocialMedia" class="space-y-3">
-              <div class="text-center">
-                <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Suivez-nous</span>
-              </div>
-              <div class="flex justify-center items-center space-x-4">
-                <NuxtLink v-if="storeInfo?.contact_settings?.facebook" :to="`https://facebook.com/${storeInfo.contact_settings.facebook}`" class="social-link-mobile w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:shadow-md" target="_blank">
-                  <Icon name="ri:facebook-fill" class="w-5 h-5" />
-                </NuxtLink>
-                <NuxtLink v-if="companyData?.phone" :to="`https://wa.me/${companyData.phone.replace(/[^0-9]/g, '')}`" class="social-link-mobile w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:shadow-md" target="_blank">
-                  <Icon name="ri:whatsapp-fill" class="w-5 h-5" />
-                </NuxtLink>
-                <NuxtLink v-if="storeInfo?.contact_settings?.instagram" :to="`https://instagram.com/${storeInfo.contact_settings.instagram}`" class="social-link-mobile w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:shadow-md" target="_blank">
-                  <Icon name="ri:instagram-fill" class="w-5 h-5" />
-                </NuxtLink>
-                <NuxtLink v-if="storeInfo?.contact_settings?.tiktok" :to="`https://tiktok.com/@${storeInfo.contact_settings.tiktok}`" class="social-link-mobile w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:shadow-md" target="_blank">
-                  <Icon name="ri:tiktok-fill" class="w-5 h-5" />
-                </NuxtLink>
-                <NuxtLink v-if="storeInfo?.contact_settings?.youtube" :to="`https://youtube.com/@${storeInfo.contact_settings.youtube}`" class="social-link-mobile w-10 h-10 flex items-center justify-center rounded-full transition-all duration-300 hover:shadow-md" target="_blank">
-                  <Icon name="ri:youtube-fill" class="w-5 h-5" />
-                </NuxtLink>
+          <!-- Mobile: Dropdown for links only (no social icons) -->
+          <div v-if="showNavLinks" class="md:hidden relative">
+            <button 
+              @click="toggleContactsAccordion" 
+              class="contact-accordion-btn duration-300 flex items-center justify-end transition-all"
+            >
+              <span class="text-xs font-medium">Menu</span>
+              <Icon 
+                name="ph:caret-down" 
+                :class="[isContactsOpen ? 'rotate-180' : 'rotate-0', 'w-3 h-3 ml-1.5 transition-transform duration-300']"
+              />
+            </button>
+
+            <!-- Absolute Dropdown -->
+            <div 
+              v-if="isContactsOpen" 
+              class="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-50 animate-slide-down"
+            >
+              <!-- Navigation Links Section -->
+              <div v-if="showNavLinks" class="py-2">
+                <div class="space-y-1">
+                  <NuxtLink 
+                    v-for="link in staticLinks" 
+                    :key="link.url"
+                    :to="link.url" 
+                    class="dropdown-link-item flex items-center justify-between px-4 py-3 bg-white transition-all duration-200 border-b border-gray-100 last:border-b-0 group"
+                    @click="isContactsOpen = false"
+                  >
+                    <span class="text-xs font-medium">{{ link.label }}</span>
+                    <Icon name="ph:arrow-right" class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  </NuxtLink>
+                </div>
               </div>
             </div>
           </div>
@@ -134,7 +94,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import TopBarMarquee from './TopBarMarquee.vue';
 
 // Define props
 const props = defineProps({
@@ -145,37 +106,55 @@ const props = defineProps({
   storeInfo: {
     type: Object,
     default: () => ({})
-  },
-  showNavLinks: {
-    type: Boolean,
-    default: false
-  },
-  showPhone: {
-    type: Boolean,
-    default: true
-  },
-  showSocialMedia: {
-    type: Boolean,
-    default: true
   }
 });
 
+// Computed properties for top bar settings
+const topBarSettings = computed(() => {
+  return props.storeInfo?.topbar_settings || {};
+});
+
+const showPhone = computed(() => {
+  // Show phone by default if topBarSettings is empty or if explicitly enabled
+  if (!topBarSettings.value || Object.keys(topBarSettings.value).length === 0) {
+    return true;
+  }
+  return topBarSettings.value?.show_phone_number;
+});
+
+const showSocialMedia = computed(() => {
+  // Show social media by default if topBarSettings is empty or if explicitly enabled
+  if (!topBarSettings.value || Object.keys(topBarSettings.value).length === 0) {
+    return true;
+  }
+  return topBarSettings.value?.show_social_icons;
+});
+
+const showNavLinks = computed(() => {
+  return topBarSettings.value?.static_links && topBarSettings.value.static_links.length > 0;
+});
+
+const staticLinks = computed(() => {
+  return topBarSettings.value?.static_links || [];
+});
+
+const marqueeTexts = computed(() => {
+  return topBarSettings.value?.marquee_texts || [];
+});
+
+const showMarquee = computed(() => {
+  return marqueeTexts.value.length > 0;
+});
+
+const isMarqueeStandalone = computed(() => {
+  return !showPhone.value && !showNavLinks.value && !showSocialMedia.value;
+});
 // Reactive variables
 const isContactsOpen = ref(false);
 
 // Functions
 function toggleContactsAccordion() {
   isContactsOpen.value = !isContactsOpen.value;
-}
-
-function getAccordionTitle() {
-  if (props.showNavLinks && props.showPhone && props.showSocialMedia) {
-    return 'Contacts & Menu';
-  } else if (props.showNavLinks) {
-    return 'Menu';
-  } else {
-    return 'Contacts';
-  }
 }
 </script>
 
@@ -264,37 +243,32 @@ function getAccordionTitle() {
   background-color: color-mix(in srgb, var(--header-top-color-hover, #7b7b7b) 10%, transparent);
 }
 
-/* Mobile phone number with dynamic styling - group hover */
-.phone-icon-mobile {
-  background-color: color-mix(in srgb, var(--header-top-color, #000000) 15%, transparent);
-  color: var(--header-top-color, #000000);
+/* Dropdown link items styling with submenu colors */
+.dropdown-link-item {
+  color: var(--header-submenu-link-color, #444444);
 }
 
-.phone-group:hover .phone-icon-mobile {
-  color: var(--header-top-color-hover, #7b7b7b);
-  background-color: color-mix(in srgb, var(--header-top-color-hover, #7b7b7b) 12%, transparent);
+.dropdown-link-item:hover {
+  color: var(--header-submenu-link-color-hover);
+  background-color: color-mix(in srgb, var(--header-submenu-link-color-hover) 8%, transparent);
 }
 
-.phone-icon-mobile:focus {
-  color: var(--header-top-color-hover, #7b7b7b);
-  outline: 2px solid color-mix(in srgb, var(--header-top-color-hover, #7b7b7b) 70%, transparent) !important;
-  outline-offset: 2px;
-  background-color: color-mix(in srgb, var(--header-top-color-hover, #7b7b7b) 15%, transparent);
+  .dropdown-link-item:focus {
+    color: var(--header-submenu-link-color-hover);
+    outline: none;
+    background-color: color-mix(in srgb, var(--header-submenu-link-color-hover) 8%, transparent);
+  }
+
+
+.dropdown-link-item .ph-arrow-right {
+  color: var(--header-submenu-link-color, #444444);
 }
 
-.phone-link-mobile {
-  color: var(--header-top-color, #000000);
+.dropdown-link-item:hover .ph-arrow-right {
+  color: var(--header-submenu-link-color-hover);
 }
 
-.phone-group:hover .phone-link-mobile {
-  color: var(--header-top-color-hover, #7b7b7b);
-}
 
-.phone-link-mobile:focus {
-  color: var(--header-top-color-hover, #7b7b7b);
-  outline: 2px solid color-mix(in srgb, var(--header-top-color-hover, #7b7b7b) 70%, transparent) !important;
-  outline-offset: 2px;
-}
 
 /* Top navigation links styling - matches phone and social links */
 .top-nav-link {

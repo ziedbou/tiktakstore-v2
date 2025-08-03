@@ -4,7 +4,7 @@
       <button
         type="button"
         @click="updateQuantity(quantity - 1)"
-        class="px-3 py-2 text-gray-500 hover:text-charcoal"
+        class="px-3 py-3 text-gray-500 hover:text-charcoal"
       >
         -
       </button>
@@ -17,7 +17,7 @@
       <button
         type="button"
         @click="updateQuantity(quantity + 1)"
-        class="px-3 py-2 text-gray-500 hover:text-charcoal"
+        class="px-3 py-3 text-gray-500 hover:text-charcoal"
       >
         +
       </button>

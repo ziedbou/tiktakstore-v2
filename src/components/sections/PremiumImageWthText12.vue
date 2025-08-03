@@ -50,7 +50,7 @@
             </NuxtLink>
           </div>
           <div class="image-text-image" style="clip-path: url(#image-shape);">
-            <img :alt="child.title" loading="lazy" :src="child.image.image" />
+            <img :alt="child.title" loading="lazy" :src="imghttps(child.image.image)" />
             <svg class="clip" fill="none" height="0px" viewBox="0 0 340 341" width="0px" 
               xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
               <defs>
@@ -79,6 +79,7 @@ import { EffectFade, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
+import { imghttps } from '~/composables/services/helpers';
 
 const props = defineProps({
   data: {

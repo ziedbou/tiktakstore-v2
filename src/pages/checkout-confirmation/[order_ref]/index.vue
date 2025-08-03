@@ -187,7 +187,7 @@
               <p class="text-gray-600 mb-6">Merci pour votre commande</p>
               <button
                 @click="$router.push('/')"
-                class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200"
+                class="btn-primary-solid inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md"
               >
                 Revenir à la page d'accueil
               </button>
@@ -209,6 +209,15 @@ const orderRef = route.params.order_ref;
 const config = useRuntimeConfig()
 const baseURL = config.public.baseURL
 // SSR API call to fetch order details
+
+
+const { trackPurchase } = useTracking();
+
+// Track page view on initial mount
+onMounted(() => {
+  trackPurchase(orderRef);
+});
+
 const { data: orderData, pending, error } = await useFetch(
   `${baseURL}get-order-by-idref/${orderRef}/${companyData.value.id}`,
   {

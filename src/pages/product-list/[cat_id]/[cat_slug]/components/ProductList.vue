@@ -64,9 +64,9 @@
         <div class="hidden lg:flex space-x-2">
           <button
             @click="setViewMode('grid-2')"
-            class="p-1 cursor-pointer hover:text-blue-600"
+            class="p-1 cursor-pointer hover:text-[var(--btn-primary-solid-background)]"
             :class="{
-              'text-blue-600': viewMode === 'grid-2',
+              'text-[var(--btn-primary-solid-background)]': viewMode === 'grid-2',
               'text-gray-500': viewMode !== 'grid-2',
             }"
           >
@@ -79,9 +79,9 @@
           </button>
           <button
             @click="setViewMode('grid-3')"
-            class="p-1 cursor-pointer hover:text-blue-600"
+            class="p-1 cursor-pointer hover:text-[var(--btn-primary-solid-background)]"
             :class="{
-              'text-blue-600': viewMode === 'grid-3',
+              'text-[var(--btn-primary-solid-background)]': viewMode === 'grid-3',
               'text-gray-500': viewMode !== 'grid-3',
             }"
           >
@@ -97,9 +97,9 @@
 
           <button
             @click="setViewMode('grid-4')"
-            class="p-1 cursor-pointer hover:text-blue-600"
+            class="p-1 cursor-pointer hover:text-[var(--btn-primary-solid-background)]"
             :class="{
-              'text-blue-600': viewMode === 'grid-4',
+              'text-[var(--btn-primary-solid-background)]': viewMode === 'grid-4',
               'text-gray-500': viewMode !== 'grid-4',
             }"
           >
@@ -197,7 +197,7 @@
         <button
           v-if="hasFiltersApplied"
           @click="handleResetFilters"
-          class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+          class="px-4 py-2 btn-primary-solid"
         >
           Réinitialiser les filtres
         </button>
@@ -209,9 +209,9 @@
       <div
         :class="{
           grid: true,
-          'grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8': viewMode === 'grid-2',
-          'grid-cols-1 md:grid-cols-3 gap-x-4 gap-y-6': viewMode === 'grid-3',
-          'grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-4': viewMode === 'grid-4',
+          'grid-cols-1 md:grid-cols-2 gap-6': viewMode === 'grid-2',
+          'grid-cols-1 md:grid-cols-3 gap-4': viewMode === 'grid-3',
+          'grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2': viewMode === 'grid-4',
         }">
         <div v-for="product in products" :key="product.id">
           <component
@@ -247,7 +247,7 @@ const props = defineProps({
     required: true,
   },
   companyId: {
-    type: [String],
+    type: String,
     required: true,
   },
   filterSelections: {
@@ -274,12 +274,13 @@ const products = ref([]);
 const totalProductCount = ref(0);
 const currentPage = ref(1);
 const totalPages = ref(1);
-const viewMode = ref("grid-4");
+const viewMode = ref("grid-3");
 const sortOption = ref("");
 const loadMoreTrigger = ref(null);
 const observer = ref(null);
 const config = useRuntimeConfig()
 const baseURL = config.public.baseURL
+
 // Computed property to check if there are more pages to load
 const hasMorePages = computed(() => {
   return currentPage.value < totalPages.value;
@@ -304,7 +305,7 @@ const hasFiltersApplied = computed(() => {
 // Get the product card component dynamically
 const dynamicComponent = shallowRef(null);
 // Load component dynamically
-const loadComponent = async (componentName = "ProductCard_5") => {
+const loadComponent = async (componentName) => {
   try {
     const module = await import(
       `@/components/product-cards/${componentName}.vue`
@@ -338,6 +339,13 @@ const updateUrlWithPage = () => {
 
 // Fetch products based on category ID, filters, and pagination
 const fetchProducts = async (isLoadMore = false) => {
+  // Guard: Don't fetch if required props are not available
+  if (!props.categoryId || !props.companyId) {
+    loading.value = false;
+    loadingMore.value = false;
+    return;
+  }
+  
   if (initialLoadInProgress.value && isLoadMore) {
     // Don't show individual loading indicators during initial multi-page load
     // But still proceed with the fetch
@@ -359,6 +367,7 @@ const fetchProducts = async (isLoadMore = false) => {
     // Get subcategories from URL if they exist
     const hasCategory = route.query.has_category || "";
 
+      // Debug statement to verify subcategory is being captured
     // Construct the API URL
     let apiUrl = `${baseURL}products-read/?company=${props.companyId}&page=${currentPage.value}&ordering=${ordering}&size=20&no_parent=true&active=true&show-children=false&has_attributs=${hasAttributs}&price_gte=${props.priceRange[0]}&price_lte=${props.priceRange[1]}`;
     
@@ -369,13 +378,14 @@ const fetchProducts = async (isLoadMore = false) => {
       apiUrl += `&has_category=${props.categoryId}`;
     }
 
-    // Create comprehensive cache key with all parameters
-    const cacheKey = `products-${props.companyId || 'null'}-${currentPage.value || 'null'}-${ordering || 'null'}-${hasAttributs || 'null'}-${props.priceRange[0] || 'null'}-${props.priceRange[1] || 'null'}-${hasCategory || props.categoryId || 'null'}`;
-        
-    const data = await $fetch(apiUrl, {
-      key: cacheKey,
-      server: false
-    });
+    
+    const response = await fetch(apiUrl);
+    
+    if (!response.ok) {
+      throw new Error("Failed to fetch products");
+    }
+    
+    const data = await response.json();
     
     if (isLoadMore || initialLoadInProgress.value) {
       // Append new products to existing array
@@ -406,6 +416,12 @@ const fetchProducts = async (isLoadMore = false) => {
 
 // New function to handle initial load with multiple pages
 const loadInitialPages = async () => {
+  // Guard: Don't load if required props are not available
+  if (!props.categoryId || !props.companyId) {
+    loading.value = false;
+    return;
+  }
+  
   try {
     initialLoadInProgress.value = true;
     loading.value = true;
@@ -477,6 +493,11 @@ watch(
     // Safely extract values with fallbacks
     const [newCategoryId = null, newfilterSelections = [], newPriceRange = [0, 1000]] = newValues || [];
     
+    // Guard: Don't proceed if required props are not available
+    if (!newCategoryId || !props.companyId) {
+      return;
+    }
+    
     // oldValues might be undefined on first run, so use safe defaults
     const [oldCategoryId = null, oldfilterSelections = [], oldPriceRange = [0, 1000]] = oldValues || [];
     
@@ -501,6 +522,11 @@ watch(
   (newQuery, oldQuery) => {
     // Skip this watcher during initial load process
     if (initialLoadInProgress.value) return;
+    
+    // Guard: Don't proceed if required props are not available
+    if (!props.categoryId || !props.companyId) {
+      return;
+    }
 
     // If query object is empty (after filter reset), reset the component state
     if (Object.keys(newQuery).length === 0) {
@@ -512,7 +538,7 @@ watch(
 
     // Check for subcategory changes
     if (newQuery.has_category !== oldQuery?.has_category) {
-      console.log("Subcategory changed in URL:", newQuery.has_category);
+      // console.log("Subcategory changed in URL:", newQuery.has_category);
       currentPage.value = 1;
       fetchProducts();
       return;
@@ -555,10 +581,15 @@ watch(loadMoreTrigger, (newValue) => {
   }
 });
 
+// Watch for viewMode changes to reload the appropriate component
+watch(viewMode, (newViewMode) => {
+  loadComponent(newViewMode === 'grid-2' ? 'ProductCard_6' : 'ProductCard_5');
+});
+
 // Initialize on component mount
 onMounted(() => {
 
-  loadComponent();
+  loadComponent(viewMode.value === 'grid-2' ? 'ProductCard_6' : 'ProductCard_5');
   // Get sort option from URL if present
   sortOption.value = route.query.ordering || "";
 
@@ -567,21 +598,22 @@ onMounted(() => {
     const savedViewMode = localStorage.getItem("productViewMode");
     if (savedViewMode) {
       viewMode.value = savedViewMode;
-    } else {
-      viewMode.value = "grid-4"; // Set default to grid-4 when no saved preference
     }
     
     // Setup intersection observer for infinite scrolling
     setupIntersectionObserver();
   }
   
-  // Check if we need to load multiple pages (user refreshed on a page > 1)
-  const targetPage = parseInt(route.query.page) || 1;
-  if (targetPage > 1) {
-    loadInitialPages(); // Load all pages up to the current page
-  } else {
-    currentPage.value = 1;
-    // We don't need to fetch products here since the immediate watcher handles it
+  // Only proceed if we have valid props
+  if (props.categoryId && props.companyId) {
+    // Check if we need to load multiple pages (user refreshed on a page > 1)
+    const targetPage = parseInt(route.query.page) || 1;
+    if (targetPage > 1) {
+      loadInitialPages(); // Load all pages up to the current page
+    } else {
+      currentPage.value = 1;
+      // We don't need to fetch products here since the immediate watcher handles it
+    }
   }
 });
 

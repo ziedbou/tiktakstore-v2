@@ -5,12 +5,12 @@
       <div
         v-for="review in extra.avis"
         :key="review.fullname"
-        class="border rounded-lg p-4 bg-gray-50 border-indigo-300"
+        class="border rounded-lg p-4 bg-gray-50 border-[var(--btn-primary-outline-border-color)]"
       >
         <div class="flex items-center mb-2">
           <img
             v-if="review.avatar"
-            :src="review.avatar"
+            :src="imghttps(review.avatar)"
             :alt="review.fullname"
             class="w-10 h-10 rounded-full mr-3"
           />
@@ -35,6 +35,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   product: {
     type: Object,

@@ -109,7 +109,7 @@ const selectOption = (productoption, option) => {
 };
 
 const updateselectedOptionVariant = () => {
-  console.log('%csrc\pages\product\components\DropDownVariants.vue:111  ', 'color: #007acc;', toRaw(getMultipleVariants(props.quantity)));
+  // console.log('%csrc\pages\product\components\DropDownVariants.vue:111  ', 'color: #007acc;', toRaw(getMultipleVariants(props.quantity)));
   if (Object.keys(selectedOptions.value).length !== attributes.value.length) {
     selectedOptionVariant.value = null;
     setMultipleVariant(props.quantity, props.index, null);

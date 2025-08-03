@@ -11,44 +11,33 @@
 </template>
 
 <script setup>
-import { computed, shallowRef } from 'vue'
-import { useStoreInfo } from '~/composables/useStoreInfo';
+import Header1 from '@/components/header/Header1.vue'
+import Header2 from '@/components/header/Header2.vue'
+import Header3 from '@/components/header/Header3.vue'
+import Header4 from '@/components/header/Header4.vue'
+import Header7 from '@/components/header/Header7.vue'
+
+import { computed } from 'vue'
+import { useStoreInfo } from '~/composables/useStoreInfo'
+
 const { storeInfo } = useStoreInfo()
 
-// Get template number from company data
 const templateNumber = computed(() => {
-  return storeInfo.value?.homepage_settings?.menu_settings?.template || '1'
+  return storeInfo.value?.homepage_settings?.menu_settings?.templateq || '7'
 })
 
-
-const styleSettings = computed(() => {
-  return storeInfo.value?.homepage_settings?.style || {}
-})
-
-// Dynamic header component reference
-const headerComponent = shallowRef(null)
-
-// Load the appropriate header component based on template
-const loadHeaderComponent = async (template) => {
-  try {
-    const componentModule = await import(`@/components/header/Header${template}.vue`)
-    headerComponent.value = componentModule.default
-    console.log(`Loaded header component: Header${template} for template: ${template}`)
-  } catch (error) {
-    console.error(`Failed to load header component Header${template}:`, error)
-    headerComponent.value = null
+const headerComponent = computed(() => {
+  switch (templateNumber.value) {
+    case '1': return Header1
+    case '2': return Header2
+    case '3': return Header3
+    case '4': return Header4
+    case '7': return Header7
+    default: return Header1
   }
-}
-
-// Load component synchronously for SSR
-if (templateNumber.value) {
-  loadHeaderComponent(templateNumber.value)
-} else {
-  // Fallback to Header1 if no template is specified
-  console.log("No template specified, falling back to Header1")
-  loadHeaderComponent('1')
-}
+})
 </script>
+
 
 <style scoped>
 .header-fallback {

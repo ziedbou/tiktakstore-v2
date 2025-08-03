@@ -51,7 +51,7 @@
         </div>
         <div class="scrolling-item scrolling-item-image">
           <div class="scrolling-image">
-            <img :src="data.values.image?.image" alt="" />
+            <img :src="imghttps(data.values.image?.image)" alt="" />
           </div>
         </div>
       </template>
@@ -61,6 +61,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
+import { imghttps } from '~/composables/services/helpers';
 
 const props = defineProps({
   data: {

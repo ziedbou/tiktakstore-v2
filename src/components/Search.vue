@@ -144,7 +144,7 @@ watch(search, async (val) => {
         `${baseURL}products-read/?company=${companyId.value}&no_parent=true&active=true&show-children=false&search=${val}`
       );
       productSearch.value = res.results;
-      console.log('Search results:', res.results);
+      // console.log('Search results:', res.results);
       isLoading.value = false;
     } catch (error) {
       console.error('API Error:', error);

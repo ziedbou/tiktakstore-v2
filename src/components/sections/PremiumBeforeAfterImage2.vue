@@ -32,7 +32,7 @@
     >
       <div class="before-after-image-relative">
         <img
-          :src="data.values.before_image?.image"
+          :src="imghttps(data.values.before_image?.image)"
           alt=""
           loading="lazy"
           draggable="false"
@@ -50,7 +50,7 @@
         }"
       >
         <img
-          :src="data.values.after_image?.image"
+          :src="imghttps(data.values.after_image?.image)"
           alt=""
           loading="lazy"
           draggable="false"
@@ -102,6 +102,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { imghttps } from "~/composables/services/helpers";
 
 defineProps({
   data: {

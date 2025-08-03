@@ -17,42 +17,42 @@
         
         <div class="space-y-2 text-gray-600 mb-6">
           <p class="flex items-center">
-            <i class="fas fa-user mr-2 text-indigo-600"></i>
+            <i class="fas fa-user mr-2 text-[var(--btn-primary-outline-color)]"></i>
             {{ address.contact || 'Aucun contact' }}
           </p>
           <p class="flex items-center">
-            <i class="fas fa-map-marker-alt mr-2 text-indigo-600"></i>
+            <i class="fas fa-map-marker-alt mr-2 text-[var(--btn-primary-outline-color)]"></i>
             {{ address.address }}
           </p>
           <p class="flex items-center">
-            <i class="fas fa-map mr-2 text-indigo-600"></i>
+            <i class="fas fa-map mr-2 text-[var(--btn-primary-outline-color)]"></i>
             {{ address.gouvernorat }}
           </p>
           <p class="flex items-center">
-            <i class="fas fa-building mr-2 text-indigo-600"></i>
+            <i class="fas fa-building mr-2 text-[var(--btn-primary-outline-color)]"></i>
             {{ address.delegation }}
           </p>
           <p class="flex items-center">
-            <i class="fas fa-mail-bulk mr-2 text-indigo-600"></i>
+            <i class="fas fa-mail-bulk mr-2 text-[var(--btn-primary-outline-color)]"></i>
             {{ address.code_postal || 'Aucun code postal' }}
           </p>
         </div>
         
         <div class="flex space-x-3">
           <button @click="openAddressModal(address, index)" 
-                  class="flex-1 rounded-md bg-indigo-600 px-3 py-2.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 flex items-center justify-center">
-            <i class="fas fa-edit mr-2"></i> Modifier
+                  class="flex-1 px-3 py-2.5 text-sm/6 shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 flex items-center justify-center btn-primary-solid">
+            <Icon name="fa-solid:edit" class="mr-2 w-4.5 h-4.5" /> Modifier
           </button>
           <button @click="deleteAddress(index)" 
-                  class="flex-1 rounded-md bg-gray-300 px-3 py-2.5 text-sm/6 font-semibold text-gray-700 shadow-xs hover:bg-gray-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 flex items-center justify-center">
-            <i class="fas fa-trash mr-2"></i> Supprimer
+                  class="flex-1 rounded-md bg-gray-300 px-3 py-2.5 text-sm/6 text-gray-700 shadow-xs hover:bg-gray-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 flex items-center justify-center">
+           <Icon name="fa-solid:trash" class="mr-2 w-3.5 h-3.5" /> Supprimer
           </button>
         </div>
       </div>
       
       <button @click="addAddress" 
-              class="bg-white rounded-lg shadow border-2 border-dashed border-blue-300 p-8 flex flex-col items-center justify-center hover:border-indigo-600 hover:bg-blue-50 min-h-64">
-        <div class="bg-blue-100 rounded-full p-4 mb-4">
+              class="bg-white rounded-lg shadow border-2 border-dashed border-[var(--btn-primary-outline-border-color)] p-8 flex flex-col items-center justify-center hover:border-[var(--btn-primary-outline-border-color-hover)] hover:bg-[var(--btn-primary-outline-background-hover)]  min-h-64">
+        <div class="bg-[var(--btn-primary-outline-background-hover)] rounded-full p-4 mb-4">
           <MapPinHouse />
         </div>
         <span class="text-sm font-semibold text-gray-700">Ajouter Nouvelle Adresse</span>
@@ -83,76 +83,93 @@
 
           <form @submit.prevent="saveAddress" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              <!-- Title -->
               <div class="md:col-span-2">
-                <label class="block text-sm/6 font-medium text-gray-900 mb-2">
-                  <i class="fas fa-tag mr-2 text-indigo-600"></i>Titre
+                <label class="flex items-center text-sm/6 font-medium text-gray-900 mb-2">
+                  <Icon name="fa-solid:tag" class="mr-2 w-3.5 h-3.5 text-[var(--btn-primary-outline-color)]" />
+                  <span>Titre</span>
                 </label>
-                <input v-model="addressToEdit.title" type="text" 
-                       class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                       placeholder="Ex: Maison, Bureau, etc." required>
+                <input v-model="addressToEdit.title" type="text"
+                      class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color)] sm:text-sm/6"
+                      placeholder="Ex: Maison, Bureau, etc." required>
               </div>
-              
+
+              <!-- Contact -->
               <div>
-                <label class="block text-sm/6 font-medium text-gray-900 mb-2">
-                  <i class="fas fa-user mr-2 text-indigo-600"></i>Contact
+                <label class="flex items-center text-sm/6 font-medium text-gray-900 mb-2">
+                  <Icon name="fa-solid:user" class="mr-2 w-3.5 h-3.5 text-[var(--btn-primary-outline-color)]" />
+                  <span>Contact</span>
                 </label>
-                <input v-model="addressToEdit.contact" type="text" 
-                       class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                       placeholder="Nom du contact">
+                <input v-model="addressToEdit.contact" type="text"
+                      class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color)] sm:text-sm/6"
+                      placeholder="Nom du contact">
               </div>
-              
+
+              <!-- Code Postal -->
               <div>
-                <label class="block text-sm/6 font-medium text-gray-900 mb-2">
-                  <i class="fas fa-mail-bulk mr-2 text-indigo-600"></i>Code Postal
+                <label class="flex items-center text-sm/6 font-medium text-gray-900 mb-2">
+                  <Icon name="fa-solid:mail-bulk" class="mr-2 w-3.5 h-3.5 text-[var(--btn-primary-outline-color)]" />
+                  <span>Code Postal</span>
                 </label>
-                <input v-model="addressToEdit.code_postal" type="text" 
-                       class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                       placeholder="Ex: 1000">
+                <input v-model="addressToEdit.code_postal" type="text"
+                      class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color)] sm:text-sm/6"
+                      placeholder="Ex: 1000">
               </div>
-              
+
+              <!-- Adresse -->
               <div class="md:col-span-2">
-                <label class="block text-sm/6 font-medium text-gray-900 mb-2">
-                  <i class="fas fa-map-marker-alt mr-2 text-indigo-600"></i>Adresse
+                <label class="flex items-center text-sm/6 font-medium text-gray-900 mb-2">
+                  <Icon name="fa-solid:map-marker-alt" class="mr-2 w-3.5 h-3.5 text-[var(--btn-primary-outline-color)]" />
+                  <span>Adresse</span>
                 </label>
-                <input v-model="addressToEdit.address" type="text" 
-                       class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                       placeholder="Adresse complète" required>
+                <input v-model="addressToEdit.address" type="text"
+                      class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color)] sm:text-sm/6"
+                      placeholder="Adresse complète" required>
               </div>
-              
+
+              <!-- Gouvernorat -->
               <div>
-                <label class="block text-sm/6 font-medium text-gray-900 mb-2">
-                  <i class="fas fa-map mr-2 text-indigo-600"></i>Gouvernorat
+                <label class="flex items-center text-sm/6 font-medium text-gray-900 mb-2">
+                  <Icon name="fa-solid:map" class="mr-2 w-3.5 h-3.5 text-[var(--btn-primary-outline-color)]" />
+                  <span>Gouvernorat</span>
                 </label>
-                <select v-model="addressToEdit.gouvernorat" @change="updateGouvernorat($event.target.value)" 
-                        class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6" required>
+                <select v-model="addressToEdit.gouvernorat" @change="updateGouvernorat($event.target.value)"
+                        class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color)] sm:text-sm/6" required>
                   <option v-for="gouv in gouvernorats" :value="gouv">{{ gouv }}</option>
                 </select>
               </div>
-              
+
+              <!-- Délégation -->
               <div>
-                <label class="block text-sm/6 font-medium text-gray-900 mb-2">
-                  <i class="fas fa-building mr-2 text-indigo-600"></i>Délégation
+                <label class="flex items-center text-sm/6 font-medium text-gray-900 mb-2">
+                  <Icon name="fa-solid:building" class="mr-2 w-3.5 h-3.5 text-[var(--btn-primary-outline-color)]" />
+                  <span>Délégation</span>
                 </label>
-                <input v-model="addressToEdit.delegation" list="delegations" 
-                       class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                       placeholder="Sélectionner ou taper" required>
+                <input v-model="addressToEdit.delegation" list="delegations"
+                      class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color)] sm:text-sm/6"
+                      placeholder="Sélectionner ou taper" required>
                 <datalist id="delegations">
                   <option v-for="dlg in options" :value="dlg">{{ dlg }}</option>
                 </datalist>
               </div>
             </div>
-            
+
+            <!-- Buttons -->
             <div class="flex space-x-4 pt-2">
               <button type="button" @click="closeModal"
-                      class="flex-1 rounded-md bg-gray-300 px-3 py-2.5 text-sm/6 font-semibold text-gray-700 shadow-xs hover:bg-gray-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 flex items-center justify-center">
-                <i class="fas fa-times mr-2"></i> Annuler
+                      class="flex-1 rounded-md bg-gray-300 px-3 py-2.5 text-sm/6 text-gray-700 shadow-xs hover:bg-gray-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 flex items-center justify-center">
+                <Icon name="fa-solid:times" class="mr-2 w-4 h-4" />
+                Annuler
               </button>
-              <button type="submit" 
-                      class="flex-1 rounded-md bg-indigo-600 px-3 py-2.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 flex items-center justify-center">
-                <i class="fas fa-save mr-2"></i> Sauvegarder
+              <button type="submit"
+                      class="flex-1 px-3 py-2.5 text-sm/6  shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 btn-primary-solid flex items-center justify-center">
+                <Icon name="fa-solid:save" class="mr-2 w-4 h-4" />
+                Sauvegarder
               </button>
             </div>
           </form>
+
         </div>
       </div>
     </div>

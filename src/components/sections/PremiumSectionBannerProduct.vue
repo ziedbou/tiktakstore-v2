@@ -4,7 +4,7 @@
       <div class="w-full md:w-1/2">
         <span class="image">
           <img
-            :src="data.values.image.image"
+            :src="imghttps(data.values.image.image)"
             class="img-fluid mx-auto md:mx-0"
             alt="Image"
           />
@@ -42,6 +42,8 @@
   </section>
 </template>
 <script>
+import { imghttps } from '~/composables/services/helpers';
+
 export default {
   props: {
     data: {

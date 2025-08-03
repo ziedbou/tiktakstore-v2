@@ -27,13 +27,14 @@ export default defineNuxtRouteMiddleware(async (to) => {
   }
 
   // Skip redirect check if already on blocked page to prevent infinite loop
-  if (to.path === '/blocked') {
+  if (to.path === '/blocked' || to.path === '/password') {
     return;
   }
 
   // Check if account type is commission and store is not activated
   if (companyData.value?.account_type === 'commission' && !companyData.value?.store_activated) {
     // console.log("Redirecting to /blocked - commission account with inactive store");
-    return navigateTo('/blocked');
+    //return navigateTo('/blocked');
+    return navigateTo('/password');
   }
 });

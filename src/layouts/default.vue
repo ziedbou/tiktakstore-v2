@@ -24,26 +24,50 @@ const { companyData } = useCompanyData();
 const { storeInfo } = useStoreInfo();
 
 // Routes where header and footer should be hidden
-const hiddenRoutes = ['/landing-page', '/checkout', '/upsell', '/blocked'];
+const hiddenRoutes = ['/landing-page', '/checkout', '/upsell', '/blocked', '/password'];
 const config = useRuntimeConfig()
 const baseURL = config.public.baseURL
+const cdnURL = config.public.cdnURL
 
 // Clean head management using service function
 useHead(() => generateHeadData({
   storeInfo: storeInfo.value,
   companyData: companyData.value,
-  baseURL
+  baseURL,
+  cdnURL
 }));
 
+
+
+
+const { trackPageView } = useTracking();
+const router = useRouter();
+
+// Track page view on initial mount
+onMounted(() => {
+  trackPageView();
+});
+
+// Track page view on route change
+watch(
+  () => router.currentRoute.value.fullPath,
+  (newPath, oldPath) => {
+    if (newPath !== oldPath) {
+      trackPageView();
+    }
+  },
+  { immediate: false } // Set to true if you want to track immediately on setup
+);
+
 // Use useLazyFetch for client-side only (delayed, not priority)
-const { data: transportData, error: transportError, execute: fetchTransporters } = await useLazyFetch(
+const { execute: fetchTransporters } = await useLazyFetch(
   () => companyData.value?.works_with_transport && companyData.value?.id 
     ? `${baseURL}transports-read/?company=${companyData.value.id}` 
     : null,
   {
     key: `transporters-${companyData.value?.id}`,
     server: false,
-    immediate: false, // Do NOT fetch immediately
+    immediate: false,
     lazy: true,
     default: () => ({ results: [] }),
     onResponse: (response) => {
@@ -59,7 +83,25 @@ onMounted(() => {
   setTimeout(() => {
     fetchTransporters();
   }, 1500); // 1.5 seconds delay
+
 })
+
+
+/*onMounted(() => {
+  const loadScript = () => {
+    const script = document.createElement('script')
+    script.src = `${baseURL}website/main.js?slug=${companyData.value.slug}`
+    script.async = true
+    document.body.appendChild(script)
+  }
+
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(loadScript)  // Charge quand le navigateur est libre
+  } else {
+    setTimeout(loadScript, 2000)      // Fallback
+  }
+})*/
+
 </script>
 
 

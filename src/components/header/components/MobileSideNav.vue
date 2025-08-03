@@ -25,7 +25,7 @@
           leave-to="-translate-x-full"
         >
           <DialogPanel
-            class="relative flex w-full flex-col overflow-y-auto bg-gradient-to-br from-white to-gray-50 shadow-2xl"
+            class="relative flex w-full flex-col overflow-y-auto bg-white shadow-2xl"
           >
             <!-- Header -->
             <div
@@ -59,34 +59,14 @@
                   @click="$emit('close')"
                 >
                   <span class="sr-only">Close menu</span>
-                  <XMarkIcon class="w-6 h-6" aria-hidden="true" />
+                  <X class="w-6 h-6" />
                 </button>
-              </div>
-
-              <!-- Search Section -->
-              <div class="px-6 pb-4">
-                <div class="relative">
-                  <form @submit.prevent="searchCall()" class="relative">
-                    <input 
-                      ref="searchInput"
-                      v-model="search"
-                      type="search" 
-                      placeholder="Rechercher un produit..."
-                      class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:border-blue-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-100 transition-all duration-300 text-sm"
-                    />
-                    <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                      </svg>
-                    </div>
-                  </form>
-                </div>
               </div>
             </div>
 
             <!-- Navigation Content -->
 
-            <div class="space-y-2 p-4">
+            <div class="p-3">
               <template
                 v-for="category in navigation.categories"
                 :key="category.name"
@@ -95,40 +75,26 @@
                 <template
                   v-if="!category.submenu || category.submenu.length === 0"
                 >
-                  <div class="rounded-lg bg-white transition-all duration-200">
+                  <div class="rounded-lg transition-all duration-200">
                     <!-- External category link -->
                     <a
                       v-if="category.type === 'extern'"
                       :href="category.href"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="flex items-center p-4 transition-all duration-200 group"
+                      class="flex items-center p-3 transition-all duration-200 group nav-link-hover"
                       @click="$emit('close')"
                     >
-                      <div class="flex items-center space-x-3">
+                      <div class="flex items-center">
                         <span class="text-md mobile-nav-link">{{
                           category.name
                         }}</span>
-                        <svg
-                          class="w-3 h-3 ml-1 text-gray-400 group-hover:text-blue-600 transition-colors duration-200"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                          ></path>
-                        </svg>
+                       
                       </div>
                     </a>
                     <!-- Internal category link -->
                     <NuxtLink
                       v-else
                       :to="category.href"
-                      class="flex items-center p-4 transition-all duration-200 group"
+                      class="flex items-center p-3 transition-all duration-200 group nav-link-hover"
                       @click="$emit('close')"
                     >
                       <div class="flex items-center">
@@ -141,15 +107,14 @@
                 </template>
 
                 <!-- Category with submenu (ACCORDION) -->
-                <div
-                  v-else
-                  class="rounded-lg bg-white transition-all duration-200 overflow-hidden"
-                  :class="{
-                    'shadow-md': expandedCategories.includes(category.name),
-                  }"
-                >
+                <div v-else class="transition-all duration-200 overflow-hidden">
                   <div
-                    class="flex items-center justify-between p-4 cursor-pointer"
+                    class="flex items-center justify-between p-3 cursor-pointer accordion-header"
+                    :class="{
+                      'accordion-open': expandedCategories.includes(
+                        category.name
+                      ),
+                    }"
                     @click="toggleCategory(category.name)"
                   >
                     <div class="flex items-center">
@@ -160,24 +125,14 @@
 
                     <div class="flex items-center space-x-2">
                       <!-- Dropdown arrow for accordion -->
-                      <svg
+                      <ChevronUp
                         class="w-5 h-5 transition-all duration-300 accordion-arrow"
                         :class="{
                           'rotate-180': expandedCategories.includes(
                             category.name
                           ),
                         }"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M19 9l-7 7-7-7"
-                        />
-                      </svg>
+                      />
                     </div>
                   </div>
 
@@ -205,17 +160,11 @@
                             :title="submenu.label"
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="flex items-center p-3 text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-all duration-200 rounded-lg group"
+                            class="flex items-center p-3 text-gray-700 transition-all duration-200 rounded-lg group nav-link-hover"
                             @click="$emit('close')"
                           >
                             <span
-                              class="font-medium"
-                              style="
-                                color: var(
-                                  --header-submenu-link-color,
-                                  #444444
-                                );
-                              "
+                              class="font-medium text-[var(--header-submenu-link-color)]"
                               >{{ submenu.label }}</span
                             >
                             <svg
@@ -236,7 +185,7 @@
                             v-else
                             :to="submenu.href"
                             :title="submenu.label"
-                            class="flex items-center p-3 text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-all duration-200 rounded-lg group"
+                            class="flex items-center p-3 text-gray-700 transition-all duration-200 rounded-lg group nav-link-hover"
                             @click="$emit('close')"
                           >
                             <span
@@ -253,50 +202,30 @@
                         </template>
 
                         <!-- Submenu with sub-submenu (accordion) -->
-                        <div
-                          v-else
-                          class="bg-gray-50 rounded-lg"
-                          :class="{
-                            'shadow-md': expandedSubmenus.includes(
-                              submenu.slug
-                            ),
-                          }"
-                        >
+                        <div v-else>
                           <div
-                            class="flex items-center justify-between p-3 cursor-pointer transition-all duration-200"
+                            class="flex items-center justify-between p-3 cursor-pointer transition-all duration-200 accordion-header"
+                            :class="{
+                              'accordion-open': expandedSubmenus.includes(
+                                submenu.slug
+                              ),
+                            }"
                             @click="toggleSubmenu(submenu.slug)"
                           >
                             <span
-                              class="font-medium"
-                              style="
-                                color: var(
-                                  --header-submenu-link-color,
-                                  #444444
-                                );
-                              "
+                              class="font-medium text-[var(--header-submenu-link-color)]"
                               >{{ submenu.label }}</span
                             >
-
                             <div class="flex items-center space-x-2">
                               <!-- Dropdown arrow only -->
-                              <svg
+                              <ChevronUp
                                 class="w-4 h-4 transition-all duration-300 accordion-arrow"
                                 :class="{
                                   'rotate-180': expandedSubmenus.includes(
                                     submenu.slug
                                   ),
                                 }"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                  stroke-width="2"
-                                  d="M19 9l-7 7-7-7"
-                                />
-                              </svg>
+                              />
                             </div>
                           </div>
 
@@ -305,7 +234,9 @@
                             v-if="expandedSubmenus.includes(submenu.slug)"
                             class="accordion-slide"
                           >
-                            <div class="px-4 py-2 space-y-1">
+                            <div
+                              class="px-4 py-2 space-y-1 sub-submenu-container"
+                            >
                               <template
                                 v-for="subSubmenu in submenu.submenu"
                                 :key="subSubmenu.slug"
@@ -316,16 +247,11 @@
                                   :title="subSubmenu.label"
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  class="flex items-center p-2 transition-all duration-200 rounded-md text-sm group"
+                                  class="flex items-center p-2 transition-all duration-200 rounded-md text-sm group nav-link-hover"
                                   @click="$emit('close')"
                                 >
                                   <span
-                                    style="
-                                      color: var(
-                                        --header-submenu-link-color,
-                                        #444444
-                                      );
-                                    "
+                                  class="text-[var(--header-submenu-link-color)]"
                                     >{{ subSubmenu.label }}</span
                                   >
                                   <svg
@@ -346,16 +272,11 @@
                                   v-else
                                   :to="subSubmenu.href"
                                   :title="subSubmenu.label"
-                                  class="flex items-center p-2 transition-all duration-200 rounded-md text-sm group"
+                                  class="flex items-center p-2 transition-all duration-200 rounded-md text-sm group nav-link-hover"
                                   @click="$emit('close')"
                                 >
                                   <span
-                                    style="
-                                      color: var(
-                                        --header-submenu-link-color,
-                                        #444444
-                                      );
-                                    "
+                                  class="text-[var(--header-submenu-link-color)]"
                                     >{{ subSubmenu.label }}</span
                                   >
                                 </NuxtLink>
@@ -369,129 +290,86 @@
                 </div>
               </template>
             </div>
-
+            <div class="account-link-mobile flex gap-3 border-t border-gray-100 py-4 px-8">
+                <!-- Account -->
+            <NuxtLink
+              to="/account"
+              @click="$emit('close')"
+              class="user-action-link-vertical w-fit flex flex-col items-center justify-center rounded-sm px-2 py-3 transition-all duration-300"
+            >
+              <Icon name="ph:user" class="w-6 h-6" />
+              <span class="text-xs mobile-nav-link">Account</span>
+            </NuxtLink>
+            <div  @click="$emit('close')">
+            <NavWishlistBtn
+              :show-text="true"
+              button-class="user-action-link-vertical flex flex-col rounded-sm items-center px-2 py-3 transition-all duration-200 text-center"
+              text-class="text-xs text-[var(--header-submenu-link-color)] hover:text-[var(--header-submenu-link-color-hover)] transition-colorsss duration-200ss"
+            />
+          </div>
+            </div>
             <!-- Footer -->
             <div
-              class="mt-auto bottom-0 bg-white/90 backdrop-blur-md border-t border-gray-100 p-4"
+              class="mt-auto bottom-0 bg-white/90 backdrop-blur-md border-t border-gray-100 py-4 px-4"
             >
-              <!-- CURRENT LAYOUT: Option 1 - Horizontal Compact 
-              <div class="space-y-3">
-                <div v-if="companyData?.phone" class="flex items-center justify-center">
-                  <NuxtLink :to="`tel:${companyData.phone}`" class="phone-group flex items-center space-x-2 group transition-all duration-300">
-                    <div class="phone-icon-mobile flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center">
-                      <Icon name="ph:phone-bold" class="w-3.5 h-3.5" />
-                    </div>
-                    <span class="phone-link-mobile text-sm font-medium">
-                      {{ companyData.phone }}
-                    </span>
+              <div class="space-y-4">
+                <div v-if="companyData?.phone" class="text-center">
+                  <NuxtLink
+                    :to="`tel:${companyData.phone}`"
+                    class="social-link-mobile inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full transition-all duration-300"
+                  >
+                    <Icon name="ph:phone-bold" class="w-3.5 h-3.5" />
+                    <span class="text-xs font-medium">{{
+                      companyData.phone
+                    }}</span>
                   </NuxtLink>
                 </div>
-                
-                <div class="text-center  border-t border-gray-200 pt-4">
-                  <div class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Suivez-nous sur</div>
-                  <div class="flex justify-center items-center space-x-3">
-                    <NuxtLink v-if="storeInfo?.contact_settings?.facebook" :to="`https://facebook.com/${storeInfo.contact_settings.facebook}`" class="social-link-mobile w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300 hover:shadow-md" target="_blank">
-                      <Icon name="ri:facebook-fill" class="w-4 h-4" />
-                    </NuxtLink>
-                    <NuxtLink v-if="companyData?.phone" :to="`https://wa.me/${companyData.phone.replace(/[^0-9]/g, '')}`" class="social-link-mobile w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300 hover:shadow-md" target="_blank">
-                      <Icon name="ri:whatsapp-fill" class="w-4 h-4" />
-                    </NuxtLink>
-                    <NuxtLink v-if="storeInfo?.contact_settings?.instagram" :to="`https://instagram.com/${storeInfo.contact_settings.instagram}`" class="social-link-mobile w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300 hover:shadow-md" target="_blank">
-                      <Icon name="ri:instagram-fill" class="w-4 h-4" />
-                    </NuxtLink>
-                    <NuxtLink v-if="storeInfo?.contact_settings?.tiktok" :to="`https://tiktok.com/@${storeInfo.contact_settings.tiktok}`" class="social-link-mobile w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300 hover:shadow-md" target="_blank">
-                      <Icon name="ri:tiktok-fill" class="w-4 h-4" />
-                    </NuxtLink>
-                    <NuxtLink v-if="storeInfo?.contact_settings?.youtube" :to="`https://youtube.com/@${storeInfo.contact_settings.youtube}`" class="social-link-mobile w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300 hover:shadow-md" target="_blank">
-                      <Icon name="ri:youtube-fill" class="w-4 h-4" />
-                    </NuxtLink>
-                  </div>
-                </div>
-              </div>
--->
-              <!-- LAYOUT OPTION 2: Super Minimal - Icons Only (Replace above div with this)
-            
-              <div class="flex items-center justify-center space-x-4 py-2">
-                <NuxtLink v-if="companyData?.phone" :to="`tel:${companyData.phone}`" class="social-link-mobile w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300" title="Appeler">
-                  <Icon name="ph:phone-bold" class="w-4 h-4" />
-                </NuxtLink>
-                <NuxtLink v-if="storeInfo?.contact_settings?.facebook" :to="`https://facebook.com/${storeInfo.contact_settings.facebook}`" class="social-link-mobile w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300" target="_blank" title="Facebook">
-                  <Icon name="ri:facebook-fill" class="w-4 h-4" />
-                </NuxtLink>
-                <NuxtLink v-if="companyData?.phone" :to="`https://wa.me/${companyData.phone.replace(/[^0-9]/g, '')}`" class="social-link-mobile w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300" target="_blank" title="WhatsApp">
-                  <Icon name="ri:whatsapp-fill" class="w-4 h-4" />
-                </NuxtLink>
-                <NuxtLink v-if="storeInfo?.contact_settings?.instagram" :to="`https://instagram.com/${storeInfo.contact_settings.instagram}`" class="social-link-mobile w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300" target="_blank" title="Instagram">
-                  <Icon name="ri:instagram-fill" class="w-4 h-4" />
-                </NuxtLink>
-                <NuxtLink v-if="storeInfo?.contact_settings?.tiktok" :to="`https://tiktok.com/@${storeInfo.contact_settings.tiktok}`" class="social-link-mobile w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300" target="_blank" title="TikTok">
-                  <Icon name="ri:tiktok-fill" class="w-4 h-4" />
-                </NuxtLink>
-                <NuxtLink v-if="storeInfo?.contact_settings?.youtube" :to="`https://youtube.com/@${storeInfo.contact_settings.youtube}`" class="social-link-mobile w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300" target="_blank" title="YouTube">
-                  <Icon name="ri:youtube-fill" class="w-4 h-4" />
-                </NuxtLink>
-              </div>
-               -->
-
-              <!-- LAYOUT OPTION 3: Two-Row Grid (Replace above div with this) -->
-              <!-- 
-              <div class="space-y-2">
-                <div class="flex items-center justify-center">
-                  <NuxtLink v-if="companyData?.phone" :to="`tel:${companyData.phone}`" class="phone-group flex items-center space-x-2 px-3 py-1.5 rounded-full bg-gray-50 transition-all duration-300">
-                    <Icon name="ph:phone-bold" class="w-3.5 h-3.5 text-green-600" />
-                    <span class="text-xs font-medium text-gray-700">{{ companyData.phone }}</span>
-                  </NuxtLink>
-                </div>
-                <div class="flex justify-center items-center space-x-2">
-                  <NuxtLink v-if="storeInfo?.contact_settings?.facebook" :to="`https://facebook.com/${storeInfo.contact_settings.facebook}`" class="social-link-mobile w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
+                <div class="flex justify-center items-center space-x-2.5">
+                  <NuxtLink
+                    v-if="storeInfo?.contact_settings?.facebook"
+                    :to="`https://facebook.com/${storeInfo.contact_settings.facebook}`"
+                    class="social-link-mobile w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300"
+                    target="_blank"
+                  >
                     <Icon name="ri:facebook-fill" class="w-3.5 h-3.5" />
                   </NuxtLink>
-                  <NuxtLink v-if="companyData?.phone" :to="`https://wa.me/${companyData.phone.replace(/[^0-9]/g, '')}`" class="social-link-mobile w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
+                  <NuxtLink
+                    v-if="companyData?.phone"
+                    :to="`https://wa.me/${companyData.phone.replace(
+                      /[^0-9]/g,
+                      ''
+                    )}`"
+                    class="social-link-mobile w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300"
+                    target="_blank"
+                  >
                     <Icon name="ri:whatsapp-fill" class="w-3.5 h-3.5" />
                   </NuxtLink>
-                  <NuxtLink v-if="storeInfo?.contact_settings?.instagram" :to="`https://instagram.com/${storeInfo.contact_settings.instagram}`" class="social-link-mobile w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
+                  <NuxtLink
+                    v-if="storeInfo?.contact_settings?.instagram"
+                    :to="`https://instagram.com/${storeInfo.contact_settings.instagram}`"
+                    class="social-link-mobile w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300"
+                    target="_blank"
+                  >
                     <Icon name="ri:instagram-fill" class="w-3.5 h-3.5" />
                   </NuxtLink>
-                  <NuxtLink v-if="storeInfo?.contact_settings?.tiktok" :to="`https://tiktok.com/@${storeInfo.contact_settings.tiktok}`" class="social-link-mobile w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
+                  <NuxtLink
+                    v-if="storeInfo?.contact_settings?.tiktok"
+                    :to="`https://tiktok.com/@${storeInfo.contact_settings.tiktok}`"
+                    class="social-link-mobile w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300"
+                    target="_blank"
+                  >
                     <Icon name="ri:tiktok-fill" class="w-3.5 h-3.5" />
                   </NuxtLink>
-                  <NuxtLink v-if="storeInfo?.contact_settings?.youtube" :to="`https://youtube.com/@${storeInfo.contact_settings.youtube}`" class="social-link-mobile w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
+                  <NuxtLink
+                    v-if="storeInfo?.contact_settings?.youtube"
+                    :to="`https://youtube.com/@${storeInfo.contact_settings.youtube}`"
+                    class="social-link-mobile w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300"
+                    target="_blank"
+                  >
                     <Icon name="ri:youtube-fill" class="w-3.5 h-3.5" />
                   </NuxtLink>
                 </div>
               </div>
-              -->
-
-              <!-- LAYOUT OPTION 4: Vertical Stack with Border (Replace above div with this) -->
-              
-              <div class="space-y-2.5">
-                <div v-if="companyData?.phone" class="text-center">
-                  <NuxtLink :to="`tel:${companyData.phone}`" class="social-link-mobile inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full transition-all duration-300">
-                    <Icon name="ph:phone-bold" class="w-3.5 h-3.5" />
-                    <span class="text-xs font-medium">{{ companyData.phone }}</span>
-                  </NuxtLink>
-                </div>
-                <div class="border-t border-gray-200 pt-2">
-                  <div class="flex justify-center items-center space-x-2.5">
-                    <NuxtLink v-if="storeInfo?.contact_settings?.facebook" :to="`https://facebook.com/${storeInfo.contact_settings.facebook}`" class="social-link-mobile w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
-                      <Icon name="ri:facebook-fill" class="w-3.5 h-3.5" />
-                    </NuxtLink>
-                    <NuxtLink v-if="companyData?.phone" :to="`https://wa.me/${companyData.phone.replace(/[^0-9]/g, '')}`" class="social-link-mobile w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
-                      <Icon name="ri:whatsapp-fill" class="w-3.5 h-3.5" />
-                    </NuxtLink>
-                    <NuxtLink v-if="storeInfo?.contact_settings?.instagram" :to="`https://instagram.com/${storeInfo.contact_settings.instagram}`" class="social-link-mobile w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
-                      <Icon name="ri:instagram-fill" class="w-3.5 h-3.5" />
-                    </NuxtLink>
-                    <NuxtLink v-if="storeInfo?.contact_settings?.tiktok" :to="`https://tiktok.com/@${storeInfo.contact_settings.tiktok}`" class="social-link-mobile w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
-                      <Icon name="ri:tiktok-fill" class="w-3.5 h-3.5" />
-                    </NuxtLink>
-                    <NuxtLink v-if="storeInfo?.contact_settings?.youtube" :to="`https://youtube.com/@${storeInfo.contact_settings.youtube}`" class="social-link-mobile w-7 h-7 flex items-center justify-center rounded-full transition-all duration-300" target="_blank">
-                      <Icon name="ri:youtube-fill" class="w-3.5 h-3.5" />
-                    </NuxtLink>
-                  </div>
-                </div>
-              </div>
-              
             </div>
           </DialogPanel>
         </TransitionChild>
@@ -508,7 +386,8 @@ import {
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
-import { XMarkIcon } from "@heroicons/vue/24/outline";
+import { ChevronUp, X } from "lucide-vue-next";
+import NavWishlistBtn from "~/components/header/components/NavWishlistBtn.vue";
 
 // Define props
 const props = defineProps({
@@ -526,7 +405,7 @@ const props = defineProps({
   },
   storeInfo: {
     type: Object,
-    default: () => ({})
+    default: () => ({}),
   },
 });
 
@@ -566,7 +445,7 @@ function toggleSubmenu(submenuSlug) {
 function searchCall() {
   if (search.value.trim()) {
     navigateTo(`/search?product=${encodeURIComponent(search.value.trim())}`);
-    emit('close');
+    emit("close");
   }
 }
 </script>
@@ -598,7 +477,7 @@ function searchCall() {
 }
 
 .mobile-nav-link:hover {
-  color: var(--header-submenu-link-color-hover, #a0a0a0) !important;
+  color: var(--header-submenu-link-color-hover) !important;
 }
 
 /* Accordion arrows using CSS variables */
@@ -608,7 +487,7 @@ function searchCall() {
 }
 
 .accordion-arrow.rotate-180 {
-  color: var(--header-submenu-link-color-hover, #a0a0a0);
+  color: var(--header-submenu-link-color-hover);
 }
 
 /* Custom scrollbar */
@@ -631,51 +510,108 @@ function searchCall() {
 
 /* Mobile social links with dynamic background */
 .social-link-mobile {
-  color: var(--header-top-color, #000000);
-  background-color: color-mix(in srgb, var(--header-top-color, #000000) 4%, transparent);
+  color: var(--header-submenu-link-color, #444444);
+  background-color: color-mix(
+    in srgb,
+    var(--header-submenu-link-color, #444444) 4%,
+    transparent
+  );
 }
 
 .social-link-mobile:hover {
-  color: var(--header-top-color-hover, #7b7b7b);
-  background-color: color-mix(in srgb, var(--header-top-color-hover, #7b7b7b) 12%, transparent);
+  color: var(--header-submenu-link-color-hover);
+  background-color: color-mix(
+    in srgb,
+    var(--header-submenu-link-color-hover) 12%,
+    transparent
+  );
 }
 
 .social-link-mobile:focus {
-  color: var(--header-top-color-hover, #7b7b7b);
-  outline: 2px solid color-mix(in srgb, var(--header-top-color-hover, #7b7b7b) 70%, transparent) !important;
+  color: var(--header-submenu-link-color-hover);
+  outline: 2px solid
+    color-mix(
+      in srgb,
+      var(--header-submenu-link-color-hover) 70%,
+      transparent
+    ) !important;
   outline-offset: 2px;
-  background-color: color-mix(in srgb, var(--header-top-color-hover, #7b7b7b) 12%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--header-submenu-link-color-hover) 12%,
+    transparent
+  );
 }
 
-/* Mobile phone number with dynamic styling - group hover */
-.phone-icon-mobile {
-  background-color: color-mix(in srgb, var(--header-top-color, #000000) 15%, transparent);
-  color: var(--header-top-color, #000000);
+/* Accordion open state styling */
+.accordion-header.accordion-open {
+  background-color: color-mix(
+    in srgb,
+    var(--header-submenu-link-color-hover) 8%,
+    transparent
+  );
+  border-radius: 8px;
 }
 
-.phone-group:hover .phone-icon-mobile {
-  color: var(--header-top-color-hover, #7b7b7b);
-  background-color: color-mix(in srgb, var(--header-top-color-hover, #7b7b7b) 12%, transparent);
+.accordion-header.accordion-open .mobile-nav-link {
+  color: var(--header-submenu-link-color-hover) !important;
 }
 
-.phone-icon-mobile:focus {
-  color: var(--header-top-color-hover, #7b7b7b);
-  outline: 2px solid color-mix(in srgb, var(--header-top-color-hover, #7b7b7b) 70%, transparent) !important;
-  outline-offset: 2px;
-  background-color: color-mix(in srgb, var(--header-top-color-hover, #7b7b7b) 15%, transparent);
+.accordion-header.accordion-open span {
+  color: var(--header-submenu-link-color-hover) !important;
 }
 
-.phone-link-mobile {
-  color: var(--header-top-color, #000000);
+.accordion-header.accordion-open .accordion-arrow {
+  color: var(--header-submenu-link-color-hover) !important;
 }
 
-.phone-group:hover .phone-link-mobile {
-  color: var(--header-top-color-hover, #7b7b7b);
+/* Hover effects for all navigation links and accordion headers */
+.nav-link-hover:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--header-submenu-link-color-hover) 8%,
+    transparent
+  );
+  border-radius: 8px;
 }
 
-.phone-link-mobile:focus {
-  color: var(--header-top-color-hover, #7b7b7b);
-  outline: 2px solid color-mix(in srgb, var(--header-top-color-hover, #7b7b7b) 70%, transparent) !important;
-  outline-offset: 2px;
+.nav-link-hover:hover .mobile-nav-link {
+  color: var(--header-submenu-link-color-hover) !important;
+}
+
+.nav-link-hover:hover span {
+  color: var(--header-submenu-link-color-hover) !important;
+}
+
+.accordion-header:hover {
+  background-color: color-mix(
+    in srgb,
+    var(--header-submenu-link-color-hover) 8%,
+    transparent
+  );
+  border-radius: 8px;
+}
+
+.accordion-header:hover .mobile-nav-link {
+  color: var(--header-submenu-link-color-hover) !important;
+}
+
+.accordion-header:hover span {
+  color: var(--header-submenu-link-color-hover) !important;
+}
+
+.accordion-header:hover .accordion-arrow {
+  color: var(--header-submenu-link-color-hover) !important;
+}
+
+/* Sub-submenu container with lighter background when open */
+.sub-submenu-container {
+  background-color: color-mix(
+    in srgb,
+    var(--header-submenu-link-color-hover) 4%,
+    transparent
+  );
+  border-radius: 6px;
+  margin: 4px 0;
 }
 </style>

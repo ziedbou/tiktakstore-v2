@@ -4,7 +4,7 @@
       <div class="sm:mx-auto sm:w-full sm:max-w-lg">
         <img class="mx-auto h-10 w-auto" v-if="companyLogo" :src="companyLogo" alt="Your Company" />
 
-        <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
+        <h2 class="mt-10 text-center text-2xl/9 font-medium tracking-tight text-gray-900">
           Créer un compte
         </h2>
       </div>
@@ -23,7 +23,7 @@
                   id="first_name"
                   v-model="signUpForm.first_name"
                   type="text"
-                  class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color-hover)] sm:text-sm/6"
                   :class="{ 'outline-red-600': errors.first_name }"
                 />
                 <p v-if="errors.first_name" class="mt-1 text-sm text-red-600">{{ errors.first_name }}</p>
@@ -36,7 +36,7 @@
                   id="last_name"
                   v-model="signUpForm.last_name"
                   type="text"
-                  class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color-hover)] sm:text-sm/6"
                   :class="{ 'outline-red-600': errors.last_name }"
                 />
                 <p v-if="errors.last_name" class="mt-1 text-sm text-red-600">{{ errors.last_name }}</p>
@@ -52,7 +52,7 @@
                 v-model="signUpForm.email"
                 type="email"
                 autocomplete="email"
-                class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color-hover)] sm:text-sm/6"
                 :class="{ 'outline-red-600': errors.email }"
               />
               <p v-if="errors.email" class="mt-1 text-sm text-red-600">{{ errors.email }}</p>
@@ -67,7 +67,7 @@
                   id="phone"
                   v-model="signUpForm.phone"
                   type="text"
-                  class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color-hover)] sm:text-sm/6"
                   :class="{ 'outline-red-600': errors.phone }"
                 />
                 <p v-if="errors.phone" class="mt-1 text-sm text-red-600">{{ errors.phone }}</p>
@@ -80,7 +80,7 @@
                   id="phone_extra"
                   v-model="signUpForm.phone_extra"
                   type="text"
-                  class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color-hover)] sm:text-sm/6"
                 />
               </div>
             </div>
@@ -95,7 +95,7 @@
                   v-model="signUpForm.password"
                   type="password"
                   autocomplete="new-password"
-                  class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color-hover)] sm:text-sm/6"
                   :class="{ 'outline-red-600': errors.password }"
                 />
                 <p v-if="errors.password" class="mt-1 text-sm text-red-600">{{ errors.password }}</p>
@@ -109,7 +109,7 @@
                   v-model="signUpForm.password2"
                   type="password"
                   autocomplete="new-password"
-                  class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                  class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color-hover)] sm:text-sm/6"
                   :class="{ 'outline-red-600': errors.password2 }"
                 />
                 <p v-if="errors.password2" class="mt-1 text-sm text-red-600">{{ errors.password2 }}</p>
@@ -121,7 +121,7 @@
             <button
               type="submit"
               :disabled="isSubmitting"
-              class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50"
+              class="flex w-full justify-center px-3 py-2.5 text-sm/6 font-medium shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 btn-primary-solid disabled:opacity-50"
             >
               {{ isSubmitting ? 'Inscription en cours...' : 'S\'inscrire' }}
             </button>
@@ -130,7 +130,7 @@
 
         <p class="mt-10 text-center text-sm/6 text-gray-500">
           Vous avez déjà un compte ?
-          <NuxtLink to="/login" class="font-semibold text-indigo-600 hover:text-indigo-500">Se connecter</NuxtLink>
+          <NuxtLink to="/login" class="font-medium text-[var(--btn-primary-outline-color)] hover:text-[var(--btn-primary-outline-color-hover)]">Se connecter</NuxtLink>
         </p>
       </div>
     </div>
@@ -161,6 +161,27 @@ if (isClient) {
   }
 }
 
+
+
+const seo = {
+  title: 'Page de connexion ' + companyData.value?.name,
+  description: '',
+  image: '',
+  url: useFullUrl(), 
+};
+
+useHead({
+  title: seo.title,
+  meta: [
+    { name: 'description', content: seo.description },
+    { property: 'og:title', content: seo.title },
+    { property: 'og:description', content: seo.description },
+    { property: 'og:image', content: seo.image },
+    { property: 'og:url', content: seo.url },
+    { name: 'twitter:title', content: seo.title },
+
+  ]
+});
 
 const signUpForm = ref({
   first_name: '',
@@ -212,6 +233,11 @@ const register = async () => {
       localStorage.setItem('user', JSON.stringify(data));
       localStorage.setItem('user_id', data.id);
       localStorage.setItem('_token', data.token);
+      
+      // Sync wishlist from API after registration
+      const { syncWishlistFromApi } = useWishlist()
+      await syncWishlistFromApi()
+      
       router.push('/account');
     }
   } catch (error) {

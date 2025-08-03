@@ -34,7 +34,7 @@
         :key="index"
       >
         <div class="brand-slide">
-          <img :src="child.image.image">
+          <img :src="imghttps(child.image.image)">
         </div>
       </swiper-slide>
     </template>
@@ -45,6 +45,7 @@
 <script setup>
 import { register } from "swiper/element/bundle";
 import "swiper/css";
+import { imghttps } from "~/composables/services/helpers";
 
 register();
 

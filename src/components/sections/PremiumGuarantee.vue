@@ -9,7 +9,7 @@
   >
     <div class="service-item">
       <div class="service-icon">
-        <img :src="data.values.image_1.image">
+        <img :src="imghttps(data.values.image_1.image)">
       </div>
       <div class="service-content">
         <h3 class="service-title">{{ data.values.title_1 }}</h3>
@@ -19,7 +19,7 @@
 
     <div class="service-item">
       <div class="service-icon">
-        <img :src="data.values.image_2.image">
+        <img :src="imghttps(data.values.image_2.image)">
       </div>
       <div class="service-content">
         <h3 class="service-title">{{ data.values.title_2 }}</h3>
@@ -29,7 +29,7 @@
 
     <div class="service-item">
       <div class="service-icon">
-        <img :src="data.values.image_3.image">
+        <img :src="imghttps(data.values.image_3.image)">
       </div>
       <div class="service-content">
         <h3 class="service-title">{{ data.values.title_3 }}</h3>
@@ -39,7 +39,7 @@
 
     <div class="service-item">
       <div class="service-icon">
-        <img :src="data.values.image_4.image">
+        <img :src="imghttps(data.values.image_4.image)">
       </div>
       <div class="service-content">
         <h3 class="service-title">{{ data.values.title_4 }}</h3>
@@ -50,6 +50,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

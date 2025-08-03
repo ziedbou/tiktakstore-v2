@@ -6,7 +6,7 @@
           <a :href="data.values.link_1" class="image-item">
             <div class="image-bg">
               <img 
-                :src="data.values.image_1?.image" 
+                :src="imghttps(data.values.image_1?.image)" 
                 :alt="data.values.title_1" 
                 loading="lazy" 
                 :style="{ borderRadius: data.values.image_border_radius + 'px' }"
@@ -28,7 +28,7 @@
           <a :href="data.values.link_2" class="image-item">
             <div class="image-bg">
               <img 
-                :src="data.values.image_2?.image" 
+                :src="imghttps(data.values.image_2?.image)" 
                 :alt="data.values.title_2" 
                 loading="lazy" 
                 :style="{ borderRadius: data.values.image_border_radius + 'px' }"
@@ -53,6 +53,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 const props = defineProps({
   data: {
     type: Object,

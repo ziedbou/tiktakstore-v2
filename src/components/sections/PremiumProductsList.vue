@@ -27,7 +27,7 @@
       '--btn-background-hover': props.data.values.btn_background_hover,
       '--btn-border-radius': `${props.data.values.btn_border_radius || 0}px`,
       '--slider-width': `${props.data.values.slider_width || 70}%`,
-      '--background-image': `url(${props.data.values.image?.image || ''})`,
+      '--background-image': `url(${imghttps(props.data.values.image?.image) || ''})`,
     }"
   >
     <div class="mx-auto overflow-hidden product-list">
@@ -168,19 +168,25 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { register } from "swiper/element/bundle";
-import { fetchSectionProducts } from "~/composables/services/productService";
+import { useGetProducts } from "~/composables/useGetProducts";
 import "swiper/css";
 import "swiper/css/scrollbar";
-
-const sectionProducts = ref([]);
+import { useCompanyData } from '@/composables/useCompanyData';
+import { imghttps } from "~/composables/services/helpers";
+const { companyId } = useCompanyData();
 const dynamicComponent = shallowRef(null);
 
 const props = defineProps({
   data: { type: Object, required: true },
-  companyId: {
-    type: String,
-    required: true,
-  },
+  index: [String, Number],
+});
+
+// Use the new hook to fetch section products with caching
+const { data: sectionProducts, pending, error, refresh } = useGetProducts({
+  type: 'list',
+  cacheKey: `PremiumProductsList-${props.index}`,
+  companyId: companyId.value,
+  productList: props.data.values.products_list
 });
 // Load component dynamically
 const loadComponent = async (componentName = "ProductCard_1") => {
@@ -194,16 +200,8 @@ const loadComponent = async (componentName = "ProductCard_1") => {
   }
 };
 
-const getSectionProducts = async () => {
-  sectionProducts.value = await fetchSectionProducts({
-    sectionValues: props.data.values,
-    companyId: props.companyId,
-  });
-};
-
 onMounted(() => {
   loadComponent(props.data.values.card_type);
-  getSectionProducts();
 });
 
 register();

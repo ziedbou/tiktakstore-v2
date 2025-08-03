@@ -52,7 +52,7 @@
           :style="{ backgroundColor: card.card_color }"
         >
           <div class="testimonials-card-image">
-            <img :src="card.img.image" alt="" loading="lazy" />
+            <img :src="imghttps(card.img.image)" alt="" loading="lazy" />
           </div>
 
           <div class="testimonials-stars">
@@ -104,6 +104,7 @@
 <script setup>
 import { register } from "swiper/element/bundle";
 import "swiper/css";
+import { imghttps } from "~/composables/services/helpers";
 register();
 
 defineProps({

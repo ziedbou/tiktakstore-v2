@@ -65,7 +65,7 @@
           <a :href="card.btn_link" class="premium-slider-6__slide-link">
             <div class="premium-slider-6__image">
               <img
-                :src="card.prod_img.image"
+                :src="imghttps(card.prod_img.image)"
                 :alt="card.prod_nm"
                 loading="lazy"
               />
@@ -87,6 +87,7 @@
 import { register } from "swiper/element/bundle";
 import "swiper/css";
 import "swiper/css/pagination";
+import { imghttps } from "~/composables/services/helpers";
 
 register();
 

@@ -1,9 +1,7 @@
 <template>
   <!-- First Level Dropdown -->
   <div class="dropdown absolute left-0 top-full w-64 bg-white rounded-2xl shadow-2xl py-3 z-50" :class="marginTop">
-      <div class="dropdown-header px-4 py-2 text-sm font-semibold border-b border-gray-200">
-        {{ category.name }}
-      </div>
+    
 
       <!-- Submenu items -->
       <template v-for="submenu in category.submenu" :key="submenu.slug">
@@ -133,7 +131,7 @@ const props = defineProps({
 .dropdown-item:hover > a,
 .dropdown-item:hover > .dropdown-link {
   background-color: rgba(59, 130, 246, 0.1) !important;
-  color: var(--header-middle-color-hover, #3b82f6) !important;
+  color: var(--header-middle-color-hover) !important;
 }
 
 /* Create invisible hover bridge between dropdown item and nested dropdown */
@@ -226,16 +224,16 @@ const props = defineProps({
 /* Header-specific overrides */
 /* For Header3 - bottom navigation */
 .header-bottom .nav-link::after {
-  background: var(--header-bottom-hover, #06b6d4);
+  background: var(--header-bottom-hover);
 }
 
 .header-bottom .nav-link:hover {
-  color: var(--header-bottom-hover, #06b6d4) !important;
+  color: var(--header-bottom-hover) !important;
   opacity: 1;
 }
 
 .header-bottom .dropdown-container:hover .nav-link {
-  color: var(--header-bottom-hover, #06b6d4) !important;
+  color: var(--header-bottom-hover) !important;
 }
 
 /* For Header4 - fashion design */
@@ -254,15 +252,15 @@ const props = defineProps({
 
 /* For Header4 when sticky */
 .header4-style.sticky-header .nav-link {
-  color: var(--header-middle-color, #1f2937);
+  color: var(--header-middle-color);
 }
 
 .header4-style.sticky-header .nav-link::after {
-  background: var(--header-middle-color-hover, #3b82f6);
+  background: var(--header-middle-color-hover);
 }
 
 .header4-style.sticky-header .nav-link:hover {
-  color: var(--header-middle-color-hover, #3b82f6);
+  color: var(--header-middle-color-hover);
   opacity: 1;
 }
 </style> 

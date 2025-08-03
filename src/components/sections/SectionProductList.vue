@@ -7,7 +7,7 @@
         <div v-for="product in products" :key="product.id" class="group relative">
         <NuxtLink :to="'/products'">
 
-          <img :src="product.imageSrc" :alt="product.imageAlt" class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80" />
+          <img :src="imghttps(product.imageSrc)" :alt="product.imageAlt" class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80" />
           <div class="mt-4 flex justify-between">
             <div>
               <h3 class="text-sm text-gray-700">
@@ -27,6 +27,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 const products = [
   {
     id: 1,

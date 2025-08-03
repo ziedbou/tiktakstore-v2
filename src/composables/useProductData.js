@@ -1,7 +1,7 @@
 import { useState } from 'nuxt/app'
 import { useCompanyData } from './useCompanyData'
 
-export function useProductData(productId = '309613') {
+export function useProductData(productId) {
   const productData = useState('productData', () => null)
   const isLoading = useState('productLoading', () => false)
   const error = useState('productError', () => null)

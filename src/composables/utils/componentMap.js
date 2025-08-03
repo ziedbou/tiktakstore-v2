@@ -50,6 +50,7 @@ export const componentMap = {
   "PremiumProductIngredients": () => import("@/components/sections/PremiumProductIngredients.vue"),
   "PremiumProductSheinStyle": () => import("@/components/sections/PremiumProductSheinStyle.vue"),
   "PremiumProductShow": () => import("@/components/sections/PremiumProductShow.vue"),
+  "PremiumProductsCarouselWithTabs": () => import("@/components/sections/PremiumProductsCarouselWithTabs.vue"),
   "PremiumPromoBanner": () => import("@/components/sections/PremiumPromoBanner.vue"),
   "PremiumScrollingFeature": () => import("@/components/sections/PremiumScrollingFeature.vue"),
   "PremiumScrollingText8": () => import("@/components/sections/PremiumScrollingText8.vue"),

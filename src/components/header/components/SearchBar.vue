@@ -50,7 +50,7 @@
       <div class="max-h-80 overflow-y-auto bg-white">
         <ProductSearch 
           :search-query="searchValue" 
-          @product-selected="handleProductSelected"
+          @clear-search="clearSearch"
         />
       </div>
     </div>
@@ -172,10 +172,7 @@ const closeMobileSearch = () => {
  // emits('update:modelValue', "") // Emit the change to parent
 }
 
-const handleProductSelected = (product) => {
-  closeMobileSearch()
-  // The ProductSearch component will emit this to its parent
-}
+
 
 // Expose focus method for parent components
 defineExpose({
@@ -191,35 +188,35 @@ defineExpose({
 
 <style scoped>
 .search-input:focus {
-  border-color: var(--header-middle-color-hover, #7b7b7b);
+  border-color: var(--header-middle-color-hover);
 }
 
 /* Mobile search button styling to match user action buttons */
 .user-action-link-vertical {
-  color: var(--header-middle-color, #000000);
+  color: var(--header-middle-color);
 }
 
 .user-action-link-vertical:hover {
-  color: var(--header-middle-color-hover, #7b7b7b);
+  color: var(--header-middle-color-hover);
   background-color: color-mix(
     in srgb,
-    var(--header-middle-color-hover, #7b7b7b) 3%,
+    var(--header-middle-color-hover) 3%,
     transparent
   );
 }
 
 .user-action-link-vertical:focus {
-  color: var(--header-middle-color-hover, #7b7b7b);
+  color: var(--header-middle-color-hover);
   outline: 1px solid
     color-mix(
       in srgb,
-      var(--header-middle-color-hover, #7b7b7b) 30%,
+      var(--header-middle-color-hover) 30%,
       transparent
     ) !important;
   outline-offset: 2px;
   background-color: color-mix(
     in srgb,
-    var(--header-middle-color-hover, #7b7b7b) 3%,
+    var(--header-middle-color-hover) 3%,
     transparent
   );
 }

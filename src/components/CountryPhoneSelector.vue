@@ -5,7 +5,7 @@
         'flex rounded-md transition-all duration-200 ring-offset-0',
         error ? 
           `ring-2 ring-red-500/50 border border-red-500 ${errorRingClass}` : 
-          'focus-within:ring-2 focus-within:ring-indigo-500/20 border border-gray-300 hover:border-gray-400 focus-within:border-indigo-500'
+          'focus-within:ring-2 focus-within:ring-[var(--btn-primary-outline-border-color)] border border-gray-300 hover:border-[var(--btn-primary-outline-border-color)] focus-within:border-[var(--btn-primary-outline-border-color)]'
       ]"
     >
       <!-- Country dropdown part -->
@@ -14,7 +14,7 @@
           class="h-full w-[110px] relative cursor-default py-2.5 pl-3 pr-8 text-left bg-gray-50 border-r border-gray-300 flex items-center transition-colors duration-200 focus:outline-none sm:text-sm rounded-l-md"
         >
           <span v-if="selectedCountry" class="truncate flex items-center">
-            <img 
+            <NuxtImg 
               :src="getFlagUrl(selectedCountry.code)" 
               :alt="selectedCountry.name" 
               class="w-5 h-auto mr-1.5 inline-block" 
@@ -106,11 +106,12 @@
       <!-- Phone number input part -->
       <input
         type="tel"
+        autocomplete="tel"
         :id="inputId"
         :name="inputId"
         v-model="phoneNumber"
         :required="required"
-        :maxlength="maxLength"
+        :maxlength="selectedCountry ? selectedCountry.phoneNumberLength : maxLength"
         :placeholder="inputPlaceholder"
         class="block w-full px-3 py-2.5 text-base text-gray-900 focus:outline-none sm:text-sm/6 bg-white rounded-r-md"
       />
@@ -170,6 +171,10 @@ const props = defineProps({
   maxLength: {
     type: Number,
     default: null
+  },
+  isQuickCheckout: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -180,6 +185,8 @@ const selectedCountry = ref(COUNTRIES.find(country => country.code === props.def
 
 // Store just the phone number part (without country code)
 const phoneNumber = ref('')
+
+const {phoneNumberx, isValidPhoneNumber } = usePhoneNumber(selectedCountry.value?.phoneNumberLength , phoneNumber, props.isQuickCheckout)
 
 // Combined value (country code + phone number)
 const combinedValue = computed(() => {

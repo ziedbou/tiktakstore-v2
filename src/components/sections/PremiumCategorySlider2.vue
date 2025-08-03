@@ -39,7 +39,7 @@
         ></path>
       </svg>
     </a>
-    <div class="slider-wrapper">
+    <div class="slider-wrapper overflow-hidden mt-4 md:mt-8">
       <swiper-container
         class="slider"
         :speed="300"
@@ -77,7 +77,7 @@
           </p>
           <a :href="child.link">
             <div class="image">
-              <img :alt="child.title" loading="lazy" :src="child.image.image" />
+              <img :alt="child.title" loading="lazy" :src="imghttps(child.image.image)" />
             </div>
           </a>
           <a class="text" :href="child.link">{{ child.title }}</a>
@@ -110,6 +110,7 @@
 import { register } from "swiper/element/bundle";
 import "swiper/css";
 import "swiper/css/scrollbar";
+import { imghttps } from "~/composables/services/helpers";
 
 register();
 
@@ -147,7 +148,7 @@ defineProps({
   box-sizing: border-box;
   background-color: var(--btn-background);
   border: 1px solid var(--btn-border-color);
-  font-family: Helvetica, "Helvetica Neue", Arial, "Lucida Grande", sans-serif;
+  letter-spacing: 0.05em;
 }
 
 .button svg {
@@ -341,8 +342,8 @@ defineProps({
   }
 
   .number {
-    top: 20px;
-    left: 20px;
+    top:-5px;
+    left:-5px;
   }
 
   .scrollbar {
@@ -380,11 +381,6 @@ defineProps({
   .btn-next svg {
     height: 28px;
     width: 28px;
-  }
-
-  .slide {
-    padding-top: 65px;
-    padding-left: 65px;
   }
 
   .image {

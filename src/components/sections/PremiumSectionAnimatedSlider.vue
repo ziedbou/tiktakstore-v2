@@ -19,7 +19,7 @@
             <a :href="child.link" class="shop-btn">{{ child.btn_text }}</a>
           </div>
           <div class="content-right">
-            <img :src="child.image.image" alt="Slide Image" class="w-full max-w-[600px] h-auto rounded-lg" />
+            <img :src="imghttps(child.image.image)" alt="Slide Image" class="w-full max-w-[600px] h-auto rounded-lg" />
           </div>
       </swiper-slide>
     </swiper-container>
@@ -33,6 +33,7 @@ import { register } from "swiper/element/bundle";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
+import { imghttps } from "~/composables/services/helpers";
 register(); 
 
 interface Design {

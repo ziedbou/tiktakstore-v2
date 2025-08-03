@@ -1,16 +1,29 @@
 
 
 <template>
-  <div class="fixed z-40 bottom-0 left-0 right-0 ">
-    <div class="p-2 px-4 gap-2 bg-white flex flex-row md:hidden">
+  <div class="fixed z-50 bottom-0 left-0 right-0 ">
+    <div 
+      v-if="preFormCheckoutTitle"
+      class="p-2 px-4 gap-2 duration-500 transition-transform bg-white flex flex-row md:hidden"
+      :class="{
+        'translate-y-full ':isScrolledToEnd
+      }"
+      >
       <QuantitySelector />
       <button
-        class="w-full flex justify-center items-center py-3 bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer font-semibold rounded-lg transition-colors"
+        class="w-full flex justify-center items-center cursor-pointer font-medium py-2 btn-primary-solid shake-animation"
+        @click="handleAchatRapide"
+      >
+      <ShoppingCart class="h-5 w-5 mr-2" />
+      <span>{{ preFormCheckoutTitle }}</span>
+    </button>
+     <!-- <button
+        class="w-full flex justify-center items-center cursor-pointer font-medium py-2 btn-primary-solid"
         @click="handleAddToCart_Before_Cofirm"
       >
       <ShoppingCart class="h-5 w-5 mr-2" />
       <span>Ajouter au panier</span>
-    </button>
+    </button> -->
     </div>
 
     <div
@@ -20,11 +33,11 @@
     ></div>
     
     <div
-  class="fixed bottom-0 left-0 right-0 md:inset-x-[30%] md:inset-y-[20%] p-4 bg-white rounded-t-xl md:rounded-b-xl z-50 flex flex-col transition-transform duration-300 transform max-h-[90vh] md:max-h-[80vh]"
-  :class="{ 'translate-y-0': isBottomSheetOpen, 'translate-y-full md:opacity-0 pointer-events-none': !isBottomSheetOpen }"
+  class="fixed bottom-0 md:top-1/2 md:-translate-y-1/2 left-0 right-0 md:inset-x-[30%]  p-4 bg-white rounded-t-xl md:rounded-b-xl z-50 flex flex-col transition-transform duration-300 transform h-fit max-h-[90vh] md:max-h-[60vh]"
+  :class="{ 'translate-y-full md:opacity-0 pointer-events-none': !isBottomSheetOpen }"
 >
   <div class="flex justify-between items-center p-4 ">
-    <h3 class="text-lg font-semibold">Veuillez choisir la couleur et la taille</h3>
+    <h3 class="text-lg font-semibold" v-if="attributes_names.length > 0">Veuillez choisir {{ attributes_names[0] }} <span v-if="attributes_names.length > 1"> et </span>{{ attributes_names[1] }} </h3>
     <button
       @click="closeBottomSheet"
       class="p-1 rounded-full hover:bg-gray-100"
@@ -54,7 +67,7 @@
     <div class="">
       <button
         @click="handleAddToCart_After_Confirm"
-        class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer font-semibold rounded-lg transition-colors"
+        class="w-full min-h-11 max-h-11 cursor-pointer font-medium btn-primary-solid"
       >
         Confirmer
       </button>
@@ -65,7 +78,7 @@
 </template>
 
 
-<script setup lang="ts">
+<script setup>
 import { ref } from 'vue';
 import QuantitySelector from './QuantitySelector.vue';
 import { useProductQuantity } from '@/composables/useProductQuantity.js';
@@ -85,11 +98,19 @@ const { product } = defineProps({
     type: Object,
     required: true,
   },
+  preFormCheckoutTitle: {
+    required: true,
+    default: null
+  },
+  isScrolledToEnd: {
+    default: false,
+    type: Boolean
+  }
 })
 const isBottomSheetOpen = ref(false);
 const isOpenCart = ref(true) ;
 const isQuickCheckout = ref(false)
-const { trackAddToCart } = useTracking()
+const { attributes_names } = useAttributesName()
 
 onMounted(() => {
   eventBus.on("show-selectMultipleVariantsModal", (data) => {
@@ -112,50 +133,51 @@ onMounted(() => {
   })
 })
 
-const handleAddToCart_Before_Cofirm = () => {
-
-  if (quantity.value > 1) {
-    // console.log("Quantity > 1 branch");
-
-    if (product.declinaison == true && product.declinaisons.length > 0) {
-      // console.log("Opening bottom sheet due to declinaison");
-      openBottomSheet();
-      return;
-    }
-
-    if (product.declinaison == false || (product.declinaisons?.length ?? 0) <= 0) {
-      // console.log("No declinaison or empty, adding to cart");
-      trackAddToCart(product);
-      addToCart(product, quantity.value);
-      return;
-    }
-  }
-
-  if (quantity.value == 1) {
-    // console.log("Quantity == 1 branch");
-
-    if (isSelectedByUser.value && product.declinaison == true && product.declinaisons.length > 0) {
-      // console.log("Variant selected, adding selected variant");
-      trackAddToCart(product);
-      addToCart(selectedVariant.value);
-      return;
-    }
-
-    if (!isSelectedByUser.value && product.declinaison == true && product.declinaisons.length > 0) {
-      // console.log("Prompting user to select variant");
-      openBottomSheet();
-      return;
-    }
-
-    if (product.declinaison == false || product.declinaisons.length <= 0) {
-      // console.log("No declinaison, adding product directly");
-      trackAddToCart(product);
-      addToCart(product);
-      return;
-    }
-  }
-
+const handleAchatRapide = () => {
+  eventBus.emit('handleQuickCheckoutEvent', false)
 }
+
+// const handleAddToCart_Before_Cofirm = () => {
+
+//   if (quantity.value > 1) {
+//     // console.log("Quantity > 1 branch");
+
+//     if (product.declinaison == true && product.declinaisons.length > 0) {
+//       // console.log("Opening bottom sheet due to declinaison");
+//       openBottomSheet();
+//       return;
+//     }
+
+//     if (product.declinaison == false || (product.declinaisons?.length ?? 0) <= 0) {
+//       // console.log("No declinaison or empty, adding to cart");
+//       addToCart(product, quantity.value);
+//       return;
+//     }
+//   }
+
+//   if (quantity.value == 1) {
+//     // console.log("Quantity == 1 branch");
+
+//     if (isSelectedByUser.value && product.declinaison == true && product.declinaisons.length > 0) {
+//       // console.log("Variant selected, adding selected variant");
+//       addToCart(selectedVariant.value);
+//       return;
+//     }
+
+//     if (!isSelectedByUser.value && product.declinaison == true && product.declinaisons.length > 0) {
+//       // console.log("Prompting user to select variant");
+//       openBottomSheet();
+//       return;
+//     }
+
+//     if (product.declinaison == false || product.declinaisons.length <= 0) {
+//       // console.log("No declinaison, adding product directly");
+//       addToCart(product);
+//       return;
+//     }
+//   }
+
+// }
 
 const handleAddToCart_After_Confirm = () => {
   const navigateToCheckout_reset = () => {
@@ -174,7 +196,6 @@ const handleAddToCart_After_Confirm = () => {
 
     if ( quantity.value == 1) {
         if (isQuickCheckout.value == false) {
-          trackAddToCart(product);
           addToCart(selectedVariant.value  , 1, null, null, isOpenCart.value);
           closeBottomSheet()
           navigateToCheckout_reset()
@@ -186,14 +207,13 @@ const handleAddToCart_After_Confirm = () => {
         }
     }
     if (quantity.value > 1) {
-      trackAddToCart(product);
       const multipleVariants = getMultipleVariants(quantity.value)
       if ( multipleVariants && multipleVariants.length > 0 && !multipleVariants.includes(null) ) {
         multipleVariants.forEach(variant => {
           addToCart(variant , 1, null, null, isOpenCart.value);
         });
-        closeBottomSheet()
         navigateToCheckout_reset()
+        closeBottomSheet()
       
       }
       else {
@@ -204,6 +224,7 @@ const handleAddToCart_After_Confirm = () => {
   
 }
 
+
 const openBottomSheet = () => {
   isBottomSheetOpen.value = true;
 };
@@ -212,3 +233,30 @@ const closeBottomSheet = () => {
   isBottomSheetOpen.value = false;
 };
 </script>
+
+
+<style scoped>
+.shake-animation {
+  animation: shake 2s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+}
+
+@keyframes shake {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-2px, 0, 0);
+  }
+  40%,
+  60% {
+    transform: translate3d(2px, 0, 0);
+  }
+}
+</style>

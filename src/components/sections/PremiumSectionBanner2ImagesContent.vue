@@ -16,7 +16,7 @@
     <div class="w-full md:w-1/2">
       <div class="banner banner-overlay overflow-hidden">
         <NuxtLink :to="data.values.link_1">
-          <img :src="data.values.image_1.image" :alt="data.values.title_1" class="w-full object-cover banner-image" />
+          <NuxtImg :src="imghttps(data.values.image_1.image)" :alt="data.values.title_1" class="w-full object-cover banner-image" />
         </NuxtLink>
         <div class="banner-content banner-content-center">
           <h4 class="banner-subtitle">
@@ -42,7 +42,7 @@
     <div class="w-full md:w-1/2">
       <div class="banner banner-overlay overflow-hidden">
         <NuxtLink :to="data.values.link_2">
-          <NuxtImg :src="data.values.image_2.image" :alt="data.values.title_2" class="w-full object-cover banner-image" />
+          <NuxtImg :src="imghttps(data.values.image_2.image)" :alt="data.values.title_2" class="w-full object-cover banner-image" />
         </NuxtLink>
         <div class="banner-content banner-content-center">
           <h4 class="banner-subtitle">
@@ -68,6 +68,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

@@ -4,7 +4,7 @@ import { useCompanyData } from '~/composables/useCompanyData';
 
 export function useRelatedProducts() {
   // Shared state for related products
-  console.log('useRelatedProducts__')
+  // console.log('useRelatedProducts__')
 
   const relatedProducts = useState('relatedProducts', () => []);
   const isLoading = useState('relatedProductsLoading', () => false);

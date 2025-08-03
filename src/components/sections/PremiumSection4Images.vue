@@ -36,7 +36,7 @@
       
       <!-- Section 1: Boucles d'oreilles et bagues -->
       <div class="col-span-12 order-1 sm:order-2 sm:col-span-6 lg:col-span-4 lg:order-1 relative flex flex-col items-center justify-center text-center p-6 group overflow-hidden aspect-[7/8] lg:aspect-[7/8.7]">
-        <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" :src="data.values.image_1.image" alt="Banner" />
+        <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" :src="imghttps(data.values.image_1.image)" alt="Banner" />
         <div class="banner-content text-center relative z-10 space-y-6">
           <h4 class="sub-title-1 text-sm uppercase tracking-widest font-light">{{ data.values.sub_title_1 }}</h4>
           <h3 class="title-1-1 text-4xl font-bold uppercase">{{ data.values.title_1_1 }}</h3>
@@ -47,7 +47,7 @@
       
       <!-- Section 3: Bracelets et chevillières -->
       <div class="col-span-12 order-3 sm:order-3 sm:col-span-6 lg:col-span-4 lg:order-3 relative flex flex-col items-center justify-center text-center p-6 group overflow-hidden aspect-[7/8] lg:aspect-[7/8.7]" style="background-color: #f9f9f9;">
-        <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" :src="data.values.image_3.image" alt="Banner" />
+        <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" :src="imghttps(data.values.image_3.image)" alt="Banner" />
         <div class="banner-content text-center relative z-10 space-y-6">
           <h4 class="sub-title-3 text-sm uppercase tracking-widest font-light">{{ data.values.sub_title_3 }}</h4>
           <h3 class="title-1-3 text-4xl font-bold uppercase">{{ data.values.title_1_3 }}</h3>
@@ -72,6 +72,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

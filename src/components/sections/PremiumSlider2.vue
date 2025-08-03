@@ -12,7 +12,7 @@
           >
             <NuxtLink :to="child.link">
               <div class="image">
-                <img :src="child.image.image" :alt="child.title" loading="lazy">
+                <img :src="imghttps(child.image.image)" :alt="child.title" loading="lazy">
               </div>
               <div class="content">
                 <p class="title">{{ child.title }}</p>
@@ -43,6 +43,7 @@ import { EffectCoverflow, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/navigation';
+import { imghttps } from '~/composables/services/helpers';
 
 defineProps({
   data: {

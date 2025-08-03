@@ -1,6 +1,6 @@
 <template>
-    <main class=" container-medium md:flex md:flex-row ">
-      <div class="flex grow flex-col gap-y-5 w-[300px] pt-5 overflow-y-autopx-6 max-md:hidden border-gray-200 min-h-[70vh]">
+    <main v-if="userToken.length > 0" class=" container-medium md:flex md:flex-row ">
+      <div class="flex grow flex-col gap-y-5 w-[300px] pt-5 overflow-y-autopx-6 max-md:hidden border-gray-200 min-h-[50vh]">
         <nav class="bg-white border border-gray-200 rounded-xl shadow p-6 mb-4 flex flex-1 flex-col  ">
           <ul role="list" class="flex flex-1 flex-col gap-y-7 ">
             <li>
@@ -111,11 +111,12 @@
           </nav>
         </header>
   
-        <div class="md:bg-white md:border mt-5 md:ml-2 md:border-gray-200 md:rounded-xl md:shadow md:p-6 divide-y min-w-full  min-h-[40vh] divide-gray-200 p-4 px-2  md:p-8">
+        <div class="md:bg-white md:border mt-5 md:ml-2 bg-white md:border-gray-200 md:rounded-xl md:shadow md:p-6 divide-y min-w-full  min-h-[40vh] divide-gray-200 p-4 px-2  md:p-8">
           <component :is="activeComponent" :userInfo="userInfo" :userToken="userToken" />
         </div>
       </div>
     </main>
+      <div v-else class="min-h-[80vh]"></div>
   </template>
   
   <script setup>

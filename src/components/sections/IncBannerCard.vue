@@ -5,7 +5,7 @@
         
         <!-- Grande bannière -->
         <div class="relative group overflow-hidden rounded-lg shadow-lg">
-          <img :src="mainBanner.image" alt="Bannière principale" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+          <img :src="imghttps(mainBanner.image)" alt="Bannière principale" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
           <div class="absolute inset-0 bg-black/40 flex flex-col justify-end p-6 text-white">
             <h3 class="text-lg font-semibold italic">{{ mainBanner.category }}</h3>
             <h4 class="text-2xl font-bold">{{ mainBanner.title }}</h4>
@@ -19,7 +19,7 @@
         <!-- Petites bannières -->
         <div class="grid grid-cols-2 gap-4">
           <div v-for="(banner, index) in smallBanners" :key="index" class="relative group overflow-hidden rounded-lg shadow-lg">
-            <img :src="banner.image" alt="Bannière secondaire" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
+            <img :src="imghttps(banner.image)" alt="Bannière secondaire" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
             <div class="absolute inset-0 bg-black/50 flex flex-col justify-end p-4 text-white">
               <h3 class="text-lg font-semibold">{{ banner.category }}</h3>
               <h4 class="text-md font-bold">{{ banner.title }}</h4>
@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import { imghttps } from '~/composables/services/helpers';
+
 export default {
   props: {
     mainBanner: Object,

@@ -12,7 +12,7 @@
           alt="Your Company"
         />
         <h2
-          class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
+          class="mt-10 text-center text-2xl/9 font-medium tracking-tight text-gray-900"
         >
           Nous contacter
         </h2>
@@ -52,7 +52,7 @@
                 name="name"
                 id="name"
                 required
-                class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color)] sm:text-sm/6"
                 :class="{ 'border-red-500': errors.name }"
                 @input="validateName"
               />
@@ -75,7 +75,7 @@
                 name="email"
                 id="email"
                 required
-                class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color)] sm:text-sm/6"
                 :class="{ 'border-red-500': errors.email }"
                 @input="validateEmail"
               />
@@ -98,7 +98,7 @@
                 id="message"
                 required
                 rows="4"
-                class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color)] sm:text-sm/6"
                 :class="{ 'border-red-500': errors.message }"
                 @input="validateMessage"
               ></textarea>
@@ -112,7 +112,7 @@
             <button
               type="submit"
               :disabled="isLoading || hasErrors"
-              class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-400 disabled:cursor-not-allowed"
+              class="flex w-full justify-center px-3 py-2.5 text-sm/6 font-medium shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 btn-primary-solid disabled:cursor-not-allowed"
             >
               <span v-if="!isLoading">Envoyer</span>
               <span v-else>Traitement en cours...</span>
@@ -154,7 +154,28 @@
   const hasErrors = computed(() => {
     return Object.values(errors.value).some((error) => error !== "");
   });
+
   
+const seo = {
+  title: 'contact',
+  description: '',
+  image: '',
+  url: useFullUrl(),
+};
+
+useHead({
+  title: seo.title,
+  meta: [
+    { name: 'description', content: seo.description },
+    { property: 'og:title', content: seo.title },
+    { property: 'og:description', content: seo.description },
+    { property: 'og:image', content: seo.image },
+    { property: 'og:url', content: seo.url },
+    { name: 'twitter:title', content: seo.title },
+
+  ]
+});
+
   const validateName = () => {
     if (!form.value.name) {
       errors.value.name = "Le nom est requis.";

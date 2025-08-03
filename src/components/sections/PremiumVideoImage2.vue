@@ -58,7 +58,7 @@
         </div>
         
         <div class="premium-video__media premium-video__media--right">
-          <img :src="data.values.img?.image || ''" alt="">
+          <img :src="imghttps(data.values.img?.image) || ''" alt="">
         </div>
       </div>
     </div>
@@ -66,6 +66,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   key: String,
   data: Object,

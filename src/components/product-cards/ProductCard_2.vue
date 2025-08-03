@@ -1,27 +1,15 @@
 <template>
   <div class="product-card">
     <div class="hover-buttons">
-      <button class="hover-button" @click="openPreviewProduct(product)">
-        <svg
-          stroke="currentColor"
-          fill="currentColor"
-          stroke-width="0"
-          viewBox="0 0 512 512"
-          height="20"
-          width="20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M396.795 396.8H320V448h128V320h-51.205zM396.8 115.205V192H448V64H320v51.205zM115.205 115.2H192V64H64v128h51.205zM115.2 396.795V320H64v128h128v-51.205z"
-          ></path>
-        </svg>
-        <div class="tooltip">Aperçu rapide</div>
-      </button>
+      <QuickViewBtn @quick-view="openQuickView" />
     </div>
 
     <NuxtLink :to="getProductLink(product)" class="product-image-container">
-        <Tags :product="product" :outOfStockTagClass="'top-0 left-0'" :promoTagClass="'top-30 left-0'" />
-      <img
+      <OutOfStockTag
+        :product="product"
+        :extra-class="'absolute top-0 left-0'"
+      />
+      <NuxtImg
         :src="imghttps(product.photo)"
         :alt="product.name"
         class="product-image"
@@ -30,35 +18,44 @@
 
     <div class="product-info">
       <div class="product-category">{{ product._category?.name }}</div>
-      <NuxtLink :to="getProductLink(product)" class="product-title">{{
-        product.name
-      }}</NuxtLink>
-      <div class="rating">★★★★★</div>
-      <div class="price-container">
-        <span class="product-price new-price"
-          >{{ getPrice(product) }} {{ /*company.currency*/ "TND" }}</span
-        >
-        <span class="old-price" v-if="product.discount"
-          >{{ product.price }} {{ /*company.currency*/ "TND" }}</span
+      <NuxtLink
+        :to="getProductLink(product)"
+        class="product-title text-base font-medium text-gray-900 line-clamp-2"
+        >{{ product.name }}</NuxtLink
+      >
+      <!-- Star Rating -->
+      <div class="flex items-center mb-1">
+        <div class="flex text-yellow-400">
+          <StarIcon v-for="n in 5" :key="n" class="size-3.5" />
+        </div>
+        <span class="ml-2 text-sm text-gray-600">{{
+          product.seo_stars || "4.9"
+        }}</span>
+      </div>
+      <!-- Price -->
+      <div class="product-price font-size-normal flex items-center gap-2 mb-1">
+        <span v-if="product.discount" class="!text-sm old-price">
+          {{ product.price }}
+        </span>
+        <span class="text-base font-semibold new-price"
+          >{{ getPrice(product) }} {{ companyData.currency }}</span
         >
       </div>
-      <button
-        @click="addToCart(product)"
-        class="cta-button"
-      >
-        Ajouter au panier
-      </button>
+      <PromoTag :product="product" />
     </div>
 
     <div class="product-bottom">
-      <button
-        @click="addToCart(product)"
-        class="cta-button"
-      >
-        Ajouter au panier
+      <button @click="addToCart(product)" class="flex justify-center items-center gap-2">
+        Ajouter au panier <ShoppingCart class="size-5" />
       </button>
     </div>
   </div>
+    <!-- Quick View Modal -->
+    <ProductQuickViewModal
+    :product="product"
+    :isOpen="isQuickViewOpen"
+    @close="closeQuickView"
+  />
 </template>
 
 <script setup>
@@ -67,22 +64,40 @@ import {
   getPrice,
   imghttps,
 } from "~/composables/services/helpers";
-import Tags from "./product-tags/Tags.vue";
 import { addToCart } from "~/composables/services/cartService";
- defineProps({
+import { useCompanyData } from "~/composables/useCompanyData";
+import { StarIcon } from "@heroicons/vue/20/solid";
+import PromoTag from "./product-tags/PromoTag.vue";
+import OutOfStockTag from "./product-tags/OutOfStockTag.vue";
+import { ShoppingCart } from "lucide-vue-next";
+import QuickViewBtn from "./product-cards-buttons/QuickViewBtn.vue";
+const { companyData } = useCompanyData();
+
+defineProps({
   product: {
     type: Object,
     required: true,
   },
 });
+
+// Quick view modal state
+const isQuickViewOpen = ref(false);
+
+// Quick view functions
+const openQuickView = () => {
+  isQuickViewOpen.value = true;
+};
+
+const closeQuickView = () => {
+  isQuickViewOpen.value = false;
+};
 </script>
 
 <style scoped>
-
 .product-card {
-  background-color: var(--product-card-bg-color ,#fff);
-  border-radius: var(--product-border-radius ,5px);
-  border-color: var(--product-card-border-color ,#f3f3f3);
+  background-color: var(--product-card-bg-color, #fff);
+  border-radius: var(--product-border-radius, 5px);
+  border-color: var(--product-card-border-color, #f3f3f3);
   padding: 10px;
   min-height: 210px;
   position: relative;
@@ -97,8 +112,8 @@ import { addToCart } from "~/composables/services/cartService";
 }
 
 .product-card:hover {
-  border-color: var(--product-card-border-color-hover ,#f3f3f3);
-  background-color: var(--product-card-bg-color-hover ,#f9f9f9);
+  border-color: var(--product-card-border-color-hover, #f3f3f3);
+  background-color: var(--product-card-bg-color-hover, #f9f9f9);
 }
 
 .product-bottom {
@@ -107,8 +122,8 @@ import { addToCart } from "~/composables/services/cartService";
   right: -1px;
   padding: 10px;
   top: calc(100% - 6px);
-  background-color: var(--product-card-bg-color-hover ,#f9f9f9);
-  border: 1px solid var(--product-card-border-color ,#f3f3f3);
+  background-color: var(--product-card-bg-color-hover, #f9f9f9);
+  border: 1px solid var(--product-card-border-color, #f3f3f3);
   border-radius: 10px;
   border-top: none;
   border-radius: 0 0 8px 8px;
@@ -119,9 +134,6 @@ import { addToCart } from "~/composables/services/cartService";
   transition: all 0.2s;
 }
 
-.product-bottom .cta-button {
-  display: block;
-}
 
 .product-image-container {
   flex: 1;
@@ -148,15 +160,7 @@ import { addToCart } from "~/composables/services/cartService";
 
 .product-title {
   font-size: var(--product-block-title-font-size);
-  line-height: 1.25;
   color: var(--product-block-title-color);
-  font-weight: 500;
-  margin-bottom: 10px;
-}
-
-.rating {
-  color: #ffc107;
-  margin-bottom: 10px;
 }
 
 .price-container {
@@ -166,13 +170,13 @@ import { addToCart } from "~/composables/services/cartService";
 }
 
 .cta-button {
-  color: var(--product-card-add-to-cart-color,#000);
-  border-color: var(--product-card-add-to-cart-border-color,#000);
-  background-color: var(--product-card-add-to-cart-bg,#fff);  
+  color: var(--product-card-add-to-cart-color, #000);
+  border-color: var(--product-card-add-to-cart-border-color, #000);
+  background-color: var(--product-card-add-to-cart-bg, #fff);
   border-width: 2px;
   border-style: solid;
   padding: 11px 16px;
-  border-radius: var(--button-border-radius,0);
+  border-radius: var(--button-border-radius, 0);
   cursor: pointer;
   font-weight: 500;
   text-align: center;
@@ -182,9 +186,9 @@ import { addToCart } from "~/composables/services/cartService";
 }
 
 .cta-button:hover {
-  color: var(--product-card-add-to-cart-color-hover,#fff);
-  border-color: var(--product-card-add-to-cart-border-color-hover,#fff);
-  background-color: var(--product-card-add-to-cart-bg-hover,#000);
+  color: var(--product-card-add-to-cart-color-hover, #fff);
+  border-color: var(--product-card-add-to-cart-border-color-hover, #fff);
+  background-color: var(--product-card-add-to-cart-bg-hover, #000);
 }
 
 .hover-buttons {
@@ -200,18 +204,6 @@ import { addToCart } from "~/composables/services/cartService";
   z-index: 1;
 }
 
-.hover-button {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  position: relative;
-}
 
 .product-card:hover .hover-buttons {
   opacity: 1;
@@ -265,7 +257,7 @@ import { addToCart } from "~/composables/services/cartService";
   .cta-button {
     display: none;
   }
-  
+
   .product-card {
     padding: 0 10px;
   }

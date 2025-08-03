@@ -57,7 +57,7 @@
                     <span class="premium-collection__background-anim"></span>
                     <img 
                       v-if="child.image && child.image.image" 
-                      :src="child.image.image" 
+                      :src="imghttps(child.image.image)" 
                       :alt="child.title"
                     >
                     <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 525.5 525.5">
@@ -83,6 +83,7 @@
 <script setup>
 import { register } from 'swiper/element/bundle';
 import { ref } from 'vue';
+import { imghttps } from '~/composables/services/helpers';
 
 // Register Swiper custom elements
 register();

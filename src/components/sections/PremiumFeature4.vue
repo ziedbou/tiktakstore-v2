@@ -33,7 +33,7 @@
           :data-id="`feature_${index + 1}`"
           :class="{ active: activeIndex === index }"
         >
-          <img :src="item.img.image" alt="" />
+          <img :src="imghttps(item.img?.image)" alt="" />
         </div>
       </div>
 
@@ -71,7 +71,7 @@
               fill="none"
             ></circle>
           </svg>
-          <img :src="item.icon.image" alt="" />
+          <img :src="imghttps(item.icon.image)" alt="" />
         </div>
       </div>
 
@@ -120,7 +120,7 @@
         :data-id="`feature_${index + 1}`"
         :class="{ active: activeIndex === index }"
       >
-        <img :src="item.img.image" alt="" />
+        <img :src="imghttps(item.img?.image)" alt="" />
       </div>
     </div>
   </div>
@@ -128,6 +128,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
+import { imghttps } from "~/composables/services/helpers";
 
 // Props
 const props = defineProps({

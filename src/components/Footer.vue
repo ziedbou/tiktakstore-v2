@@ -1,6 +1,6 @@
 <template>
   <footer class="bg-gray-900 footer-container">
-    <div class="container-medium mx-auto px-6 pt-16 pb-8 sm:pt-24 lg:px-8 lg:pt-32 footer-content">
+    <div class="container-medium mx-auto px-6 pt-16 pb-8 lg:px-8 footer-content">
       <div class="xl:grid xl:gap-8 footer-grid">
         <!-- Bloc logo (1/5) -->
         <div class="footer-logo-section">
@@ -8,7 +8,7 @@
             <span class="sr-only">Your Company</span>
             <NuxtImg 
               class="h-20 w-auto max-h-[60px] md:max-h-[70px] max-w-[100px] md:max-w-[130px] object-contain footer-logo-img" 
-              :src="cdnURL + companyData?.logo" 
+              :src="imghttps(cdnURL + companyData?.logo)" 
               alt="company logo"
               width="auto"
               height="32"
@@ -22,15 +22,15 @@
         <div class="mt-16 grid grid-cols-2 lg:grid-cols-4 gap-8 col-span-7 xl:mt-0 footer-menu-section">
           <div v-for="section in navigation.categories" :key="section.label" class="footer-menu-column">
             <h3 class="text-sm/6 font-semibold text-white footer-menu-title">{{ section.label }}</h3>
-            <ul role="list" class="mt-6 space-y-4 footer-menu-list">
+            <ul role="list" class="mt-3 space-y-1 footer-menu-list">
               <li v-for="item in section.submenu" :key="item.label" class="footer-menu-item">
-                <a 
+                <NuxtLink 
                   v-if="item.slug" 
-                  :href="`/${item.slug}`" 
+                  :href="`${item.href}`"
                   class="text-sm/6 text-gray-400 hover:text-white footer-menu-link"
                 >
                   {{ item.label }}
-                </a>
+                </NuxtLink>
                 <span 
                   v-else 
                   v-html="item.label" 
@@ -49,7 +49,7 @@
             href="https://www.tiktakpro.com/" 
             target="_blank" 
             rel="noopener noreferrer"
-            class="hover:text-[#f89c0e] font-semibold transition-colors duration-200 footer-copyright-link"
+            class="text-[#f89c0e] font-semibold transition-colors duration-200 footer-copyright-link"
           >
             TikTak PRO.
           </a> 
@@ -63,15 +63,16 @@
 <script setup>
 import { useMenu } from '~/composables/useMenu'
 import { useCompanyData } from '@/composables/useCompanyData';
+import { imghttps } from '~/composables/services/helpers';
 const {companyId, companyData } = useCompanyData();
 // Use the new composable for footer menu data with SSR
 const { menuData: footerMenuData, error: menuError } = useMenu({ 
   companyId: companyId.value, 
   position: 'footer' 
 });
-const config = useRuntimeConfig();
 
-const cdnURL = config.public.cdnURL;
+
+const cdnURL =  useRuntimeConfig().public.cdnURL;
 
 
 // Create navigation object with the footer data and social links

@@ -17,7 +17,7 @@
             class="features-item-premium-feature"
           >
             <div class="features-icon-premium-feature">
-              <img :src="item.icon.image" :alt="item.text">
+              <img :src="imghttps(item.icon.image)" :alt="item.text">
             </div>
 
             <div class="features-title-premium-feature">
@@ -30,6 +30,8 @@
 </template>
 
 <script setup lang="ts">
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

@@ -97,6 +97,8 @@
 </template>
 
 <script>
+import { imghttps } from '~/composables/services/helpers';
+
 export default {
   props: {
     data: { type: Object, required: true },
@@ -106,7 +108,7 @@ export default {
     mainBannerStyle() {
       return {
         backgroundColor: this.data.values.banner_1_bg,
-        backgroundImage: `url('${this.data.values.image_1.image}')`,
+        backgroundImage: `url('${imghttps(this.data.values.image_1.image)}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         minHeight: "350px",
@@ -147,7 +149,7 @@ export default {
     bgImageStyle2() {
       return {
         backgroundColor: "#ffebee",
-        backgroundImage: `url('${this.data.values.image_2.image}')`,
+        backgroundImage: `url('${imghttps(this.data.values.image_2.image)}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       };
@@ -155,7 +157,7 @@ export default {
     bgImageStyle3() {
       return {
         backgroundColor: "#e8eaf6",
-        backgroundImage: `url('${this.data.values.image_3.image}')`,
+        backgroundImage: `url('${imghttps(this.data.values.image_3.image)}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       };
@@ -163,7 +165,7 @@ export default {
     bgImageStyle4() {
       return {
         backgroundColor: "#fff8e1",
-        backgroundImage: `url('${this.data.values.image_4.image}')`,
+        backgroundImage: `url('${imghttps(this.data.values.image_4.image)}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       };
@@ -171,7 +173,7 @@ export default {
     bgImageStyle5() {
       return {
         backgroundColor: "#f3e5f5",
-        backgroundImage: `url('${this.data.values.image_5.image}')`,
+        backgroundImage: `url('${imghttps(this.data.values.image_5.image)}')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       };
@@ -265,19 +267,19 @@ export default {
 
 #new-release {
   background-color: #ffebee;
-  background-image: url(v-bind("data.values.image_2.image"));
+  background-image: url(v-bind(imghttps("data.values.image_2.image")));
 }
 #big-discount {
   background-color: #e8eaf6;
-  background-image: url(v-bind("data.values.image_3.image"));
+  background-image: url(v-bind(imghttps("data.values.image_3.image")));
 }
 #weekend-deal {
   background-color: #fff8e1;
-  background-image: url(v-bind("data.values.image_4.image"));
+  background-image: url(v-bind(imghttps("data.values.image_4.image")));
 }
 #spring-sale {
   background-color: #f3e5f5;
-  background-image: url(v-bind("data.values.image_5.image"));
+  background-image: url(v-bind(imghttps("data.values.image_5.image")));
 }
 
 @media (max-width: 1024px) {

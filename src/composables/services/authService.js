@@ -6,6 +6,7 @@
 export function saveUserSession(user, token) {
   localStorage.setItem('user', JSON.stringify(user))
   localStorage.setItem('user_id', user.id)
+  localStorage.setItem('wishlist', JSON.stringify(user.customer.favorite))
   localStorage.setItem('_token', token)
   document.cookie = `token=${token}`
 }

@@ -43,13 +43,13 @@
           >
             <div class="before-after-images">
               <div class="before-after-first before-after-image">
-                <img :src="item.before_image.image" alt="" loading="lazy" />
+                <img :src="imghttps(item.before_image.image)" alt="" loading="lazy" />
                 <div class="before-after-badge">
                   {{ item.before_text }}
                 </div>
               </div>
               <div class="before-after-second before-after-image">
-                <img :src="item.after_image.image" alt="" loading="lazy" />
+                <img :src="imghttps(item.after_image.image)" alt="" loading="lazy" />
                 <div class="before-after-badge">
                   {{ item.after_text }}
                 </div>
@@ -121,6 +121,7 @@ import { ref, onMounted } from "vue";
 import { register } from "swiper/element/bundle";
 import "swiper/css";
 import "swiper/css/pagination";
+import { imghttps } from "~/composables/services/helpers";
 
 register();
 // Define props

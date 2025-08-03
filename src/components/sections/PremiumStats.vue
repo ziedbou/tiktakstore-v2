@@ -20,7 +20,7 @@
               <div class="count-info">
                 <h2 class="count" ref="countRef1" :data-target="data.values.number_1">0</h2>
                 <a :href="data.values.link">
-                  <img :src="data.values.icon_1.image" :alt="data.values.text_1">
+                  <img :src="imghttps(data.values.icon_1.image)" :alt="data.values.text_1">
                 </a>
               </div>
               <span class="count-title">{{ data.values.text_1 }}</span>
@@ -29,7 +29,7 @@
               <div class="count-info">
                 <h2 class="count" ref="countRef2" :data-target="data.values.number_2">0</h2>
                 <a :href="data.values.link">
-                  <img :src="data.values.icon_2.image" :alt="data.values.text_2">
+                  <img :src="imghttps(data.values.icon_2.image)" :alt="data.values.text_2">
                 </a>
               </div>
               <span class="count-title">{{ data.values.text_2 }}</span>
@@ -38,7 +38,7 @@
               <div class="count-info">
                 <h2 class="count" ref="countRef3" :data-target="data.values.number_3">0</h2>
                 <a :href="data.values.link">
-                  <img :src="data.values.icon_3.image" :alt="data.values.text_3">
+                  <img :src="imghttps(data.values.icon_3.image)" :alt="data.values.text_3">
                 </a>
               </div>
               <span class="count-title">{{ data.values.text_3 }}</span>
@@ -47,7 +47,7 @@
               <div class="count-info">
                 <h2 class="count" ref="countRef4" :data-target="data.values.number_4">0</h2>
                 <a :href="data.values.link">
-                  <img :src="data.values.icon_4.image" :alt="data.values.text_4">
+                  <img :src="imghttps(data.values.icon_4.image)" :alt="data.values.text_4">
                 </a>
               </div>
               <span class="count-title">{{ data.values.text_4 }}</span>
@@ -61,6 +61,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { imghttps } from '~/composables/services/helpers';
 
 const props = defineProps({
   data: {

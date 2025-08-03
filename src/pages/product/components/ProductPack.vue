@@ -28,7 +28,7 @@
             <div class="flex items-center space-x-4">
               <img
                 v-if="offer.image?.image_thumb"
-                :src="offer.image.image_thumb"
+                :src="imghttps(offer.image.image_thumb)"
                 :alt="offer.title"
                 class="w-16 h-16 object-cover rounded"
               >
@@ -56,6 +56,7 @@
   
   <script setup>
   import { ref } from 'vue';
+import { imghttps } from '~/composables/services/helpers';
   
   const props = defineProps({
     product: {

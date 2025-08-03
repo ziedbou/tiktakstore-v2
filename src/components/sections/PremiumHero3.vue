@@ -23,7 +23,7 @@
           class="overflow-hidden rounded-lg group relative"
         >
           <img
-            :src="img"
+            :src="imghttps(img)"
             alt="fashion"
             class="w-full h-full object-cover aspect-[3/4] group-hover:scale-105 transition-transform duration-500"
           />
@@ -34,6 +34,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 const images = [
   "https://images.unsplash.com/photo-1612423284934-94fdb588c781?auto=format&fit=crop&w=800&q=80",
   "https://images.unsplash.com/photo-1542060748-10c28b62716f?auto=format&fit=crop&w=800&q=80",

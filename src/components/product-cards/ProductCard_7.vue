@@ -12,22 +12,20 @@
             : 'var(--product-card-border-radius, 5px)',
         }"
       >
-        <img
+        <NuxtImg
           :src="imghttps(product.photo)"
           :alt="product.name"
-          class="size-full object-cover group-hover:opacity-75"
+          class="size-full object-cover"
         />
-        <Tags
-          :product="product"
-          :outOfStockTagClass="image_full ? 'top-2.5 left-2.5' : 'top-4 left-4'"
-          :promoTagClass="image_full ? 'top-2.5 right-2.5' : 'top-4 right-4'"
-        />
-        <button
-          @click.prevent="openQuickView"
-          class="z-10 absolute left-3 md:-translate-x-1/2 md:left-1/2 bottom-3 md:-bottom-10 md:group-hover:bottom-[25%] md:opacity-0 md:group-hover:opacity-100 opacity-100 bg-white bg-opacity-90 hover:bg-opacity-100 text-gray-800 font-semibold h-10 w-10 flex items-center justify-center rounded-full shadow-md transition-all duration-300 hover:scale-105"
-        >
-          <ArrowsPointingOutIcon class="w-4 h-4" />
-        </button>
+        <OutOfStockTag
+        :product="product"
+        :extraClass="`absolute ${image_full ? 'top-2.5 left-2.5' : 'top-1 left-1'}`"
+       
+      />
+      <div class="absolute top-1/4 right-5 flex flex-col gap-2.5 opacity-100 translate-y-0 md:opacity-0 md:translate-y-5 transition-all duration-300 ease-out z-[3] md:group-hover:opacity-100 md:group-hover:translate-y-0">
+        <ToggellFavorite :product-id="product.id" />
+        <QuickViewBtn @quick-view="openQuickView" />
+      </div>
         <div
           class="absolute inset-x-0 bottom-0 h-36 p-4 flex items-end justify-end"
           :style="{
@@ -36,18 +34,15 @@
               : 'var(--product-card-border-radius, 5px)',
           }"
         >
-          <div
-            aria-hidden="true"
-            class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"
-          />
+  
+          <PromoTag :product="product" />
           <p
-            class="relative flex items-center justify-center text-lg font-semibold text-white gap-2"
+            class="relative flex items-center justify-center text-base font-semibold text-white gap-2 ml-auto"
           >
+          <span v-if="product.discount" class="line-through text-sm"
+              >{{ product.price }}</span>
             <span
-              >{{ getPrice(product) }} {{ /*company.currency*/ "TND" }}</span
-            >
-            <span v-if="product.discount" class="line-through text-sm"
-              >{{ product.price }} {{ /*company.currency*/ "TND" }}</span
+              >{{ getPrice(product) }} {{ companyData.currency }}</span
             >
           </p>
         </div>
@@ -60,14 +55,19 @@
           {{ product.name }}
         </NuxtLink>
       </h3>
-      <p class="mt-1 text-sm text-gray-500">{{ product?._category.name }}</p>
+      <p class="mt-1 text-sm text-gray-500" v-if="product?._category">
+          <NuxtLink :to="getCategoryLink(product)">
+            {{ product?._category?.name }}
+          </NuxtLink>
+        </p>
     </div>
     <div class="mt-auto p-2">
       <button
         @click="addToCart(product)"
-        class="add_to_cart rounded-md relative cursor-pointer w-full flex items-center justify-center border px-8 py-2 text-sm font-medium transition-all duration-300"
+        class="add_to_cart  rounded-md relative cursor-pointer w-full flex items-center justify-center gap-2 border px-8 py-2 text-sm font-medium transition-all duration-300"
       >
         Ajouter au panier
+        <ShoppingCart class="size-4" />
       </button>
     </div>
 </div>
@@ -83,13 +83,21 @@
 <script setup>
 import {
   getProductLink,
+  getCategoryLink,
   getPrice,
   imghttps,
 } from "~/composables/services/helpers";
-import Tags from "./product-tags/Tags.vue";
-import { ArrowsPointingOutIcon } from "@heroicons/vue/24/outline";
+
 import ProductQuickViewModal from "~/components/ProductQuickViewModal.vue";
 import { addToCart } from "~/composables/services/cartService";
+import { useCompanyData } from "~/composables/useCompanyData";
+import OutOfStockTag from "./product-tags/OutOfStockTag.vue";
+import ToggellFavorite from "./product-cards-buttons/ToggellFavorite.vue";
+import QuickViewBtn from './product-cards-buttons/QuickViewBtn.vue'; 
+import { ShoppingCart } from "lucide-vue-next";
+import PromoTag from "./product-tags/PromoTag.vue";
+
+const { companyData } = useCompanyData()
 
 const props = defineProps({
   product: {

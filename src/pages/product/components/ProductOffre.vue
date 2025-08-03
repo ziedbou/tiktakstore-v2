@@ -4,8 +4,8 @@
     <div
       v-for="(formula, index) in sortedFormulas"
       :key="index"
-      class="border rounded-lg p-4 mb-3 cursor-pointer relative overflow-hidden"
-      :class="quantity === formula.quantity ? 'border-indigo-600' : 'border-gray-200'"
+      class="border border-2 rounded-lg p-4 mb-3 cursor-pointer relative overflow-hidden"
+      :class="quantity === formula.quantity ? 'border-[var(--btn-primary-outline-border-color)]' : 'border-gray-200'"
     >
       <div
         class="flex items-center justify-between"
@@ -14,22 +14,22 @@
         <div class="flex items-center">
           <div
             class="w-5 h-5 rounded-full border flex items-center justify-center"
-            :class="quantity === formula.quantity ? 'border-indigo-600' : 'border-gray-300'"
+            :class="quantity === formula.quantity ? 'border-[var(--btn-primary-outline-border-color)]' : 'border-gray-300'"
           >
             <div
               v-if="quantity === formula.quantity"
-              class="w-3 h-3 rounded-full bg-indigo-600"
+              class="w-3 h-3 rounded-full bg-[var(--btn-primary-solid-background)]"
             ></div>
           </div>
-          <span class="ml-3 text-gray-800">
+          <span class="ml-3 text-base text-gray-800">
             Acheter {{ formula.quantity }} à {{ getPriceOfProduct(product, formula.quantity) }} {{ currency }} seulement
           </span>
         </div>
         <div class="flex flex-col items-end">
-          <div class="text-gray-700 text-nowrap">
+          <div class="text-gray-700 text-base font-bold text-nowrap">
             {{ getPriceOfProduct(product, formula.quantity, true) }} {{ currency }}
           </div>
-          <div class="text-gray-400 text-sm line-through">
+          <div class="text-gray-400 text-base line-through">
             {{ (product.price * formula.quantity).toFixed(2) }} {{ currency }}
           </div>
         </div>
@@ -58,7 +58,7 @@
         v-if="index === sortedFormulas.length - 1"
         class="absolute top-0 right-0"
       >
-        <div class="bg-indigo-600 text-white text-xs py-[1px] px-2 rounded-tr-lg rounded-bl-lg">
+        <div class="bg-[var(--btn-primary-solid-background)] text-white text-xs py-[1px] px-2 rounded-tr-lg rounded-bl-lg">
           Meilleure offre
         </div>
       </div>

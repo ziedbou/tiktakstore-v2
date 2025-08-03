@@ -15,7 +15,7 @@
     <div 
      :class="[{'border-x-0': data.design.container === 'container-fluid'}]"
     class="min-h-[360px] border border-gray-200 w-full bg-gray-300 bg-cover bg-center bg-no-repeat flex items-center justify-between px-4 py-10 mb-4"
-      :style="{backgroundImage: `url(${data.values.image_1.image})`}">
+      :style="{backgroundImage: `url(${imghttps(data.values.image_1.image)})`}">
       <div class="mx-auto">
         <div class="max-w-3xl mx-auto text-center">
           <h4 class="text-xl font-semibold mb-2" :style="{color: data.values.sub_title_color}">
@@ -59,7 +59,7 @@
         <div
         :class="[{'border-l-0': data.design.container === 'container-fluid'}]"
         class="bg-gray-300 bg-cover bg-center bg-no-repeat border border-gray-200 min-h-[230px] flex items-center justify-end"
-          :style="{backgroundImage: `url(${data.values.image_2.image})`}">
+          :style="{backgroundImage: `url(${imghttps(data.values.image_2.image)})`}">
           <div class="w-full md:w-1/2 p-4 mx-3 md:py-0 md:mx-0 md:px-8 bg-white/70 md:bg-transparent">
             <p class="text-sm font-normal mb-1" :style="{color: data.values.sub_title_color_1_2}">
               {{ data.values.sub_title_2 }}
@@ -86,7 +86,7 @@
         :class="[{'border-r-0': data.design.container === 'container-fluid'}]"
 
         class="bg-gray-300 bg-cover bg-center bg-no-repeat border border-gray-200 min-h-[230px] flex items-center justify-end"
-          :style="{backgroundImage: `url(${data.values.image_3.image})`}">
+          :style="{backgroundImage: `url(${imghttps(data.values.image_3.image)})`}">
           <div class="w-full md:w-1/2 p-4 mx-3 md:py-0 md:mx-0 md:px-8 bg-white/70 md:bg-transparent">
             <p class="text-sm font-normal mb-1" :style="{color: data.values.sub_title_color_1_2}">
               {{ data.values.sub_title_3 }}
@@ -114,6 +114,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { imghttps } from '~/composables/services/helpers';
 
 defineProps({
   data: {

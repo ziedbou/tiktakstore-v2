@@ -40,7 +40,7 @@
           <div class="hero-circle">
             <div class="hero-circle-image">
               <img
-                :src="data.values.animated_img.image"
+                :src="imghttps(data.values.animated_img.image)"
                 alt=""
               />
             </div>
@@ -48,7 +48,7 @@
 
           <div class="hero-image">
             <img
-              :src="data.values.img.image"
+              :src="imghttps(data.values.img.image)"
               alt=""
             />
           </div>
@@ -63,6 +63,8 @@
 
 
 <script setup lang="ts">
+import { imghttps } from '~/composables/services/helpers';
+
 interface AnimatedImage {
   image: string;
 }

@@ -37,7 +37,7 @@
               :key="`track-${i}-item-${index}`"
               class="instafeed-image-slide"
             >
-              <img :src="child.image.image" alt="" loading="lazy">
+              <img :src="imghttps(child.image.image)" alt="" loading="lazy">
             </div>
           </div>
         </div>
@@ -47,6 +47,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

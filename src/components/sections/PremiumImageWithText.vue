@@ -15,7 +15,7 @@
           <div class="image-text-side-images">
             <div v-for="(img, index) in sideImages" :key="`side-${index}`" class="image-text-image">
               <NuxtLink :to="data.values.link">
-                <img :src="img" :alt="data.values.title || ''" loading="lazy">
+                <img :src="imghttps(img)" :alt="data.values.title || ''" loading="lazy">
               </NuxtLink>
             </div>
           </div>
@@ -51,7 +51,7 @@
           <div class="image-text-side-images">
             <div v-for="(img, index) in sideImages2" :key="`side2-${index}`" class="image-text-image">
               <NuxtLink :to="data.values.link">
-                <img :src="img" :alt="data.values.title || ''" loading="lazy">
+                <img :src="imghttps(img)" :alt="data.values.title || ''" loading="lazy">
               </NuxtLink>
             </div>
           </div>
@@ -59,7 +59,7 @@
           <div class="image-text-images">
             <div v-for="(img, index) in allImages" :key="`all-${index}`" class="image-text-image">
               <NuxtLink :to="data.values.link">
-                <img :src="img" :alt="data.values.title || ''" loading="lazy">
+                <img :src="imghttps(img)" :alt="data.values.title || ''" loading="lazy">
               </NuxtLink>
             </div>
           </div>
@@ -70,6 +70,7 @@
   
   <script setup>
   import { computed } from 'vue';
+import { imghttps } from '~/composables/services/helpers';
   
   const props = defineProps({
     data: {

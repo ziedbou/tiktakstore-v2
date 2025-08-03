@@ -1,6 +1,6 @@
 <template>
   <div class="section-{{ key }}">
-    <h1 class="title_huqlamth">{{ data.values.section_title }}</h1>
+    <p class="title_huqlamth">{{ data.values.section_title }}</p>
     <div class="tabs_huqlamth" role="tablist">
       <button 
         v-for="(child, index) in data.values.children" 
@@ -59,6 +59,14 @@ const setActiveTab = (index) => {
 .title_huqlamth {
   text-align: center;
   font-size: 3.5rem;
+  line-height: normal;
+}
+
+
+@media (max-width: 549px) {
+  .title_huqlamth {
+    font-size: 2.5rem;
+  }
 }
 
 .tabs_huqlamth {

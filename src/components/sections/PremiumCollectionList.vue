@@ -35,7 +35,7 @@
           <div class="premium-collection-list__item">
             <div class="premium-collection-list__image">
               <img 
-                :src="child.image.image" 
+                :src="imghttps(child.image.image)" 
                 :alt="child.title" 
               >                        
             </div>
@@ -60,7 +60,7 @@
             <div class="premium-collection-list__item">
               <div class="premium-collection-list__image">
                 <img 
-                  :src="child.image.image" 
+                  :src="imghttps(child.image.image)" 
                   :alt="child.title" 
                 >
               </div>
@@ -82,7 +82,7 @@
             <div class="premium-collection-list__item">
               <div class="premium-collection-list__image">
                 <img 
-                  :src="child.image.image" 
+                  :src="imghttps(child.image.image)" 
                   :alt="child.title" 
                 >
               </div>
@@ -108,7 +108,7 @@
             <div class="premium-collection-list__item">
               <div class="premium-collection-list__image">
                 <img
-                  :src="child.image.image" 
+                  :src="imghttps(child.image.image)" 
                   :alt="child.title" 
                 >
               </div>
@@ -130,7 +130,7 @@
             <div class="premium-collection-list__item">
               <div class="premium-collection-list__image">
                 <img 
-                  :src="child.image.image" 
+                  :src="imghttps(child.image.image)" 
                   :alt="child.title" 
                 >
               </div>
@@ -152,7 +152,7 @@
             <div class="premium-collection-list__item">
               <div class="premium-collection-list__image">  
                 <img 
-                  :src="child.image.image" 
+                  :src="imghttps(child.image.image)" 
                   :alt="child.title"
                 >
               </div>
@@ -171,6 +171,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

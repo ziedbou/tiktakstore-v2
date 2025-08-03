@@ -32,7 +32,7 @@
           >
             <div class="video-text-image">
               <video autoplay loop muted playsinline preload="none">
-                <source :src="child.video" type="video/mp4" />
+                <source :src="imghttps(child.video)" type="video/mp4" />
               </video>
             </div>
             <div class="video-text-content">
@@ -76,6 +76,7 @@ import Swiper from 'swiper';
 import { Navigation, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { imghttps } from '~/composables/services/helpers';
 
 defineProps({
   data: {

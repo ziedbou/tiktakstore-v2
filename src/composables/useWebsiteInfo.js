@@ -6,10 +6,9 @@ export function useWebsiteInfo() {
   const error = ref(null);
   const isLoading = ref(false);
 
-  const { companyData, companyId } = useCompanyData();
+  const { companyData } = useCompanyData();
   const config = useRuntimeConfig()
   const baseURL = config.public.baseURL
-  console.log('companyDatavalue', companyData.value?.slug);
   
   const fetchWebsiteInfo = async () => {
     isLoading.value = true;

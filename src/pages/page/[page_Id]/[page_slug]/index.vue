@@ -1,11 +1,16 @@
 <template>
-  <DynamicSections :data="pageData?.main_content || []" />
+  <DynamicSections v-if="pageData" :data="pageData.main_content || []" />
+  <DynamicSectionsSkeleton v-else-if="!error" />
+  <div v-else class="text-center p-8">
+    <p>Failed to load page content. Please try again later.</p>
+  </div>
 </template>
 
 <script setup>
   import { watch } from "vue";
 import { usePageContent } from '@/composables/usePageContent';
 import DynamicSections from '@/components/DynamicSections.vue';
+import DynamicSectionsSkeleton from '@/components/DynamicSectionsSkeleton.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -16,7 +21,8 @@ const { pageData, error } = usePageContent(
   pageId,           // Page ID
   false,            // isTypePage = false (fetch by ID, not by type)
   { 
-    fresh: false,   // Use cache when available
+    lazy: false,    // Load immediately
+    default: () => null, // Provide default value
   }
 );
 
@@ -24,7 +30,7 @@ const { pageData, error } = usePageContent(
 watch(pageData, (newPageData) => {
   if (newPageData && (!newPageData.active /*|| newPageData.page_type !== "content"*/)) {
     router.push("/404");
-    console.log("Page is not active");
+    // console.log("Page is not active");
   } 
 }, { immediate: true });
 // Set SEO meta tags based on the API response

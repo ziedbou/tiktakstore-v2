@@ -61,7 +61,7 @@
             <img
               :alt="child.title || ''"
               loading="lazy"
-              :src="child.image.image"
+              :src="imghttps(child.image.image)"
             />
             <svg
               class="clip"
@@ -95,6 +95,7 @@ import { EffectFade, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/pagination";
+import { imghttps } from "~/composables/services/helpers";
 
 const props = defineProps({
   data: {

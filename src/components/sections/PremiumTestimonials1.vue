@@ -23,7 +23,7 @@
     </div>
     <div class="body">
       <div class="image">
-        <img :alt="data.values.title" loading="lazy" :src="data.values.main_image.image" />
+        <img :alt="data.values.title" loading="lazy" :src="imghttps(data.values.main_image.image)" />
       </div>
       <div class="slider-wrapper">
         <swiper-container
@@ -51,7 +51,7 @@
           }"
         >
           <swiper-slide class="slide-image">
-            <img :alt="data.values.title" loading="lazy" :src="data.values.main_image.image" />
+            <img :alt="data.values.title" loading="lazy" :src="imghttps(data.values.main_image.image)" />
           </swiper-slide>
           <swiper-slide 
             v-for="(child, index) in data.values.children" 
@@ -94,6 +94,7 @@
 import { register } from "swiper/element/bundle";
 import "swiper/css";
 import "swiper/css/scrollbar";
+import { imghttps } from "~/composables/services/helpers";
 
 register();
 

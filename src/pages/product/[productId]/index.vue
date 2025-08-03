@@ -1,22 +1,20 @@
 <template>
-  <div class="container-medium !px-0 mx-auto md:px-4 py-10 max-md:pt-0 space-y-16">
+  <div class="container-medium !px-0 mx-auto sm:!px-4 py-10 max-md:pt-0 space-y-16">
     <div v-if="error" class="text-center py-10 text-red-600">
       <p>Erreur: {{ error }}</p>
     </div>
     <div v-else>
-      <div v-if="productData?.provider != 'basic'" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div>
+      <div v-if="productData?.provider != 'basic'" class="grid grid-cols-1 lg:grid-cols-2 gap-1 md:gap-8  ">
           <ProductGallery
             :images="productImages"
             :loading="isLoading"
           />
-        </div>
         <div>
           <ProductCardSkeleton v-if="isLoading" />
           
           <!-- class="bg-white border border-gray-200 rounded-xl shadow-lg p-6" -->
           <div
-          class="md:bg-white md:border max-md:px-4 md:border-gray-200 md:rounded-xl md:shadow-lg md:p-6"
+          class="md:border max-md:px-4 md:border-gray-200 md:rounded-xl md:shadow-lg md:p-6"
           v-else-if="productExtraData && productData"
           >
             <template v-for="(extra, index) in activeExtraComponents" :key="index">
@@ -32,7 +30,6 @@
                 :extra="extra"
               />
             </template>
-            <!-- <Category v-if="productData?._category?.name" :category="productData._category.name" /> -->
           </div>
         </div>
       </div>
@@ -47,8 +44,7 @@
         :loading="isLoading"
         :onAddToCart="() => {}"
       />
-      <!-- <BuyerNotification v-if="!isLoading && buyerNotifications.length" :notifications="buyerNotifications" /> -->
-      <BottomSheet :product="productData" v-if="productData.product_type != 'pack'" />
+      <BottomSheet :isScrolledToEnd="isScrolledToEnd" :product="productData" :preFormCheckoutTitle="preFormCheckoutTitle" v-if="productData.product_type != 'pack'" />
     </div>
   </div>
 </template>
@@ -68,8 +64,6 @@ import ProductVariants from '../components/ProductVariants.vue';
 import PurchaseButtons from '../components/PurchaseButtons.vue';
 import QuickCheckoutForm from '../components/QuickCheckoutForm.vue';
 import RelatedProducts from '../components/RelatedProducts.vue';
-import BuyerNotification from '../components/BuyerNotification.vue';
-import Category from '../components/Category.vue';
 import CountdownTimer from '../components/CountdownTimer.vue';
 import TextBlock from '../components/TextBlock.vue';
 import ProductOffre from '../components/ProductOffre.vue';
@@ -86,6 +80,7 @@ import BottomSheet from '../components/BottomSheet.vue';
 import DynamicSections from '@/components/DynamicSections.vue';
 import BasicPack from '../components/basicPack.vue';
 import AdvancedPack from '../components/advancedPack.vue';
+import { getPriceOfProduct, imghttps } from '~/composables/services/helpers';
 
 const route = useRoute();
 const productId = route.params.productId;
@@ -122,25 +117,49 @@ const activeExtraComponents = computed(() => {
   return productExtraData.value?.data?.filter((extra) => extra.active) || [];
 });
 
+const preFormCheckoutTitle = computed(() => {
+  const item = productExtraData.value?.data?.find(
+    (extra) => extra.slug === "pre-form-checkout" && extra.active
+  );
+  return item ? (item?.btn_text ? item?.btn_text  : "اشتري الان") : null;
+});
+
+
 const dynamicSectionsData = computed(() => {
   return productExtraData.value?.data_full_page || [];
 });
 
-
+ 
 const { isSelectedByUser } = useSelectedVariant();
 const { selectedMultipleVariants, clearAllMultipleVariants } = useSelectedMultipleVariants()
 const { resetQuantity } = useProductQuantity()
-const { trackViewContent, trackPageView } = useTracking();
+const { trackViewContent} = useTracking();
+
+const isScrolledToEnd = ref(false);
+
+const handleScroll = () => {
+  const scrollTop = window.scrollY;
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+  // console.log('scrollTop___ ', scrollTop , windowHeight )
+  const threshold = 300;
+  isScrolledToEnd.value = (scrollTop + windowHeight) >= documentHeight - threshold ;
+};
 
 onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
   if (productData.value) {
-    trackPageView(productData.value)
     trackViewContent(productData.value);
+    
   }
   resetQuantity()
   isSelectedByUser.value = false;
   clearAllMultipleVariants()
   // console.log("selectedMultipleVariants", selectedMultipleVariants)
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
 });
 
 const productImages = computed(() => {
@@ -252,6 +271,8 @@ await useAsyncData('product', async () => {
 }, { server: true });
 
 // --- Seo useHead ---
+  const {websiteInfo} = useWebsiteInfo() 
+// console.log("websiteInfo", websiteInfo.value?.seo_settings?.keywords || "" )
 const seoMetadata = computed(() => {
   if (!productData.value) {
     return {
@@ -259,26 +280,22 @@ const seoMetadata = computed(() => {
       description: 'Please wait while we load the product details.',
       keywords: '',
       image: '',
-      url: `https://yourdomain.com${route.fullPath}`,
       rating: '4.5',
       reviewCount: '0',
       price: '0.00',
-      sku: '',
     };
   }
+  
 
-  const { name, seo_title, seo_description, seo_keywords, seo_slug, photo, price, seo_stars, seo_reviews, reference } = productData.value;
-
+  const { seo_title, seo_description, photo, price, seo_stars, seo_reviews, } = productData.value;
   return {
-    title: seo_title || `${name} - Your Brand`,
-    description: seo_description || `Discover ${name} at Your Brand. High-quality product priced at $${price}.`,
-    keywords: seo_keywords || 'product, socks, pack, your brand',
-    image: photo || 'https://yourdomain.com/default-image.jpg',
-    url: seo_slug ? `https://yourdomain.com/${seo_slug}` : `https://yourdomain.com/product/${productId}`,
-    rating: seo_stars || '4.5',
-    reviewCount: seo_reviews || '0',
-    price: price || '0.00',
-    sku: reference || '',
+    title: companyData.value?.name + " | " + seo_title,
+    description: seo_description ,
+    keywords: websiteInfo.value?.seo_settings?.keywords || "" ,
+    image: imghttps(photo) ,
+    rating: seo_stars ,
+    reviewCount: seo_reviews,
+    price: price ,
   };
 });
 
@@ -287,19 +304,14 @@ useHead({
   meta: computed(() => [
     { name: 'description', content: seoMetadata.value.description },
     { name: 'keywords', content: seoMetadata.value.keywords },
-    { name: 'robots', content: 'index, follow' },
     { property: 'og:title', content: seoMetadata.value.title },
     { property: 'og:description', content: seoMetadata.value.description },
     { property: 'og:image', content: seoMetadata.value.image },
-    { property: 'og:url', content: seoMetadata.value.url },
     { property: 'og:type', content: 'product' },
     { name: 'twitter:card', content: 'summary_large_image' },
     { name: 'twitter:title', content: seoMetadata.value.title },
     { name: 'twitter:description', content: seoMetadata.value.description },
     { name: 'twitter:image', content: seoMetadata.value.image },
-  ]),
-  link: computed(() => [
-    { rel: 'canonical', href: seoMetadata.value.url },
   ]),
   script: computed(() => [
     {
@@ -308,25 +320,23 @@ useHead({
         '@context': 'https://schema.org',
         '@type': 'Product',
         name: productData.value?.name || 'Product',
-        image: productData.value?.photo || seoMetadata.value.image,
+        image: seoMetadata.value.image,
         description: seoMetadata.value.description,
-        sku: seoMetadata.value.sku,
         brand: {
           '@type': 'Brand',
-          name: companyData.value?.name || 'Your Brand',
+          name: companyData.value?.name ,
         },
         offers: {
           '@type': 'Offer',
           url: seoMetadata.value.url,
-          priceCurrency: 'USD',
+          priceCurrency: companyData.currency,
           price: seoMetadata.value.price,
-          availability: productData.value?.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+          availability: 'https://schema.org/InStock',
+          priceValidUntil :"2026-12-31"
         },
-        aggregateRating: productData.value?.seo_stars ? {
-          '@type': 'AggregateRating',
-          ratingValue: seoMetadata.value.rating,
-          reviewCount: seoMetadata.value.reviewCount,
-        } : undefined,
+        aggregateRating:{"@type": "AggregateRating",
+        "ratingValue": "4.7",
+        "reviewCount": "24"},
       }, null, 2),
     },
   ]),

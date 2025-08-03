@@ -11,7 +11,7 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     '@nuxt/ui',
     '@pinia/nuxt',
-    'nuxt-meta-pixel',
+    // 'nuxt-meta-pixel',
   ],
   css: [
     '~/assets/css/main.css'
@@ -20,12 +20,12 @@ export default defineNuxtConfig({
     public: {
       baseURL: process.env.BASE_URL || 'https://api.tiktak.space/api/v1/',
       cdnURL: process.env.CDN_URL || 'https://cdn.cloudtiktak.com/',
-      metapixel: {
-        default: {
-          id: '', // Will be set dynamically
-          pageView: '/**',
-        },
-      },
+      // metapixel: {
+      //   default: {
+      //     id: '',
+      //     pageView: '/**',
+      //   },
+      // },
     },
   },
   vue: {
@@ -38,6 +38,6 @@ export default defineNuxtConfig({
   },
   devServer: {
     host: '0.0.0.0',
-    port: 3000,
+    port: 3001,
   },
 });

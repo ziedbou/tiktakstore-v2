@@ -51,15 +51,18 @@ onMounted(() => {
         h4 { font-size: 1.25rem; }
         h5 { font-size: 1rem; }
         h6 { font-size: 0.875rem; }
-        p {
+        p {  
           margin-bottom: 1rem;
           color: #333;
           font-size: 1rem;
+          width: 100%
         }
         ul, ol {
           padding-left: 1.5rem;
           margin-bottom: 1rem;
         }
+          font {
+         line-height:25px !important;}
         ul {
           list-style-type: disc;
         }
@@ -96,5 +99,8 @@ onMounted(() => {
 <style scoped>
 .text-block {
   margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

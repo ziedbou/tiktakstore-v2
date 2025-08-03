@@ -11,10 +11,9 @@
         leave-from="opacity-100"
         leave-to="opacity-0"
         class="cart-overlay-transition"
-      >
+      > 
         <div class="fixed inset-0 bg-gray-500/75 transition-opacity cart-overlay" />
       </TransitionChild>
-
       <div class="fixed inset-0 overflow-hidden cart-content-container">
         <div class="absolute inset-0 overflow-hidden cart-content-wrapper">
           <div class="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 cart-panel-container">
@@ -91,14 +90,14 @@
                     <div class="flow-root cart-items">
                       <!-- Empty cart state -->
                       <div v-if="!cart._details || cart._details.length === 0" class="text-center py-12 cart-empty">
-                        <div class="mx-auto w-24 h-24 mb-6 flex items-center justify-center rounded-full bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 cart-empty-icon-container">
-                          <ShoppingBag class="w-10 h-10 text-gray-400 cart-empty-icon" />
+                        <div class="mx-auto w-24 h-24 mb-6 flex items-center justify-center rounded-full bg-[var(--btn-primary-outline-background)] border border-[var(--btn-primary-outline-border-color)] cart-empty-icon-container">
+                          <ShoppingBag class="w-10 h-10 text-[var(--btn-primary-outline-color)]" />
                         </div>
                         <h3 class="text-lg font-medium text-gray-900 mb-2 cart-empty-title">Votre panier est vide</h3>
                         <p class="text-gray-500 mb-8 cart-empty-description">Ajoutez des articles à votre panier pour commencer vos achats.</p>
                         <button
                           @click="emit('close')"
-                          class="inline-flex items-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors duration-200 cart-empty-continue-button"
+                          class="btn-primary-solid inline-flex items-center px-6 py-3  font-medium cart-empty-continue-button"
                         >
                           Continuer les achats
                           <span aria-hidden="true" class="ml-2 cart-empty-continue-arrow">→</span>
@@ -123,14 +122,14 @@
                                     @error=""
                                   />
                                 </div>
-                                <span class="absolute -top-2 -right-2 flex items-center justify-center h-4 px-[5px] w-auto rounded-full bg-indigo-600 text-white text-xs font-semibold cart-item-quantity-badge">
+                                <span class="absolute -top-2 -right-2 flex items-center justify-center h-4 px-[5px] w-auto rounded-full bg-[var(--header-badge-bg)] text-[var(--header-badge-color)] text-xs font-semibold cart-item-quantity-badge">
                                   {{ item.quantity }}
                                 </span>
                               </div>
                               <div class="ml-4 flex-1 cart-item-details">
                                 <div class="flex justify-between text-base font-medium text-gray-900 cart-item-info">
                                   <h3 class="cart-item-name-container">
-                                    <a :href="`#product-${item.product_id}`" class="cart-item-name-link">
+                                    <a :href="`#product-${item.product_id}`" class="cart-item-name-link  line-clamp-2">
                                       {{ item.product_name }}
                                     </a>
                                   </h3>
@@ -143,7 +142,7 @@
                                   <button
                                     type="button"
                                     class="ml-2 p-1.5 rounded-full bg-white shadow-sm border border-gray-200 text-gray-400 hover:text-red-500 hover:bg-red-50 hover:border-red-200 transition-all duration-200 ease-in-out transform hover:scale-110 cart-item-remove-button"
-                                    @click="removeFromCart(item.product_id)"
+                                    @click="removeFromCart(item.product_id, item.options)"
                                     title="Remove item"
                                   >
                                     <Trash2 class="size-3.5 cart-item-remove-icon" />
@@ -151,14 +150,14 @@
                                 </p>
                               </div>
                             </div>
-                            <ul v-if="item.options" class="ml-8 cart-item-options">
+                            <ul v-if="item.options" class="pl-2 ml-2 mt-1 border-gray-200 border-l-4 cart-item-options">
                               <li
                                 v-for="option in item.options || []"
                                 :key="option?.product_id"
                                 class="flex py-3 cart-item-option"
                               >
                                 <div class="relative cart-item-option-image-container">
-                                  <div class="size-16 shrink-0 rounded-md border overflow-hidden border-gray-200 cart-item-option-image">
+                                  <div class="size-12 shrink-0 rounded-md border overflow-hidden border-gray-200 cart-item-option-image">
                                     <img
                                       :src="imghttps(option?.photo_thumb)"
                                       :alt="option?.product_name"
@@ -168,7 +167,7 @@
                                 </div>
                                 <div class="ml-4 flex-1 cart-item-option-details">
                                   <div class="flex justify-between text-base font-medium text-gray-900 cart-item-option-info">
-                                    <h3 class="cart-item-option-name">
+                                    <h3 class="cart-item-option-name line-clamp-2">
                                       {{ option?.quantity }} * {{ option?.product_name }} {{ option?.attrs }}
                                     </h3>
                                   </div>
@@ -199,6 +198,12 @@
                       </p>
                     </div>
                     <div class="flex justify-between text-base font-medium text-gray-900 mt-1 cart-footer-total">
+                      <p class="cart-footer-total-label">Frais de livraison</p>
+                      <p class="cart-footer-total-amount">
+                        {{ (cart.transport_price || 0).toFixed(2) }} {{ companyData.currency }}
+                      </p>
+                    </div>
+                    <div class="flex justify-between text-base font-medium text-gray-900 mt-1 cart-footer-total">
                       <p class="cart-footer-total-label">Total</p>
                       <p class="cart-footer-total-amount">
                         {{ (cart.total || 0).toFixed(2) }} {{ companyData.currency }}
@@ -207,32 +212,17 @@
                     <NuxtLink
                       to="/cart"
                       @click="emit('close')"
-                      class="mt-4 flex items-center justify-center rounded-md border-2 border-indigo-600 bg-transparent px-6 py-2.5 text-base font-medium text-indigo-600 shadow-xs hover:bg-indigo-50 hover:border-indigo-700 hover:text-indigo-700 transition-colors duration-200 cart-footer-cart-link"
+                      class="btn-primary-outline mt-4 flex items-center justify-center px-6 py-2.5 text-base font-mediumshadow-xs cart-footer-cart-link"
                     >
                       Votre panier
                     </NuxtLink>
                     <NuxtLink
                       to="/checkout"
                       @click="emit('close')"
-                      class="mt-2 flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-2.5 text-base font-medium text-white shadow-xs hover:bg-indigo-700 cart-footer-checkout-link"
+                      class="btn-primary-solid mt-2 flex items-center justify-center px-6 py-2.5 text-base font-medium shadow-xs cart-footer-checkout-link"
                     >
                       Valider mes achats
                     </NuxtLink>
-                    <!-- <div
-                      class="mt-4 flex justify-center text-center text-sm text-gray-500 cart-footer-continue"
-                    >
-                      <p class="cart-footer-continue-text">
-                        ou{{ " " }}
-                        <NuxtLink
-                          to="/"
-                          class="font-medium text-indigo-600 hover:text-indigo-500 cart-footer-continue-link"
-                          @click="emit('close')"
-                        >
-                          Continuer les Achats
-                          <span aria-hidden="true" class="cart-footer-continue-arrow"> →</span>
-                        </NuxtLink>
-                      </p>
-                    </div> -->
                   </div>
                 </div>
               </DialogPanel>

@@ -21,7 +21,7 @@
           <div class="desktop-view">
             <div class="left">
               <div class="image">
-                <img :src="child.image.image" :alt="child.slide_title" loading="lazy" />
+                <img :src="imghttps(child.image.image)" :alt="child.slide_title" loading="lazy" />
               </div>
             </div>
             <div class="right">
@@ -42,7 +42,7 @@
           <div class="mobile-view">
             <div class="mobile-top" :class="{ 'mobile-alternate': (index + 1) % 2 === 0 }">
               <div class="mobile-image">
-                <img :src="child.image.image" :alt="child.slide_title" loading="lazy" />
+                <img :src="imghttps(child.image.image)" :alt="child.slide_title" loading="lazy" />
               </div>
               <div class="mobile-title-container">
                 <p class="number">{{ index + 1 }}.</p>
@@ -67,6 +67,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

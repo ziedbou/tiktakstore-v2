@@ -80,10 +80,10 @@
       <div class="premium-promo-flip-container">
         <div class="premium-promo-flipper">
           <div class="premium-promo-front">
-            <img :src="data.values.image_1.image" alt="premium-promo-front Image" class="premium-promo-card-image">
+            <img :src="imghttps(data.values.image_1.image)" alt="premium-promo-front Image" class="premium-promo-card-image">
           </div>
           <div class="premium-promo-back">
-            <img :src="data.values.image_2.image" alt="premium-promo-back Image" class="premium-promo-card-image">
+            <img :src="imghttps(data.values.image_2.image)" alt="premium-promo-back Image" class="premium-promo-card-image">
           </div>
         </div>
       </div>
@@ -93,6 +93,7 @@
 
 <script setup>
 import { onMounted, watch, ref } from 'vue';
+import { imghttps } from '~/composables/services/helpers';
 
 const props = defineProps({
   data: {

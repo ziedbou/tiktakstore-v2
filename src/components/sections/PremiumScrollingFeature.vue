@@ -32,7 +32,7 @@
             <div v-for="(_, sectionIndex) in 4" :key="sectionIndex" class="track-horizontal">
               <div v-for="(item, index) in data.values.children" :key="`${sectionIndex}-${index}`" class="scrolling-feature-item">
                 <div class="scrolling-feature-icon">
-                  <img :src="item.icon.image" alt="">
+                  <img :src="imghttps(item.icon.image)" alt="">
                 </div>
                 <p class="scrolling-feature-text">{{ item.txt }}</p>
               </div>
@@ -62,11 +62,11 @@
             <div v-for="(item, index) in data.values.children" :key="index" class="premium-scrolling-slide swiper-slide">
               <div class="premium-scrolling-slide-content">
                 <div class="premium-scrolling-slide-image" v-if="item.icon && item.icon.image">
-                  <img :src="item.icon.image" alt="">
+                  <img :src="imghttps(item.icon.image)" alt="">
                 </div>
                 <div class="premium-scrolling-title-wrap">
                   <div class="premium-scrolling-slide-icon" v-if="item.icon && item.icon.image">
-                    <img :src="item.icon.image" alt="">
+                    <img :src="imghttps(item.icon.image)" alt="">
                   </div>
                   <div class="premium-scrolling-slide-title">{{ item.txt }}</div>
                 </div>
@@ -93,6 +93,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { register } from "swiper/element/bundle";
 import "swiper/css";
+import { imghttps } from '~/composables/services/helpers';
 
 register();
 const props = defineProps({

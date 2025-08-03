@@ -16,7 +16,7 @@
       <div class="feature-items">
         <div class="feature-item">
           <div class="feature-item-icon">
-            <img :src="data.values.stat1_icon.image" alt="" loading="lazy" />
+            <img :src="imghttps(data.values.stat1_icon.image)" alt="" loading="lazy" />
           </div>
           <div class="feature-item-content">
             <p class="feature-item-heading">
@@ -29,7 +29,7 @@
         </div>
         <div class="feature-item">
           <div class="feature-item-icon">
-            <img :src="data.values.stat2_icon.image" alt="" loading="lazy" />
+            <img :src="imghttps(data.values.stat2_icon.image)" alt="" loading="lazy" />
           </div>
           <div class="feature-item-content">
             <p class="feature-item-heading">
@@ -42,7 +42,7 @@
         </div>
         <div class="feature-item">
           <div class="feature-item-icon">
-            <img :src="data.values.stat3_icon.image" alt="" loading="lazy" />
+            <img :src="imghttps(data.values.stat3_icon.image)" alt="" loading="lazy" />
           </div>
           <div class="feature-item-content">
             <p class="feature-item-heading">
@@ -55,7 +55,7 @@
         </div>
         <div class="feature-item">
           <div class="feature-item-icon">
-            <img :src="data.values.stat4_icon.image" alt="" loading="lazy" />
+            <img :src="imghttps(data.values.stat4_icon.image)" alt="" loading="lazy" />
           </div>
           <div class="feature-item-content">
             <p class="feature-item-heading">
@@ -106,7 +106,7 @@
                 v-for="(item, index) in slicedChildren.slice().reverse()"
                 :key="`left-${n}-${index}`"
               >
-                <img :src="item.image.image" alt="" loading="lazy" />
+                <img :src="imghttps(item.image.image)" alt="" loading="lazy" />
               </div>
             </template>
           </div>
@@ -119,7 +119,7 @@
                 v-for="(item, index) in slicedChildren.slice().reverse()"
                 :key="`right-${n}-${index}`"
               >
-                <img :src="item.image.image" alt="" loading="lazy" />
+                <img :src="imghttps(item.image.image)" alt="" loading="lazy" />
               </div>
             </template>
           </div>
@@ -132,7 +132,7 @@
                 v-for="(item, index) in slicedChildren"
                 :key="`left2-${n}-${index}`"
               >
-                <img :src="item.image.image" alt="" loading="lazy" />
+                <img :src="imghttps(item.image.image)" alt="" loading="lazy" />
               </div>
             </template>
           </div>
@@ -144,6 +144,7 @@
 
 <script setup>
 import { computed, onMounted } from "vue";
+import { imghttps } from "~/composables/services/helpers";
 
 const props = defineProps({
   key: String,

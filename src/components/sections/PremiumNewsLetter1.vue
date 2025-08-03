@@ -1,5 +1,5 @@
 <template>
-  <section class="newsletter-section" :style="{ backgroundImage: `url(${data.values.bg_image.image})` }">
+  <section class="newsletter-section" :style="{ backgroundImage: `url(${imghttps(data.values.bg_image.image)})` }">
     <div class="newsletter-container">
       <div class="newsletter-content">
         <div class="newsletter-text">
@@ -22,6 +22,7 @@
 
 <script setup lang="ts">
 import { ref, markRaw } from 'vue';
+import { imghttps } from '~/composables/services/helpers';
 
 // Define props with defaults to avoid reactivity issues
 withDefaults(defineProps<{

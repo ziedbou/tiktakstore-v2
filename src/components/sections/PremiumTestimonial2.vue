@@ -51,7 +51,7 @@
             class="testimonials-slide"
           >
             <div class="testimonials-image">
-              <img :src="item.image.image" alt="" />
+              <img :src="imghttps(item.image.image)" alt="" />
             </div>
             <div class="testimonials-content">
               <div class="testimonials-content-top">
@@ -86,6 +86,7 @@
 import { register } from "swiper/element/bundle";
 import "swiper/css";
 import "swiper/css/pagination";
+import { imghttps } from "~/composables/services/helpers";
 
 register();
 

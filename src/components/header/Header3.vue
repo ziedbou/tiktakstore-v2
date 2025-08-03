@@ -8,18 +8,16 @@
     @close="mobileMenuOpen = false" 
   />
 
-  <header class="header-wrapper relative z-50 shadow-lg" :style="headerStyles">
+  <header class="header-wrapper relative z-50 shadow-none lg:shadow-lg">
     <!-- Header Top Section -->
-    <TopBar :company-data="companyData" :store-info="storeInfo" />
+        <TopBar 
+      :company-data="companyData" 
+      :store-info="storeInfo"   
+    />
 
     <!-- Header Middle Section -->
     <div
-      class="header-middle bg-white text-black border-b border-gray-200 relative"
-      style="
-        background-color: var(--header-middle-bg, #ffffff);
-        color: var(--header-middle-color, #000000);
-      "
-    >
+      class="header-middle border-b border-gray-200 relative">
       <div class="header-container">
         <!-- Desktop Layout (lg and up) -->
         <div class="hidden lg:flex justify-between items-center py-4">
@@ -47,21 +45,11 @@
           <!-- User Actions -->
           <div class="flex-1 flex justify-end items-center space-x-4">
             <!-- Wishlist -->
-            <NuxtLink
-              to="/wishlist"
-              class="user-action-link-vertical flex gap-1 rounded-sm items-center px-2 py-3 transition-all duration-300 text-center"
-            >
-              <div class="relative flex items-center justify-center">
-                <Icon name="ph:heart" class="w-6 h-6" />
-                <span
-                  v-if="wishlistCount > 0"
-                  class="cart-badge absolute -top-2 -right-2 flex items-center justify-center h-4 min-w-4 px-1 text-xs font-bold rounded-full"
-                  style="background-color: var(--header-badge-bg, #e05050); color: var(--header-badge-color, #ffffff);"
-                  >{{ wishlistCount }}</span
-                >
-              </div>
-              <span class="user-action-text text-xs mt-0.5 font-medium">Favoris</span>
-            </NuxtLink>
+            <NavWishlistBtn 
+              :show-text="true"
+              button-class="user-action-link-vertical flex gap-1 rounded-sm items-center px-2 py-3 transition-all duration-300 text-center"
+              text-class="user-action-text text-xs mt-0.5 font-medium"
+            />
 
             <!-- Account -->
             <NuxtLink
@@ -85,6 +73,7 @@
         <!-- Mobile/Tablet Layout (md and down) -->
         <div class="lg:hidden flex justify-between items-center py-2 lg:py-4">
           <!-- Mobile Menu Button -->
+           <div class="flex-1">
           <button
             type="button"
             class="p-2 text-gray-400 hover:text-gray-600 transition-colors"
@@ -93,9 +82,9 @@
             <span class="sr-only">Open menu</span>
             <Bars3Icon class="h-6 w-6" aria-hidden="true" />
           </button>
-
+          </div>
           <!-- Logo -->
-          <div class="flex-1 flex justify-start">
+          <div class="flex-1 flex justify-center">
             <NuxtLink
               to="/"
               class="logo-container transition-transform duration-300 hover:scale-105"
@@ -113,7 +102,7 @@
           </div>
 
           <!-- User Actions -->
-          <div class="flex items-center space-x-2">
+          <div class="flex flex-1 justify-end items-center space-x-2">
             <!-- Mobile Search Button -->
             <SearchBar v-model="search" mobile="true" v-if="isMobile">
               <template #trigger="{ toggleMobileSearch, mobileSearchOpen }">
@@ -122,44 +111,17 @@
                   class="user-action-link-vertical flex gap-1 rounded-sm items-center px-2 py-3 transition-all duration-300 text-center"
                 >
                   <Icon :name="mobileSearchOpen ? 'ph:x' : 'ph:magnifying-glass'" class="w-5 h-5" />
-                  <span class="user-action-text text-xs mt-0.5 font-medium">Rechercher</span>
                 </button>
               </template>
             </SearchBar>
 
-            <!-- Wishlist (hidden on xs) -->
-            <NuxtLink
-              to="/wishlist"
-              class="user-action-link-vertical hidden xs:flex gap-1 rounded-sm items-center px-2 py-3 transition-all duration-300 text-center"
-            >
-              <div class="relative flex items-center justify-center">
-                <Icon name="ph:heart" class="w-5 h-5" />
-                <span
-                  v-if="wishlistCount > 0"
-                  class="cart-badge absolute -top-2 -right-2 flex items-center justify-center h-4 min-w-4 px-1 text-xs font-bold rounded-full"
-                  style="background-color: var(--header-badge-bg, #e05050); color: var(--header-badge-color, #ffffff);"
-                  >{{ wishlistCount }}</span
-                >
-              </div>
-              <span class="user-action-text text-xs mt-0.5 font-medium">Favoris</span>
-            </NuxtLink>
-
-            <!-- Account (hidden on sm and down) -->
-            <NuxtLink
-              to="/account"
-              class="user-action-link-vertical hidden md:flex gap-1 rounded-sm items-center px-2 py-3 transition-all duration-300 text-center"
-            >
-              <Icon name="ph:user" class="w-5 h-5" />
-              <span class="user-action-text text-xs mt-0.5 font-medium">Compte</span>
-            </NuxtLink>
-
             <!-- Cart -->
             <NavCartBtn 
-              :show-text="true"
+             :isMobileCart="true"
+              :show-text="false"
               button-class="user-action-link-vertical flex gap-1 rounded-sm items-center px-2 py-3 transition-all duration-300 text-center bg-transparent border-0 cursor-pointer"
               icon-class="w-5 h-5"
               text-class="user-action-text text-xs mt-0.5 font-medium"
-              button-text="Panier"
             />
           </div>
         </div>
@@ -167,8 +129,8 @@
                  <!-- Search Results -->
      <ProductSearch
        :search-query="search"
-       @product-selected="navigateToProduct"
        :dropdown-height="'calc(100vh - 139px)'"
+       @clear-search="clearSearch"
        v-if="!isMobile"
      />
     </div>
@@ -178,8 +140,8 @@
         class="header-bottom bg-black text-white transition-all duration-300 hidden lg:block"
         :class="{ 'sticky-header': isSticky }"
         style="
-          background-color: var(--header-bottom-bg, #000000);
-          color: var(--header-bottom-color, #ffffff);
+          background-color: var(--header-bottom-bg);
+          color: var(--header-bottom-color);
         "
       >
           <nav class="header-container py-3">
@@ -192,8 +154,6 @@
                   <a
                     v-if="category.type === 'extern'"
                     :href="category.href"
-                    target="_blank"
-                    rel="noopener noreferrer"
                     class="nav-item px-3 py-2 rounded-md text-sm font-medium relative transition-colors duration-300"
                   >
                     {{ category.name }}
@@ -221,9 +181,9 @@
                 </div>
               </template>
               
-              <!-- Dynamic Pages Navigation -->
+              <!-- Dynamic Pages Navigation 
               <template v-for="page in navigation.pages" :key="page.name">
-                <!-- External page link -->
+             
                 <a
                   v-if="page.type === 'extern'"
                   :href="page.href"
@@ -236,7 +196,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                   </svg>
                 </a>
-                <!-- Internal page link -->
+             
                 <NuxtLink
                   v-else
                   :to="page.href"
@@ -244,7 +204,7 @@
                 >
                   {{ page.name }}
                 </NuxtLink>
-              </template>
+              </template>-->
             </div>
           </nav>
     </div>
@@ -261,9 +221,8 @@ import NavigationDropdown from "~/components/header/components/NavigationDropdow
 import ProductSearch from "~/components/header/components/ProductSearch.vue";
 import SearchBar from "~/components/header/components/SearchBar.vue";
 import NavCartBtn from "~/components/header/components/NavCartBtn.vue";
+import NavWishlistBtn from "~/components/header/components/NavWishlistBtn.vue";
 import { useMenu } from "~/composables/useMenu";
-import eventBus from "@/composables/eventBus.js";
-import { getProductLink, imghttps } from "~/composables/services/helpers";
 import { useViewport } from "~/composables/useViewport";
 
 // Define props
@@ -279,7 +238,6 @@ const { companyData } = useCompanyData();
 // Get CDN URL from runtime config
 const config = useRuntimeConfig();
 const cdnURL = config.public.cdnURL;
-const baseURL = config.public.baseURL;
 // Use the new composable for menu data with SSR
 const { menuData: navigation} = useMenu({
   companyId: companyData.value.id,
@@ -289,23 +247,16 @@ const { menuData: navigation} = useMenu({
 // Use viewport composable
 const { isMobile } = useViewport(1024);
 
-console.log("navigation ", navigation)
-
 // Reactive variables
 const mobileMenuOpen = ref(false);
-const wishlistCount = ref(0);
 const search = ref("");
 
 const isSticky = ref(false);
 
-
-
-const navigateToProduct = (prod) => {
-  search.value = "";
-  setTimeout(() => {
-    navigateTo(getProductLink(prod));
-  }, 500);
-};
+// Methods
+const clearSearch = () => {
+  search.value = ""
+}
 
 // Scroll event handler
 const handleScroll = () => {
@@ -315,39 +266,23 @@ const handleScroll = () => {
 };
 
 onMounted(() => {
-  // Update wishlist count from localStorage
-  try {
-    const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-    wishlistCount.value = wishlist.length || 0;
-  } catch (error) {
-    console.error("Error accessing wishlist localStorage:", error);
-    wishlistCount.value = 0;
-  }
-
-  // Setup event listener for wishlist updates
-  eventBus.on("wishlist-updated", () => {
-    try {
-      const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-      wishlistCount.value = wishlist.length || 0;
-    } catch (error) {
-      console.error("Error updating wishlist count:", error);
-    }
-  });
-
   // Add scroll event listener
   window.addEventListener("scroll", handleScroll);
 });
 
 onUnmounted(() => {
-  eventBus.off("wishlist-updated");
   // Remove scroll event listener
   window.removeEventListener("scroll", handleScroll);
 });
 </script>
 
 <style scoped>
+.header-middle{
+  background-color: var(--header-middle-bg);
+  color: var(--header-middle-color);
+}
  .search-input:focus{
-  border-color: var(--header-middle-color-hover, #7b7b7b);
+  border-color: var(--header-middle-color-hover);
 }
 /* Dropdown navigation styles */
 .dropdown-container:hover .dropdown {
@@ -358,7 +293,7 @@ onUnmounted(() => {
 
 /* Keep nav link hover state when dropdown is active */
 .dropdown-container:hover .nav-item {
-  color: var(--header-bottom-hover, #06b6d4) !important;
+  color: var(--header-bottom-hover) !important;
 }
 
 .dropdown-container:hover .nav-item::after {
@@ -368,7 +303,7 @@ onUnmounted(() => {
 /* Keep chevron rotated when dropdown is active */
 .dropdown-container:hover .chevron {
   transform: rotate(180deg) !important;
-  color: var(--header-bottom-hover, #06b6d4) !important;
+  color: var(--header-bottom-hover) !important;
 }
 
 /* Create invisible hover bridge to maintain dropdown visibility */
@@ -392,7 +327,7 @@ onUnmounted(() => {
   left: 50%;
   width: 0;
   height: 2px;
-  background: var(--header-bottom-hover, #06b6d4);
+  background: var(--header-bottom-hover);
   transition: all 0.3s ease;
   transform: translateX(-50%);
 }
@@ -404,18 +339,12 @@ onUnmounted(() => {
 
 /* Navigation item hover effects using CSS variables */
 .nav-item:hover {
-  color: var(--header-bottom-hover, #06b6d4) !important;
+  color: var(--header-bottom-hover) !important;
 }
 
 /* Keep navigation item hover state when dropdown is active */
 .dropdown-container:hover .nav-item {
-  color: var(--header-bottom-hover, #06b6d4) !important;
-}
-
-.glass-effect {
-  backdrop-filter: blur(16px);
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--header-bottom-hover) !important;
 }
 
 .chevron {
@@ -425,31 +354,7 @@ onUnmounted(() => {
 .nav-item:hover .chevron,
 .dropdown-container:hover .chevron {
   transform: rotate(180deg);
-  color: var(--header-bottom-hover, #06b6d4);
-}
-
-/* Sticky Header Styles - Cannot be replicated with Tailwind */
-.sticky-header {
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  transform: translateY(-100%);
-  animation: slideDownSticky 0.4s ease-out forwards;
-}
-
-/* Sticky header animation */
-@keyframes slideDownSticky {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  color: var(--header-bottom-hover);
 }
 
 /* Active nav link underline effect - Complex CSS that's easier to maintain here */
@@ -461,37 +366,8 @@ onUnmounted(() => {
   transform: translateX(-50%);
   width: 30px;
   height: 3px;
-  background-color: var(--header-badge-bg, #e05050);
+  background-color: var(--header-badge-bg);
   border-radius: 2px;
 }
 
-/* User action buttons styling - brand-aware */
-.user-action-link-vertical {
-  color: var(--header-middle-color, #000000);
-}
-
-.user-action-link-vertical:hover {
-  color: var(--header-middle-color-hover, #7b7b7b);
-  background-color: color-mix(
-    in srgb,
-    var(--header-middle-color-hover, #7b7b7b) 3%,
-    transparent
-  );
-}
-
-.user-action-link-vertical:focus {
-  color: var(--header-middle-color-hover, #7b7b7b);
-  outline: 1px solid
-    color-mix(
-      in srgb,
-      var(--header-middle-color-hover, #7b7b7b) 30%,
-      transparent
-    ) !important;
-  outline-offset: 2px;
-  background-color: color-mix(
-    in srgb,
-    var(--header-middle-color-hover, #7b7b7b) 3%,
-    transparent
-  );
-}
 </style>

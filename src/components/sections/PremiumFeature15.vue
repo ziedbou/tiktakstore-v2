@@ -27,7 +27,7 @@
           @mouseleave="leaveThumb(index)"
         >
           <div class="feature-thumbs-icon">
-            <img :src="child.tab_icon.image" alt="" loading="lazy" />
+            <img :src="imghttps(child.tab_icon.image)" alt="" loading="lazy" />
           </div>
           <p 
             class="feature-thumbs-text"
@@ -94,7 +94,7 @@
                 {{ child.tab_name }}
               </p>
               <div class="feature-image-inner">
-                <img :src="child.image.image" alt="" loading="lazy" />
+                <img :src="imghttps(child.image.image)" alt="" loading="lazy" />
               </div>
               <div
                 class="feature-text feature-element-mobile"
@@ -124,6 +124,7 @@ import { Navigation, Thumbs, EffectFade } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/effect-fade'
+import { imghttps } from '~/composables/services/helpers'
 
 const props = defineProps({
   data: Object

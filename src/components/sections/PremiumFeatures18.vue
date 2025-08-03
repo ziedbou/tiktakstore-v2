@@ -7,7 +7,7 @@
           <img 
             :alt="data.values.image.alt || ''" 
             loading="lazy"
-            :src="data.values.image.image" 
+            :src="imghttps(data.values.image.image)" 
           />
         </div>
         <div class="feature-content">
@@ -24,7 +24,7 @@
                 <img 
                   :alt="child.icon.alt || ''" 
                   loading="lazy"
-                  :src="child.icon.image" 
+                  :src="imghttps(child.icon.image)" 
                 />
               </div>
               <div class="feature-heading">
@@ -46,6 +46,8 @@
 </template>
 
 <script>
+import { imghttps } from '~/composables/services/helpers';
+
 export default {
   props: {
     data: {

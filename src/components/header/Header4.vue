@@ -1,84 +1,116 @@
 <template>
   <!-- Fashion Design Header -->
-  <header 
-    class="header-wrapper border-b border-white/40 absolute left-0 right-0 top-0 z-50 transition-all duration-300"
-    :class="{ 'sticky-header': isSticky }"
+  <header
+    class="header-wrapper left-0 right-0 top-0 z-50 transition-all duration-300"
+    :class="{ 
+      'sticky-header': isSticky, 
+      'absolute': isHomePage,
+      'relative': !isHomePage,
+      'non-home-page': !isHomePage,
+      'border-b border-white/40': isHomePage,
+      'border-b border-gray-200': !isHomePage
+    }"
     :style="headerStyles"
   >
     <!-- Header Middle Section (Only Section) -->
-    <div class="header-middle transition-all duration-300" :style="backgroundStyles">
-      <div class="header-container">
-        <!-- Desktop Layout (lg and up) -->
-        <div class="hidden lg:flex items-center justify-between py-1">
-          <!-- Navigation Links (Left) -->
-          <nav class="flex-1">
-            <div class="flex items-center space-x-8">
-              <!-- Dynamic Categories Navigation -->
-              <template v-for="category in navigation.categories?.slice(0, 4)" :key="category.name">
-                <!-- Category without submenu -->
-                <template v-if="!category.submenu || category.submenu.length === 0">
-                  <a
-                    v-if="category.type === 'extern'"
-                    :href="category.href"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="nav-link text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-70"
-                  >
-                    {{ category.name }}
-                  </a>
-                  <NuxtLink
-                    v-else
-                    :to="category.href"
-                    class="nav-link text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-70"
-                  >
-                    {{ category.name }}
-                  </NuxtLink>
-                </template>
-                
-                <!-- Category with submenu (dropdown) -->
-                <div v-else class="relative dropdown-container">
-                  <button class="nav-link text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-70 flex items-center space-x-1">
-                    <span>{{ category.name }}</span>
-                    <Icon name="ph:caret-down" class="w-3 h-3 chevron transition-transform duration-300" />
-                  </button>
-                  
-                  <NavigationDropdown :category="category" marginTop="mt-9" />
-                </div>
-              </template>
-            </div>
-          </nav>
+    <div
+      class="header-middle transition-all duration-300"
+      :style="backgroundStyles"
+    >
+        <div class="header-container flex items-center justify-between py-2">
+          <!-- Left Section: Navigation (Desktop) / Menu Button (Mobile) -->
+          <div class="flex-1">
+            <!-- Mobile Menu Button -->
+            <button
+              type="button"
+              class="mobile-menu-btn lg:hidden h-10 w-10 flex items-center justify-center bg-transparent transition-all duration-300"
+              @click="mobileMenuOpen = true"
+            >
+              <Icon name="ph:list" class="w-6 h-6" />
+            </button>
 
-          <!-- Logo (Center) -->
-          <div class="flex-shrink-0 mx-8 flex items-center justify-center">
+            <!-- Desktop Navigation -->
+            <nav class="hidden lg:block">
+              <div class="flex items-center space-x-8">
+                <!-- Dynamic Categories Navigation -->
+                <template
+                  v-for="category in navigation.categories"
+                  :key="category.name"
+                >
+                  <!-- Category without submenu -->
+                  <template
+                    v-if="!category.submenu || category.submenu.length === 0"
+                  >
+                    <a
+                      v-if="category.type === 'extern'"
+                      :href="category.href"
+                      class="nav-link text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-70"
+                    >
+                      {{ category.name }}
+                    </a>
+                    <NuxtLink
+                      v-else
+                      :to="category.href"
+                      class="nav-link text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-70"
+                    >
+                      {{ category.name }}
+                    </NuxtLink>
+                  </template>
+
+                  <!-- Category with submenu (dropdown) -->
+                  <div v-else class="relative dropdown-container">
+                    <button
+                      class="nav-link text-sm font-medium tracking-wide transition-all duration-300 hover:opacity-70 flex items-center space-x-1"
+                    >
+                      <span>{{ category.name }}</span>
+                      <Icon
+                        name="ph:caret-down"
+                        class="w-3 h-3 chevron transition-transform duration-300"
+                      />
+                    </button>
+
+                    <NavigationDropdown :category="category" marginTop="mt-9" />
+                  </div>
+                </template>
+              </div>
+            </nav>
+          </div>
+
+          <!-- Center Section: Logo -->
+          <div class="flex-1 flex justify-center">
             <NuxtLink
               to="/"
-              class="logo-container inline-block transition-transform duration-300 hover:scale-105"
+              class="logo-container transition-transform duration-300 hover:scale-105"
             >
               <NuxtImg
-                class="h-20 w-20 object-contain rounded-full"
+                class="h-16 w-auto max-w-[100px] object-contain"
                 :src="cdnURL + companyData?.logo"
-                :alt="companyData?.name || 'Logo'"
-                width="64"
-                height="64"
+                :alt="companyData?.name || 'company logo'"
+                width="auto"
+                height="32"
                 loading="eager"
                 format="webp"
               />
             </NuxtLink>
           </div>
 
-          <!-- Search & User Actions (Right) -->
-          <div class="flex-1 flex items-center justify-end space-x-4">
-            <!-- Search Bar -->
-            <div class="relative max-w-xs w-full">
-              <form @submit.prevent="searchCall()" class="relative">
-                <input 
+          <!-- Right Section: Search & Actions -->
+          <div class="flex-1 flex items-center justify-end space-x-2 ">
+            <!-- Desktop Search Bar -->
+         
+              <form
+                @submit.prevent="searchCall()"
+                class="relative hidden lg:block max-w-2xs w-full"
+              >
+                <input
+                  name="search"
                   ref="searchInput"
                   v-model="search"
-                  type="text" 
+                  type="text"
                   placeholder="Rechercher un produit"
                   class="search-input w-full pl-4 pr-16 py-2.5 bg-transparent border-0 border-b border-white text-white placeholder-white/70 focus:outline-none transition-all duration-300 text-sm"
                 />
-                
+
                 <!-- Clear Button (shows when typing) -->
                 <button
                   v-if="search.length > 0"
@@ -88,136 +120,81 @@
                 >
                   <Icon name="ph:x" class="w-4 h-4" />
                 </button>
-                
+
                 <!-- Search Icon -->
                 <button
                   type="submit"
-                  class="search-btn absolute right-2 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white transition-colors duration-300 hover:bg-white/10 rounded-full p-1"
+                  class="search-btn absolute right-2 top-1/2 transform -translate-y-1/2 text-white/70  transition-colors duration-300"
                 >
                   <Icon name="ph:magnifying-glass" class="w-4 h-4" />
                 </button>
               </form>
+        
+
+            <!-- Mobile Search Button -->
+            <div class="lg:hidden">
+              <SearchBar v-model="search" mobile="true">
+                <template #trigger="{ toggleMobileSearch, mobileSearchOpen }">
+                  <button
+                    @click="toggleMobileSearch"
+                    class="user-action h-10 w-10 flex items-center justify-center transition-all duration-300"
+                  >
+                    <Icon
+                      :name="mobileSearchOpen ? 'ph:x' : 'ph:magnifying-glass'"
+                      class="w-5 h-5"
+                    />
+                  </button>
+                </template>
+              </SearchBar>
             </div>
 
-            <!-- Wishlist -->
-            <NuxtLink
-              to="/wishlist"
-              class="user-action border border-transparent hover:border-white/20 relative h-12 w-12 flex items-center justify-center rounded-full bg-transparent transition-all duration-300"
-            >
-              <Icon name="ph:heart" class="w-5 h-5" />
-              <span
-                v-if="wishlistCount > 0"
-                class="cart-badge absolute -top-1 -right-1 flex items-center justify-center h-5 min-w-5 px-1 text-xs font-bold rounded-full bg-red-500 text-white"
-              >{{ wishlistCount }}</span>
-            </NuxtLink>
+              <NavWishlistBtn
+                :show-text="false"
+                button-class="user-action hidden lg:flex relative h-12 w-12 items-center justify-center bg-transparent transition-all duration-300"
+                icon-class="w-6 h-6"
+              />
 
-            <!-- Account -->
-            <NuxtLink
-              to="/account"
-              class="user-action border border-transparent hover:border-white/20 h-12 w-12 flex items-center justify-center rounded-full bg-transparent transition-all duration-300"
-            >
-              <Icon name="ph:user" class="w-5 h-5" />
-            </NuxtLink>
+              <!-- Account -->
+              <NuxtLink
+                to="/account"
+                class="user-action h-12 w-12 hidden lg:flex  items-center justify-center bg-transparent transition-all duration-300"
+              >
+                <Icon name="ph:user" class="w-6 h-6" />
+              </NuxtLink>
 
-            <!-- Cart -->
-            <NavCartBtn 
-              button-class="user-action border border-transparent hover:border-white/20 relative h-12 w-12 flex items-center justify-center rounded-full bg-transparent transition-all duration-300"
-              icon-class="w-5 h-5"
-            />
+              <!-- Cart -->
+              <NavCartBtn
+                :show-text="false"
+                button-class="user-action relative h-10 w-10 lg:h-12 lg:w-12 flex items-center justify-center bg-transparent transition-all duration-300"
+                icon-class="w-5 lg:w-6 h-5 lg:h-6 "
+              />
           </div>
         </div>
 
-        <!-- Mobile Layout (md and down) -->
-        <div class="lg:hidden flex items-center justify-between py-3">
-          <!-- Mobile Menu Button -->
-          <button
-            type="button"
-            class="mobile-menu-btn h-10 w-10 flex items-center justify-center rounded-full bg-transparent transition-all duration-300"
-            @click="mobileMenuOpen = true"
-          >
-            <Icon name="ph:list" class="w-6 h-6" />
-          </button>
 
-          <!-- Logo -->
-          <NuxtLink
-            to="/"
-            class="logo-container transition-transform duration-300 hover:scale-105"
-          >
-            <NuxtImg
-              class="h-12 w-12 object-contain rounded-full border-2 border-white/20"
-              :src="cdnURL + companyData?.logo"
-              :alt="companyData?.name || 'Logo'"
-              width="48"
-              height="48"
-              loading="eager"
-              format="webp"
-            />
-          </NuxtLink>
-
-          <!-- Mobile Actions -->
-          <div class="flex items-center space-x-2">
-            <!-- Mobile Search Button -->
-            <SearchBar v-model="search" mobile="true" v-if="isMobile">
-              <template #trigger="{ toggleMobileSearch, mobileSearchOpen }">
-                <button
-                  @click="toggleMobileSearch"
-                  class="user-action h-10 w-10 flex items-center justify-center rounded-full bg-transparent transition-all duration-300"
-                >
-                  <Icon :name="mobileSearchOpen ? 'ph:x' : 'ph:magnifying-glass'" class="w-5 h-5" />
-                </button>
-              </template>
-            </SearchBar>
-
-            <!-- Wishlist -->
-            <NuxtLink
-              to="/wishlist"
-              class="user-action relative h-10 w-10 flex items-center justify-center rounded-full bg-transparent transition-all duration-300"
-            >
-              <Icon name="ph:heart" class="w-5 h-5" />
-              <span
-                v-if="wishlistCount > 0"
-                class="cart-badge absolute -top-1 -right-1 flex items-center justify-center h-4 min-w-4 px-1 text-xs font-bold rounded-full bg-red-500 text-white"
-              >{{ wishlistCount }}</span>
-            </NuxtLink>
-
-            <!-- Account -->
-            <NuxtLink
-              to="/account"
-              class="user-action h-10 w-10 flex items-center justify-center rounded-full bg-transparent transition-all duration-300"
-            >
-              <Icon name="ph:user" class="w-5 h-5" />
-            </NuxtLink>
-
-            <!-- Cart -->
-            <NavCartBtn 
-              button-class="user-action relative h-10 w-10 flex items-center justify-center rounded-full bg-transparent transition-all duration-300"
-              icon-class="w-5 h-5"
-            />
-          </div>
-        </div>
-      </div>
     </div>
 
-    <!-- Search Results -->
+    <!-- Search Results (Desktop only) -->
     <ProductSearch
       :search-query="search"
-      @product-selected="navigateToProduct"
-      :dropdown-height="'calc(100vh - 120px)'"
-      :top-offset="'120px'"
+      @clear-search="clearSearch"
+      :dropdown-height="'calc(100vh - 124px)'"
+      :top-offset="'160px'"
       :is-mobile="isMobile"
+      class="hidden lg:block"
       v-if="!isMobile"
     />
   </header>
 
   <!-- Mobile Side Navigation -->
-  <MobileSideNav 
-    :open="mobileMenuOpen" 
-    :navigation="navigation" 
+  <MobileSideNav
+    :isMobileCart="true"
+    :open="mobileMenuOpen"
+    :navigation="navigation"
     :company-data="companyData"
     :store-info="storeInfo"
-    @close="mobileMenuOpen = false" 
+    @close="mobileMenuOpen = false"
   />
-
 </template>
 
 <script setup>
@@ -228,9 +205,8 @@ import NavigationDropdown from "~/components/header/components/NavigationDropdow
 import ProductSearch from "~/components/header/components/ProductSearch.vue";
 import SearchBar from "~/components/header/components/SearchBar.vue";
 import NavCartBtn from "~/components/header/components/NavCartBtn.vue";
+import NavWishlistBtn from "~/components/header/components/NavWishlistBtn.vue";
 import { useMenu } from "~/composables/useMenu";
-import eventBus from "@/composables/eventBus.js";
-import { getProductLink, imghttps } from "~/composables/services/helpers";
 import { useViewport } from "~/composables/useViewport";
 
 // Define props
@@ -241,12 +217,12 @@ const props = defineProps({
   },
 });
 
+const router = useRouter();
 const { companyData } = useCompanyData();
 
 // Get CDN URL from runtime config
 const config = useRuntimeConfig();
 const cdnURL = config.public.cdnURL;
-const baseURL = config.public.baseURL;
 
 // Use the new composable for menu data
 const { menuData: navigation } = useMenu({
@@ -259,44 +235,58 @@ const { isMobile } = useViewport(1024);
 
 // Reactive variables
 const mobileMenuOpen = ref(false);
-const wishlistCount = ref(0);
 const search = ref("");
 const searchInput = ref(null);
 const isSticky = ref(false);
 
-// Computed styles
+// Computed properties
+const isHomePage = computed(() => {
+  return router.currentRoute.value.path === '/';
+});
+
 const headerStyles = computed(() => {
-  if (isSticky.value) {
+  // On home page: show white when not sticky, colored when sticky
+  // On other pages: always show colored (sticky appearance)
+  if (isHomePage.value) {
+    if (isSticky.value) {
+      return {
+        color: "var(--header-middle-color)",
+      };
+    }
     return {
-      color: 'var(--header-middle-color, #1f2937)',
+      color: "#ffffff",
+    };
+  } else {
+    // Non-home pages: always show sticky styling
+    return {
+      color: "var(--header-middle-color)",
     };
   }
-  return {
-    color: '#ffffff',
-  };
 });
 
 const backgroundStyles = computed(() => {
-  if (isSticky.value) {
+  // On home page: transparent when not sticky, background when sticky
+  // On other pages: always show background (sticky appearance)
+  if (isHomePage.value) {
+    if (isSticky.value) {
+      return {
+        backgroundColor: "var(--header-middle-bg, #ffffff)",
+        backdropFilter: "blur(10px)",
+      };
+    }
     return {
-      backgroundColor: 'var(--header-middle-bg, #ffffff)',
-      backdropFilter: 'blur(10px)',
+      backgroundColor: "transparent",
+    };
+  } else {
+    // Non-home pages: always show background
+    return {
+      backgroundColor: "var(--header-middle-bg, #ffffff)",
+      backdropFilter: "blur(10px)",
     };
   }
-  return {
-    backgroundColor: 'transparent',
-  };
 });
 
 // Functions
-
-const navigateToProduct = (prod) => {
-  search.value = "";
-  setTimeout(() => {
-    navigateTo(getProductLink(prod));
-  }, 500);
-};
-
 function searchCall() {
   if (search.value.trim()) {
     navigateTo(`/search?product=${encodeURIComponent(search.value.trim())}`);
@@ -315,37 +305,16 @@ const handleScroll = () => {
 };
 
 onMounted(() => {
-  // Update wishlist count from localStorage
-  try {
-    const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-    wishlistCount.value = wishlist.length || 0;
-  } catch (error) {
-    console.error("Error accessing wishlist localStorage:", error);
-    wishlistCount.value = 0;
-  }
-
-  // Setup event listener for wishlist updates
-  eventBus.on("wishlist-updated", () => {
-    try {
-      const wishlist = JSON.parse(localStorage.getItem("wishlist")) || [];
-      wishlistCount.value = wishlist.length || 0;
-    } catch (error) {
-      console.error("Error updating wishlist count:", error);
-    }
-  });
-
   // Add scroll event listener
   window.addEventListener("scroll", handleScroll);
 });
 
 onUnmounted(() => {
-  eventBus.off("wishlist-updated");
   window.removeEventListener("scroll", handleScroll);
 });
 </script>
 
 <style scoped>
-
 /* Fashion header specific styles */
 .header-wrapper.sticky-header {
   position: fixed !important;
@@ -376,7 +345,7 @@ onUnmounted(() => {
 }
 
 .nav-link::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -4px;
   left: 0;
@@ -397,18 +366,17 @@ onUnmounted(() => {
 
 /* Navigation links when sticky - use CSS variables */
 .sticky-header .nav-link {
-  color: var(--header-middle-color, #1f2937);
+  color: var(--header-middle-color);
 }
 
 .sticky-header .nav-link::after {
-  background: var(--header-middle-color-hover, #3b82f6);
+  background: var(--header-middle-color-hover);
 }
 
 .sticky-header .nav-link:hover {
-  color: var(--header-middle-color-hover, #3b82f6);
+  color: var(--header-middle-color-hover);
   opacity: 1;
 }
-
 
 /* Dropdown navigation styles */
 .dropdown-container:hover .dropdown {
@@ -433,13 +401,13 @@ onUnmounted(() => {
 
 /* For sticky header - keep nav link highlighted when dropdown active */
 .sticky-header .dropdown-container:hover .nav-link {
-  color: var(--header-middle-color-hover, #3b82f6) !important;
+  color: var(--header-middle-color-hover) !important;
   opacity: 1 !important;
 }
 
 /* Create invisible hover bridge to maintain dropdown visibility */
 .dropdown-container::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 100%;
   left: 0;
@@ -474,8 +442,8 @@ onUnmounted(() => {
 
 /* Search input when sticky - use CSS variables */
 .sticky-header .search-input {
-  color: var(--header-middle-color, #1f2937) !important;
-  border-bottom-color: var(--header-middle-color, #1f2937) !important;
+  color: var(--header-middle-color) !important;
+  border-bottom-color: var(--header-middle-color) !important;
 }
 
 .sticky-header .search-input::placeholder {
@@ -521,59 +489,12 @@ onUnmounted(() => {
 
 .sticky-header .search-btn:hover,
 .sticky-header .clear-btn:hover {
-  color: var(--header-middle-color-hover, #3b82f6) !important;
-  background-color: color-mix(in srgb, var(--header-middle-color-hover, #3b82f6) 10%, transparent) !important;
-}
-
-/* User actions - WHITE by default, no borders */
-.user-action {
-  color: #ffffff !important;
-  background-color: transparent !important;
-}
-
-.user-action svg {
-  color: #ffffff !important;
-}
-
-/* User actions glassmorphism on hover/focus */
-.user-action:hover,
-.user-action:focus {
-  color: #ffffff !important;
-  background-color: rgba(255, 255, 255, 0.15) !important;
-  backdrop-filter: blur(10px) !important;
-  outline: none !important;
-}
-
-.user-action:hover svg,
-.user-action:focus svg {
-  color: #ffffff !important;
-}
-
-/* User actions when sticky - use CSS variables */
-.sticky-header .user-action {
-  color: var(--header-middle-color, #1f2937) !important;
-}
-
-.sticky-header .user-action svg {
-  color: var(--header-middle-color, #1f2937) !important;
-}
-
-.sticky-header .user-action:hover,
-.sticky-header .user-action:focus {
-  color: var(--header-middle-color-hover, #3b82f6) !important;
-  background-color: color-mix(in srgb, var(--header-middle-color-hover, #3b82f6) 10%, transparent) !important;
-  border-color:var(--header-middle-color-hover, #3b82f6) !important;
-  outline: none !important;
-}
-
-.sticky-header .user-action:hover svg,
-.sticky-header .user-action:focus svg {
-  color: var(--header-middle-color-hover, #3b82f6) !important;
-}
-
-/* Logo when sticky */
-.sticky-header .logo-container img {
-  border-color: var(--header-middle-color-hover, #3b82f6) !important;
+  color: var(--header-middle-color-hover) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--header-middle-color-hover) 10%,
+    transparent
+  ) !important;
 }
 
 /* Mobile menu button - WHITE by default */
@@ -596,20 +517,152 @@ onUnmounted(() => {
 
 /* Mobile menu button when sticky */
 .sticky-header .mobile-menu-btn {
-  color: var(--header-middle-color, #1f2937) !important;
+  color: var(--header-middle-color) !important;
 }
 
 .sticky-header .mobile-menu-btn svg {
-  color: var(--header-middle-color, #1f2937) !important;
+  color: var(--header-middle-color) !important;
 }
 
 .sticky-header .mobile-menu-btn:hover {
-  color: var(--header-middle-color-hover, #3b82f6) !important;
-  background-color: color-mix(in srgb, var(--header-middle-color-hover, #3b82f6) 10%, transparent) !important;
+  color: var(--header-middle-color-hover) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--header-middle-color-hover) 10%,
+    transparent
+  ) !important;
 }
 
 .sticky-header .mobile-menu-btn:hover svg {
-  color: var(--header-middle-color-hover, #3b82f6) !important;
+  color: var(--header-middle-color-hover) !important;
+}
+
+</style>
+<style>
+/* User actions - WHITE by default, no borders */
+.user-action {
+  color: #ffffff !important;
+  background-color: transparent !important;
+}
+
+
+/* User actions glassmorphism on hover/focus */
+.user-action:hover,
+.user-action:focus {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(10px) !important;
+  outline: none !important;
+}
+
+.user-action:hover svg,
+.user-action:focus svg {
+  color: #ffffff !important;
+}
+
+/* User actions when sticky - use CSS variables */
+.sticky-header .user-action {
+  color: var(--header-middle-color) !important;
+}
+
+.sticky-header .user-action svg {
+  color: var(--header-middle-color) !important;
+}
+
+.sticky-header .user-action:hover {
+  color: var(--header-middle-color-hover) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--header-middle-color-hover) 10%,
+    transparent
+  ) !important;
+  border-color: var(--header-middle-color-hover) !important;
+  outline: none !important;
+}
+
+.sticky-header .user-action:hover svg {
+  color: var(--header-middle-color-hover) !important;
+}
+
+
+/* Non-home page styling - always look like sticky */
+.non-home-page .nav-link {
+  color: var(--header-middle-color) !important;
+}
+
+.non-home-page .nav-link::after {
+  background: var(--header-middle-color-hover) !important;
+}
+
+.non-home-page .nav-link:hover {
+  color: var(--header-middle-color-hover) !important;
+  opacity: 1 !important;
+}
+
+.non-home-page .search-input {
+  color: var(--header-middle-color) !important;
+  border-bottom-color: var(--header-middle-color) !important;
+}
+
+.non-home-page .search-input::placeholder {
+  color: var(--header-middle-color, #6b7280) !important;
+  opacity: 0.7;
+}
+
+.non-home-page .search-btn,
+.non-home-page .clear-btn {
+  color: var(--header-middle-color, #6b7280) !important;
+}
+
+.non-home-page .search-btn:hover,
+.non-home-page .clear-btn:hover {
+  color: var(--header-middle-color-hover) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--header-middle-color-hover) 10%,
+    transparent
+  ) !important;
+}
+
+.non-home-page .user-action {
+  color: var(--header-middle-color) !important;
+}
+
+.non-home-page .user-action svg {
+  color: var(--header-middle-color) !important;
+}
+
+.non-home-page .user-action:hover {
+  color: var(--header-middle-color-hover) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--header-middle-color-hover) 10%,
+    transparent
+  ) !important;
+}
+
+.non-home-page .user-action:hover svg {
+  color: var(--header-middle-color-hover) !important;
+}
+
+.non-home-page .mobile-menu-btn {
+  color: var(--header-middle-color) !important;
+}
+
+.non-home-page .mobile-menu-btn svg {
+  color: var(--header-middle-color) !important;
+}
+
+.non-home-page .mobile-menu-btn:hover {
+  color: var(--header-middle-color-hover) !important;
+  background-color: color-mix(
+    in srgb,
+    var(--header-middle-color-hover) 10%,
+    transparent
+  ) !important;
+}
+
+.non-home-page .mobile-menu-btn:hover svg {
+  color: var(--header-middle-color-hover) !important;
 }
 </style>
-

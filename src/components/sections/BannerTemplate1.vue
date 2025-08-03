@@ -13,9 +13,9 @@
   >
     <!-- First Banner -->
     <div class="md:col-span-4 lg:col-span-4">
-      <a :href="data.values.url_1" class="banner primary-banner p-4 md:p-6 hover:shadow-md overflow-hidden relative block aspect-[3/4] h-auto lg:aspect-auto lg:h-full">
+      <NuxtLink :href="data.values.url_1" class="banner primary-banner p-4 md:p-6 hover:shadow-md overflow-hidden relative block aspect-[3/4] h-auto lg:aspect-auto lg:h-full">
         <div class="banner-overlay"></div>
-        <div class="banner-bg" :style="{ backgroundImage: 'url(' + data.values.image_1.image + ')' }"></div>
+        <div class="banner-bg" :style="{ backgroundImage: 'url(' + imghttps(data.values.image_1.image) + ')' }"></div>
         <div class="banner-content text-left pl-6 md:pl-8">
           <p class="banner-subtitle text-sm md:text-base mb-1">{{ data.values.subtitle_1 || 'New Collection' }}</p>
           <h3 class="banner-title text-xl md:text-2xl mb-2 md:mb-3 max-w-64">{{ data.values.title_1 || 'Featured Products' }}</h3>
@@ -24,14 +24,14 @@
             <span class="banner-arrow">→</span>
           </span>
         </div>
-      </a>
+      </NuxtLink>
     </div>
 
     <!-- Fourth Banner -->
     <div class="md:col-span-4 lg:col-span-4 lg:order-last">
-      <a :href="data.values.url_4" class="banner primary-banner p-4 md:p-6 hover:shadow-md overflow-hidden relative block aspect-[3/4] h-auto lg:aspect-auto lg:h-full">
+      <NuxtLink :href="data.values.url_4" class="banner primary-banner p-4 md:p-6 hover:shadow-md overflow-hidden relative block aspect-[3/4] h-auto lg:aspect-auto lg:h-full">
         <div class="banner-overlay"></div>
-        <div class="banner-bg" :style="{ backgroundImage: 'url(' + data.values.image_4.image + ')' }"></div>
+        <div class="banner-bg" :style="{ backgroundImage: 'url(' + imghttps(data.values.image_4.image) + ')' }"></div>
         <div class="banner-content text-left pl-6 md:pl-8">
           <p class="banner-subtitle text-sm md:text-base mb-1">{{ data.values.subtitle_4 || 'Special Offers' }}</p>
           <h3 class="banner-title text-xl md:text-2xl mb-2 md:mb-3 max-w-64">{{ data.values.title_4 || 'Season Sale' }}</h3>
@@ -40,43 +40,45 @@
             <span class="banner-arrow">→</span>
           </span>
         </div>
-      </a>
+      </NuxtLink>
     </div>
 
     <!-- Middle Column (Two Banners) -->
     <div class="grid md:col-span-8 lg:col-span-4 lg:order-2 md:grid md:grid-cols-2 lg:grid-cols-1 gap-3 md:gap-5">
       <!-- Top Middle Banner -->
-      <a :href="data.values.url_2" class="banner p-4 md:p-6 hover:shadow-md overflow-hidden min-h-[260px] sm:min-h-[300px] relative block">
+      <NuxtLink :href="data.values.url_2" class="banner p-4 md:p-6 hover:shadow-md overflow-hidden min-h-[260px] sm:min-h-[300px] relative block">
         <div class="banner-overlay"></div>
-        <div class="banner-bg" :style="{ backgroundImage: 'url(' + data.values.image_2.image + ')' }"></div>
+        <div class="banner-bg" :style="{ backgroundImage: 'url(' + imghttps(data.values.image_2.image) + ')' }"></div>
         <div class="banner-content text-left pl-6 md:pl-8">
-          <p class="banner-subtitle text-sm md:text-base mb-1">{{ data.values.subtitle_2 || 'Limited Time' }}</p>
-          <h3 class="banner-title text-xl md:text-2xl mb-2 md:mb-3 max-w-64">{{ data.values.title_2 || 'New Arrivals' }}</h3>
-          <span class="banner-link mt-1 inline-flex items-center">
+          <p class="banner-subtitle text-sm md:text-base mb-1">{{ data.values.subtitle_2 }}</p>
+          <h3 class="banner-title text-xl md:text-2xl mb-2 md:mb-3 max-w-64">{{ data.values.title_2 }}</h3>
+          <span v-if="data.values.cta_text_2" class="banner-link mt-1 inline-flex items-center">
             {{ data.values.cta_text_2 || 'Shop Now' }}
             <span class="banner-arrow">→</span>
           </span>
         </div>
-      </a>
+      </NuxtLink>
       
       <!-- Bottom Middle Banner -->
-      <a :href="data.values.url_3" class="banner p-4 md:p-6 hover:shadow-md overflow-hidden min-h-[260px] sm:min-h-[300px] relative block">
+      <NuxtLink :href="data.values.url_3" class="banner p-4 md:p-6 hover:shadow-md overflow-hidden min-h-[260px] sm:min-h-[300px] relative block">
         <div class="banner-overlay"></div>
-        <div class="banner-bg" :style="{ backgroundImage: 'url(' + data.values.image_3.image + ')' }"></div>
+        <div class="banner-bg" :style="{ backgroundImage: 'url(' + imghttps(data.values.image_3.image) + ')' }"></div>
         <div class="banner-content text-left pl-6 md:pl-8">
-          <p class="banner-subtitle text-sm md:text-base mb-1">{{ data.values.subtitle_3 || 'Trending Items' }}</p>
-          <h3 class="banner-title text-xl md:text-2xl mb-2 md:mb-3 max-w-64">{{ data.values.title_3 || 'Popular Products' }}</h3>
-          <span class="banner-link mt-1 inline-flex items-center">
+          <p class="banner-subtitle text-sm md:text-base mb-1">{{ data.values.subtitle_3 }}</p>
+          <h3 class="banner-title text-xl md:text-2xl mb-2 md:mb-3 max-w-64">{{ data.values.title_3 }}</h3>
+          <span v-if="data.values.cta_text_3" class="banner-link mt-1 inline-flex items-center">
             {{ data.values.cta_text_3 || 'Discover Now' }}
             <span class="banner-arrow">→</span>
           </span>
         </div>
-      </a>
+      </NuxtLink>
     </div>
   </div>
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

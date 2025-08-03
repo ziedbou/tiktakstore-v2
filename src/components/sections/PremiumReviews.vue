@@ -53,7 +53,7 @@
               class="testimonials-slide swiper-slide"
             >
               <div class="testimonials-slide-image">
-                <img :src="slide.image?.image" alt="" loading="lazy" />
+                <img :src="imghttps(slide.image?.image)" alt="" loading="lazy" />
               </div>
 
               <div class="testimonials-slide-content">
@@ -84,6 +84,7 @@ import Swiper from "swiper";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import { imghttps } from "~/composables/services/helpers";
 
 const props = defineProps({
   data: {

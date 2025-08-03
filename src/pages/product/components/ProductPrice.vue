@@ -1,16 +1,16 @@
 <template>
   <div v-if="effectiveProduct">
     <!-- Multiple Variants -->
-    <div v-if="variants.length !== 1" class="flex flex-col md:flex-row md:items-baseline mb-2">
+    <div v-if="variants.length !== 1" class="flex flex-row flex-wrap gap-y-2 items-center mb-5 md:mb-2 ">
       <template v-if="currentDiscount > 0">
-        <span class="text-2xl md:text-3xl font-bold text-charcoal mr-0 md:mr-3 mb-1 md:mb-0">
-          {{ getPriceFromDiscountType(currentPrice, currentDiscount, effectiveProduct.discount_type) }} {{ currency }}
+        <span class="text-2xl text-gray-400 mr-2 line-through flex items-center">
+          {{ getCurrency(currentPrice) }} <span class="text-xl ml-1">{{ currency }}</span>
+        </span>
+        <span class="text-3xl mr-2 font-bold text-charcoal flex items-center ">
+          {{ getPriceFromDiscountType(currentPrice, currentDiscount, effectiveProduct.discount_type) }} <span class="text-xl ml-1">{{ currency }}</span>
         </span>
         <span>
-          <span class="text-base md:text-lg text-gray-500 line-through mb-1 md:mb-0">
-            {{ getCurrency(currentPrice) }} {{ currency }}
-          </span>
-          <span class="bg-indigo-100 text-indigo-800 ml-2 px-1 md:px-2 py-0.5 md:py-1 rounded text-sm font-medium">
+          <span class="bg-indigo-100 text-indigo-800  px-1 md:px-2 py-0.5 md:py-1 rounded font-medium ">
             <template v-if="usePromoTagStyle">
               <template v-if="effectiveProduct.discount_type === 'percent'">
                 {{ Math.floor(currentDiscount) }}% de réduction
@@ -26,16 +26,16 @@
         </span>
       </template>
       <template v-else>
-        <span class="text-2xl md:text-3xl font-bold text-charcoal">
-          {{ getCurrency(currentPrice) }} {{ currency }}
+        <span class="text-3xl font-bold text-charcoal flex items-center">
+          {{ getCurrency(currentPrice) }} <span class="text-xl ml-1">{{ currency }}</span>
         </span>
       </template>
     </div>
 
     <!-- Single Variant -->
-    <div v-if="variants.length === 1" class="flex flex-col md:flex-row md:items-baseline mb-2">
+    <div v-if="variants.length === 1" class="flex flex-col md:flex-row md:items-baseline mb-5 md:mb-2">
       <template v-if="variants[0].discount > 0">
-        <span class="text-2xl md:text-3xl font-bold text-charcoal mr-0 md:mr-2 mb-1 md:mb-0">
+        <span class="text-3xl font-bold text-charcoal mr-0 md:mr-2 mb-1 md:mb-0">
           {{ getPriceFromDiscountType(variants[0].price, variants[0].discount, effectiveProduct.discount_type) }} {{ currency }}
         </span>
         <span class="text-base md:text-lg text-gray-500 line-through mb-1 md:mb-0">
@@ -56,7 +56,7 @@
         </span>
       </template>
       <template v-else>
-        <span class="text-2xl md:text-3xl font-bold text-charcoal">
+        <span class="text-3xl font-bold text-charcoal">
           {{ getCurrency(variants[0].price) }} {{ currency }}
         </span>
       </template>

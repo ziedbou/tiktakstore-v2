@@ -31,7 +31,7 @@
             <div class="feature-items">
               <div class="feature-item">
                 <div class="feature-icon">
-                  <img :src="data.values.image1?.image" alt="">
+                  <img :src="imghttps(data.values.image1?.image)" alt="">
                 </div>
                 <div class="feature-item-content">
                   <div class="feature-item-heading">
@@ -44,7 +44,7 @@
               </div>
               <div class="feature-item">
                 <div class="feature-icon">
-                  <img :src="data.values.image2?.image" alt="">
+                  <img :src="imghttps(data.values.image2?.image)" alt="">
                 </div>
                 <div class="feature-item-content">
                   <div class="feature-item-heading">
@@ -62,7 +62,7 @@
               <img src="//section.store/cdn/shop/files/bg-illustration.svg?v=1718710959" alt="" loading="lazy">
             </div>
             <div class="feature-image">
-              <img :src="data.values.product_image?.image" alt="">
+              <img :src="imghttps(data.values.product_image?.image)" alt="">
             </div>
             <div 
               class="feature-hover-item feature-hover-item-1"
@@ -71,7 +71,7 @@
               @click="toggleBlock(0)"
             >
               <div class="feature-hover-item-icon">
-                <img :src="data.values.icon1?.image" alt="">
+                <img :src="imghttps(data.values.icon1?.image)" alt="">
               </div>
               <p class="feature-hover-item-text">{{ data.values.text_tag1 }}</p>
             </div>
@@ -82,7 +82,7 @@
               @click="toggleBlock(1)"
             >
               <div class="feature-hover-item-icon">
-                <img :src="data.values.icon2?.image" alt="">
+                <img :src="imghttps(data.values.icon2?.image)" alt="">
               </div>
               <p class="feature-hover-item-text">{{ data.values.text_tag2 }}</p>
             </div>
@@ -111,6 +111,7 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue';
+import { imghttps } from '~/composables/services/helpers';
 
 const props = defineProps({
   data: {

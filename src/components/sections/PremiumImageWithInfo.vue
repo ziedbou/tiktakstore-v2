@@ -22,12 +22,12 @@
       <div 
         class="banner flex justify-center items-center text-center px-3 py-8 flex-col gap-5.5"
         :style="{
-          'background-image': `url('${data.values.background_image.image}')`,
+          'background-image': `url('${imghttps(data.values.background_image.image)}')`,
         }"
       >
      
           <img 
-            :src="data.values.icone.image"
+            :src="imghttps(data.values.icone.image)"
             class="mx-auto w-auto" 
             alt=""
           >
@@ -47,6 +47,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

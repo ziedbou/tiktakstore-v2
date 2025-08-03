@@ -68,7 +68,7 @@
           >
             <template v-if="data.values.table_brand_img.image && index === 0">
               <img
-                :src="data.values.table_brand_img.image"
+                :src="imghttps(data.values.table_brand_img.image)"
                 alt=""
                 loading="lazy"
               />
@@ -152,6 +152,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   key: String,
   data: Object,

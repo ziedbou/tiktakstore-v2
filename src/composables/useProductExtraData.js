@@ -28,7 +28,7 @@ export function useProductExtraData(productId = '309613') {
 
         const res = await $fetch(fullApi)
 
-        productExtraData.value = res[0]
+        productExtraData.value = res[0] || default_config
         // console.log("productExtraData__", fullApi, res)
     } catch (err) {
         error.value = err.message || 'Failed to fetch product extra data'
@@ -44,3 +44,57 @@ export function useProductExtraData(productId = '309613') {
     fetchProductExtraData
   }
 }
+
+const default_config = {
+        "data": [
+            {
+                "slug": "title",
+                "title": "Nom du produit",
+                "active": true,
+                "default": true
+            },
+            {
+                "slug": "price",
+                "title": "Prix du produit",
+                "active": true,
+                "default": true
+            },
+            {
+                "slug": "variants",
+                "title": "Séléction des variants",
+                "active": true,
+                "default": true
+            },
+            {
+                "slug": "counter",
+                "text": "عرض خاص قريب يوفا",
+                "timer": "3",
+                "title": "Compte à rebours",
+                "active": false
+            },
+            {
+                "slug": "description",
+                "text": "",
+                "title": "Description principale",
+                "active": true,
+                "default": true
+            },
+            {
+                "slug": "addToCartBtns",
+                "text": "",
+                "title": "Ajout au panier",
+                "active": true,
+                "params": {
+                    "addToCart": {
+                        "display": true
+                    },
+                    "expressCheckout": {
+                        "action": "checkout",
+                        "display": true
+                    }
+                },
+                "default": true
+            }
+        ],
+        "data_full_page": [],
+      }

@@ -29,7 +29,7 @@
               <div class="testimonials-bottom">
                 <div v-if="item.image || true" class="testimonials-avatar">
                   <img 
-                    :src="item.image ? item.image.image : `https://randomuser.me/api/portraits/women/${index + 3}.jpg`" 
+                    :src="item.image ? imghttps(item.image.image) : `https://randomuser.me/api/portraits/women/${index + 3}.jpg`" 
                     alt="" 
                     loading="lazy"
                   >
@@ -98,6 +98,7 @@ import { ref, onMounted } from "vue";
 import { register } from "swiper/element/bundle";
 import "swiper/css";
 import "swiper/css/pagination";
+import { imghttps } from "~/composables/services/helpers";
 
 register();
 

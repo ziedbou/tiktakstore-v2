@@ -8,7 +8,7 @@
       <div
         class="cta cta-horizontal cta-horizontal-box bg-image scta flex items-center justify-center"
         :style="{
-          backgroundImage: data.values.image.image ? `url('${data.values.image.image}')` : '',
+          backgroundImage: data.values.image.image ? `url('${processedImageUrl}')` : '',
           alignItems: data.values.bloc_vertical,
           borderRadius: data.values.image_border_radius + 'px'
         }"
@@ -35,16 +35,27 @@
 </template>
 
 <script>
+import { imghttps } from '~/composables/services/helpers';
+
 export default {
   props: {
     data: { type: Object, required: true },
   },
   data() {
     return {
-      hover: false
-    }
-  }
-}
+      hover: false,
+    };
+  },
+  created() {
+    // Log the initial value for debugging
+  },
+  computed: {
+    processedImageUrl() {
+      const image = this.data?.values?.image?.image;
+      return image && typeof image === 'string' ? imghttps(image) : '';
+    },
+  },
+};
 </script>
 
 <style scoped>

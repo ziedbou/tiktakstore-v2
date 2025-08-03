@@ -51,7 +51,7 @@
                 <img
                   :alt="child.title || ''"
                   loading="lazy"
-                  :src="child.slide_image.image"
+                  :src="imghttps(child.slide_image.image)"
                 />
               </NuxtLink>
             </div>
@@ -97,7 +97,7 @@
             <img
               :alt="child.title || ''"
               loading="lazy"
-              :src="child.slide_image.image_thumb"
+              :src="imghttps(child.slide_image.image_thumb)"
             />
             <div class="slideshow-thumb-progress">
               <svg
@@ -172,6 +172,7 @@ import "swiper/css/scrollbar";
 import "swiper/css/thumbs";
 import "swiper/css/parallax";
 import "swiper/css/autoplay";
+import { imghttps } from "~/composables/services/helpers";
 
 const props = defineProps({
   data: {

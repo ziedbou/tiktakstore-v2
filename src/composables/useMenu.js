@@ -30,17 +30,16 @@ export const useMenu = ({ companyId, position = 'header', name = '', menuId = nu
   })
 
   const menuData = computed(() => {
-    if (!response.value || !response.value[0]) return position === 'header' ? { categories: [], pages: [] } : []
+    if (!response.value || !response.value[0]) return position === 'header' ? { categories: [] } : []
     
     const rawMenus = response.value[0]?.menus || []
     // Header style
     if (position === 'header') {
       const categories = rawMenus
-        .filter(item => item.type === 'category')
         .map(item => ({
           id: item.cat_id || item.slug,
           name: item.label,
-          href: getLink(item),
+          href: item.is_home?'/':item.type === 'extern' ? item.href : getLink(item),
           submenu: (item.submenu || []).map(sub => ({
             label: sub.label,
             href: getLink(sub),
@@ -58,16 +57,9 @@ export const useMenu = ({ companyId, position = 'header', name = '', menuId = nu
           featured: []
         }))
 
-      const pages = rawMenus
-        .filter(item => item.type === 'page' && !item.is_home)
-        .map(item => ({
-          name: item.label,
-          href: getLink(item)
-        }))
 
       return {
-        categories,
-        pages,
+        categories
       }
     }
 

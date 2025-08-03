@@ -23,7 +23,7 @@
           :alt="data.values.alt_text || ''" 
           class="countdown-banner-image countdown-banner-image--desktop" 
           loading="lazy" 
-          :src="data.values.image?.image"
+          :src="imghttps(data.values.image?.image)"
         />
         
         <!-- Mobile Image -->
@@ -31,7 +31,7 @@
           :alt="data.values.alt_text || ''" 
           class="countdown-banner-image countdown-banner-image--mobile" 
           loading="lazy" 
-          :src="data.values.mobile_image?.image || data.values.image?.image"
+          :src="imghttps(data.values.mobile_image?.image) || imghttps(data.values.image?.image)"
         />
 
         <div class="countdown-banner-content">
@@ -95,6 +95,7 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { imghttps } from '~/composables/services/helpers';
 
 const props = defineProps({
   data: {

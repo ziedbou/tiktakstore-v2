@@ -25,7 +25,7 @@
           <img
             :alt="child.image.alt || ''"
             loading="lazy"
-            :src="child.image.image"
+            :src="imghttps(child.image.image)"
           />
         </SwiperSlide>
       </Swiper>
@@ -80,7 +80,7 @@
               <img
                 :alt="child.image.alt || ''"
                 loading="lazy"
-                :src="child.image.image"
+                :src="imghttps(child.image.image)"
               />
             </SwiperSlide>
           </Swiper>
@@ -108,7 +108,7 @@
               <img
                 :alt="child.image.alt || ''"
                 loading="lazy"
-                :src="child.image.image"
+                :src="imghttps(child.image.image)"
               />
             </SwiperSlide>
           </Swiper>
@@ -131,7 +131,7 @@
             <img
               :alt="`Icon ${n}`"
               loading="lazy"
-              :src="data.values[`icon_${n}`].image"
+              :src="imghttps(data.values[`icon_${n}`].image)"
             />
           </div>
           <div class="features-content">
@@ -179,7 +179,7 @@
           <img
             :alt="child.image.alt || ''"
             loading="lazy"
-            :src="child.image.image"
+            :src="imghttps(child.image.image)"
           />
         </SwiperSlide>
       </Swiper>
@@ -194,6 +194,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Autoplay } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/autoplay'
+import { imghttps } from '~/composables/services/helpers'
 
 const props = defineProps({
   data: Object

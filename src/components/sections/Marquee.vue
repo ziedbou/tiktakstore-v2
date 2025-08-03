@@ -23,9 +23,9 @@
                 xmlns="http://www.w3.org/2000/svg" 
                 width="16" 
                 height="16" 
-                :fill="currentColor"
               >
                 <path 
+                  fill="white"
                   fill-rule="evenodd" 
                   d="M5.711,0.441 L4.123,4.839 L8.869,4.310 L2.082,15.557 L4.212,7.168 L0.132,7.627 L1.906,0.441 L5.711,0.441 Z" 
                 />
@@ -55,6 +55,7 @@ const props = defineProps({
   padding-bottom: 15px;
   margin-top: 0;
   margin-bottom: 0;
+  color: white;
 }
 
 .marquee-text-function {

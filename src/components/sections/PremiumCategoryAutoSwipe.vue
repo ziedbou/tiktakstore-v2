@@ -39,7 +39,7 @@
     <template v-for="i in 2">
       <swiper-slide v-for="(child, index) in data.values.children" :key="index" class="category-slide my-1">
         <a :href="child.link" class="category-card">
-          <img :src="child.image.image" :alt="child.text" class="category-icon">
+          <img :src="imghttps(child.image.image)" :alt="child.text" class="category-icon">
           <span class="category-name">{{ child.text }}</span>
         </a>
       </swiper-slide>
@@ -51,6 +51,7 @@
 <script setup>
 import { register } from "swiper/element/bundle";
 import "swiper/css";
+import { imghttps } from "~/composables/services/helpers";
 
 register();
 

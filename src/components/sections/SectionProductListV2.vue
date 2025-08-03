@@ -7,7 +7,7 @@
         <div v-for="product in products" :key="product.id">
           <div class="relative">
             <div class="relative h-72 w-full overflow-hidden rounded-lg">
-              <img :src="product.imageSrc" :alt="product.imageAlt" class="size-full object-cover" />
+              <img :src="imghttps(product.imageSrc)" :alt="product.imageAlt" class="size-full object-cover" />
             </div>
             <div class="relative mt-4">
               <h3 class="text-sm font-medium text-gray-900">{{ product.name }}</h3>
@@ -29,6 +29,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 const products = [
   {
     id: 1,

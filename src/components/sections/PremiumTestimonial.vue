@@ -15,13 +15,13 @@
   >
     <div 
       class="testimonial-section"
-      :style="{backgroundImage: `url(${data.values.background_image.image})`}"
+      :style="{backgroundImage: `url(${imghttps(data.values.background_image.image)})`}"
     > 
       <div class="testimonial-container">
         <!-- Person image -->
         <div class="image-container">
           <img 
-            :src="data.values.image_1.image" 
+            :src="imghttps(data.values.image_1.image)" 
             alt="Photo of a person" 
             class="person-image"
           >
@@ -68,7 +68,7 @@
         <!-- Product images -->
         <div class="product-images">
           <img 
-            :src="data.values.image_2.image" 
+            :src="imghttps(data.values.image_2.image)" 
             alt="Product 1" 
             class="product-image"
           >
@@ -84,6 +84,7 @@ import { ref } from 'vue';
 import { register } from 'swiper/element/bundle';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import { imghttps } from '~/composables/services/helpers';
 
 register();
 

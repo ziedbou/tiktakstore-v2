@@ -6,9 +6,9 @@
     <div class="banner-shein-container">
       <!-- Left Panel - Promotions -->
       <div class="left-panel image-cover">
-        <a :href="data.values.link_left" style="width: 100%"> 
-          <img :src="data.values.imageLeft.image">
-        </a>
+        <NuxtLink :href="data.values.link_left" style="width: 100%"> 
+          <NuxtImg :src="imghttps(data.values.imageLeft?.image)"/>
+        </NuxtLink>
       </div>
 
       <!-- Center Carousel -->
@@ -16,16 +16,16 @@
         <div class="swiper mySwiper">
           <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="(item, index) in data.values.children" :key="index">
-              <a :href="item.link" class="h-full">
+              <NuxtLink :href="item.link" class="h-full">
                 <div class="slide-content">
-                  <img :src="item.bannerImage.image" :alt="item.title">
+                  <NuxtImg :src="imghttps(item.bannerImage?.image)" :alt="item.title"/>
                   <div class="slide-text">
                     <h2>{{ item.title }}</h2>
                     <p>{{ item.subtitle }}</p>
-                    <a v-if="item.button_text" class="show-now-btn flex items-center gap-3" :href="item.link"><span>{{ item.button_text }}</span> <svg data-v-14c8c335="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-move-right-icon lucide-move-right lucide-icon customizable"><path d="M18 8L22 12L18 16"></path><path d="M2 12H22"></path></svg></a>
+                    <NuxtLink v-if="item.button_text" class="show-now-btn flex items-center gap-3" :href="item.link"><span>{{ item.button_text }}</span> <svg data-v-14c8c335="" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-move-right-icon lucide-move-right lucide-icon customizable"><path d="M18 8L22 12L18 16"></path><path d="M2 12H22"></path></svg></NuxtLink>
                   </div>
                 </div>
-              </a>
+              </NuxtLink>
             </div>
           </div>
 
@@ -40,9 +40,9 @@
 
       <!-- Right Panel - Trending Items -->
       <div class="right-panel image-cover">
-        <a :href="data.values.link_right"> 
-          <img :src="data.values.imageRight.image" alt="Right Panel Image">
-        </a>
+        <NuxtLink :href="data.values.link_right"> 
+          <NuxtImg :src="imghttps(data.values.imageRight?.image)" alt="Right Panel Image"/>
+        </NuxtLink>
       </div>
     </div>
   </section>
@@ -58,6 +58,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import 'swiper/css/effect-fade';
+import { imghttps } from '~/composables/services/helpers';
 
 const props = defineProps({
   data: {

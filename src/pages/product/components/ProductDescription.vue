@@ -49,10 +49,13 @@ onMounted(() => {
         h4 { font-size: 1.25rem; }
         h5 { font-size: 1rem; }
         h6 { font-size: 0.875rem; }
+        font {
+         line-height:25px !important;}
         p {
           margin-bottom: 1rem;
           color: #333;
           font-size: 1rem;
+           line-height: 25px;
         }
         ul, ol {
           padding-left: 1.5rem;
@@ -78,6 +81,9 @@ onMounted(() => {
           max-width: 100%;
           height: auto;
           display: block;
+        }
+        .description-container {
+          font-size: 15px !important;
         }
       </style>
       <div class="description-container">

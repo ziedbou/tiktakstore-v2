@@ -99,6 +99,7 @@ export const fetchSectionProducts = async ({ sectionValues, companyId = '8GPmlML
 
   try {
     const response = await axios.get(`${baseURL}products-read/${params}`)
+    // console.log('Produits section:', `${baseURL}products-read/${params}`)
     return response.data.results || []
   } catch (error) {
     console.error('Erreur chargement produits section:', error)

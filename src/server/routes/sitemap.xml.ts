@@ -1,11 +1,15 @@
 export function getSlugOrServer(url: string) {
-  let host = url.split("://")[1]?.split(":")[0] || url;
-  host = host.replace("www.", "");
-  if (!host.includes("tiktak-store")) {
-    return [host.split("/")[0], "server"];
+  let host = url.split('://')[1]?.split(':')[0] || url;
+  host = host.replace('www.', '');
+  // Extract the main domain part before any port or path
+  const domain = host.split('/')[0];
+  // Check for tiktak-store or tiktak-preview in the domain
+  if (domain.includes('tiktak-store') || domain.includes('tiktak-preview')) {
+    // Extract the slug before the first dot
+    const slug = domain.split('.')[0];
+    return [slug, 'slug'];
   } else {
-    const slug = host.split(".")[0];
-    return [slug, "slug"];
+    return [domain, 'server'];
   }
 }
 

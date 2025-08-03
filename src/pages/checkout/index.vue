@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white pb-20 lg:pb-0 default-container">
+  <div class="bg-white pb-20 lg:pb-0 container-medium">
     <!-- Background color split screen for large screens -->
     <div
       class="fixed top-0 left-0 hidden h-full w-1/2 bg-white lg:block"
@@ -11,12 +11,12 @@
     />
 
     <div
-      class="relative mx-auto grid max-w-7xl grid-cols-1 gap-x-16 lg:grid-cols-2 lg:px-8 xl:gap-x-48"
+      class="relative mx-auto md:grid grid-cols-1 gap-x-16 lg:grid-cols-2 xl:gap-x-48"
     >
       <h1 class="sr-only">Order information</h1>
 
       <form
-        class="px-4 pt-4 pb-8 sm:px-6 lg:col-start-1 lg:row-start-1 lg:px-0 lg:pb-16"
+        class="pt-4 pb-8 lg:col-start-1 lg:row-start-1 lg:pb-16"
       >
         <img
           :src="`https://cdn.cloudtiktak.com${companyData.logo}`"
@@ -25,23 +25,23 @@
         />
         
         <!-- Breadcrumb navigation -->
-        <div class="mx-auto max-w-lg lg:max-w-none">
+        <div class="mx-auto max-w-2xl lg:max-w-none">
           <Breadcrumb :items="breadcrumbItems" />
         </div>
 
         <!-- Loading state -->
         <div
           v-if="storeInfoLoading"
-          class="mx-auto max-w-lg lg:max-w-none mt-10 flex flex-col items-center justify-center"
+          class="mx-auto max-w-2xl lg:max-w-none mt-10 flex flex-col items-center justify-center"
         >
           <div
-            class="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-indigo-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+            class="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-[var(--btn-primary-outline-border-color)] border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
           ></div>
           <p class="mt-4 text-gray-600">Chargement des paramètres...</p>
         </div>
 
         <!-- Form content -->
-        <div v-else class="mx-auto max-w-lg lg:max-w-none">
+        <div v-else class="mx-auto max-w-2xl lg:max-w-none">
           <!-- information section -->
           <section
             v-if="checkoutFields.contactInformation.length"
@@ -72,7 +72,7 @@
                     v-if="field.slug === 'email'"
                     type="email"
                     :id="field.slug"
-                    :name="field.slug"
+                    :name="facebookNameTags[field.slug] ?? field.slug"
                     v-model="formData[field.slug]"
                     :required="field.required"
                     :maxlength="field.max_length"
@@ -82,7 +82,7 @@
                         : field.field
                     "
                     :class="[
-                      'block w-full rounded-md px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                      'block w-full rounded-md px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color)] sm:text-sm/6',
                       errors[field.slug]
                         ? 'border-red-500 outline-red-500 ring-2 ring-red-500/50'
                         : 'bg-white outline-gray-300',
@@ -102,12 +102,13 @@
                     :errorRingClass="
                       errors[field.slug] ? 'ring-2 ring-red-500/50' : ''
                     "
+                    :isQuickCheckout="false"
                   />
                   <input
                     v-else
                     type="text"
                     :id="field.slug"
-                    :name="field.slug"
+                    :name="facebookNameTags[field.slug] ?? field.slug"
                     v-model="formData[field.slug]"
                     :required="field.required"
                     :maxlength="field.max_length"
@@ -117,7 +118,7 @@
                         : field.field
                     "
                     :class="[
-                      'block w-full rounded-md px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                      'block w-full rounded-md px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color)] sm:text-sm/6',
                       errors[field.slug]
                         ? 'border-red-500 outline-red-500 ring-2 ring-red-500/50'
                         : 'bg-white outline-gray-300',
@@ -208,7 +209,7 @@
                     v-else-if="field.slug !== 'comment'"
                     type="text"
                     :id="field.slug"
-                    :name="field.slug"
+                    :name="facebookNameTags[field.slug] ?? field.slug"
                     v-model="formData[field.slug]"
                     :required="field.required"
                     :maxlength="field.max_length"
@@ -218,7 +219,7 @@
                         : field.field
                     "
                     :class="[
-                      'block w-full rounded-md px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                      'block w-full rounded-md px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color)] sm:text-sm/6',
                       errors[field.slug]
                         ? 'border-red-500 outline-red-500 ring-2 ring-red-500/50'
                         : 'bg-white outline-gray-300',
@@ -227,12 +228,12 @@
                   <textarea
                     v-else
                     :id="field.slug"
-                    :name="field.slug"
+                    :name="facebookNameTags[field.slug] ?? field.slug"
                     v-model="formData[field.slug]"
                     :required="field.required"
                     rows="3"
                     :class="[
-                      'block w-full rounded-md px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                      'block w-full rounded-md px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color)] sm:text-sm/6',
                       errors[field.slug]
                         ? 'border-red-500 outline-red-500 ring-2 ring-red-500/50'
                         : 'bg-white outline-gray-300',
@@ -293,7 +294,7 @@
                     "
                     rows="3"
                     :class="[
-                      'block w-full rounded-md px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6',
+                      'block w-full rounded-md px-3 py-2 text-base text-gray-900 outline-1 -outline-offset-1 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color)] sm:text-sm/6',
                       errors[field.slug]
                         ? 'border-red-500 outline-red-500 ring-2 ring-red-500/50'
                         : 'bg-white outline-gray-300',
@@ -307,7 +308,7 @@
                       type="checkbox"
                       :id="field.slug"
                       v-model="formData[field.slug]"
-                      class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                      class="h-4 w-4 text-[var(--btn-primary-outline-color)] focus:ring-[var(--btn-primary-outline-border-color)] border-gray-300 rounded"
                     />
                     <label
                       :for="field.slug"
@@ -331,10 +332,10 @@
 
       <section
         aria-labelledby="summary-heading"
-        class="bg-gray-50 px-4 pt-16 pb-10 sm:px-6 lg:col-start-2 lg:row-start-1 lg:bg-transparent lg:px-0 lg:pb-16"
+        class="bg-gray-50 pt-16 pb-10 lg:col-start-2 lg:row-start-1 lg:bg-transparent lg:pb-16"
       >
         <ClientOnly>
-          <div class="mx-auto max-w-lg lg:max-w-none">
+          <div class="mx-auto max-w-2xl lg:max-w-none">
             <h2 id="summary-heading" class="text-lg font-medium text-gray-900 mb-4">
               Votre commande
             </h2>
@@ -354,12 +355,12 @@
                     :alt="item._product.name"
                     class="w-16 h-16 rounded-md object-cover hover:opacity-75 transition-opacity duration-200"
                   />
-                  <span class="absolute -top-2.5 -right-2.5 flex items-center justify-center h-5 px-[6.5px] w-auto rounded-full bg-red-600 text-white text-xs">
+                  <span class="absolute -top-2.5 -right-2.5 flex items-center justify-center h-5 px-[6.5px] w-auto rounded-full bg-[var(--header-badge-bg)] text-[var(--header-badge-color)] text-xs">
                       {{ item.quantity }}
                   </span>
                 </NuxtLink>
                 <div class="flex-auto space-y-1">
-                  <NuxtLink :to="getProductLink(item._product)" class="hover:text-indigo-600 transition-colors duration-200">
+                  <NuxtLink :to="getProductLink(item._product)" class="transition-colors duration-200">
                     <h3>{{ item._product.name }}</h3>
                   </NuxtLink>
                   <p class="text-gray-500">{{ item.product_attrs || "" }}</p>
@@ -376,8 +377,8 @@
               <div class="flex items-center justify-between">
                 <dt class="text-gray-600">Sous-total</dt>
                 <dd>
-                  {{ companyData.currency }}
                   {{ orderSummary.subtotal.toFixed(2) }}
+                  {{ companyData.currency }}
                 </dd>
               </div>
 
@@ -419,16 +420,16 @@
                   </span>
                 </dt>
                 <dd>
-                  -{{ companyData.currency }}
                   {{ orderSummary.discount.toFixed(2) }}
+                  {{ companyData.currency }}
                 </dd>
               </div>
 
               <div class="flex items-center justify-between">
                 <dt class="text-gray-600">Frais de livraison</dt>
                 <dd>
-                  {{ companyData.currency }}
                   {{ orderSummary.shipping.toFixed(2) }}
+                  {{ companyData.currency }}
                 </dd>
               </div>
 
@@ -442,25 +443,21 @@
                   <template v-if="orderSummary.discount > 0">
                     <span class="line-through font-medium text-gray-500 mx-2">
                       {{
-                        companyData.currency +
-                        " " +
                         (
                           orderSummary.subtotal + orderSummary.transport_price
                         ).toFixed(2)
                       }}
                     </span>
                     <span>
-                      {{
-                        companyData.currency +
-                        " " +
-                        orderSummary.total.toFixed(2)
-                      }}
+                      {{orderSummary.total.toFixed(2)}}
+                      {{companyData.currency}}
                     </span>
                   </template>
                   <template v-else>
-                    <span>{{
-                      companyData.currency + " " + orderSummary.total.toFixed(2)
-                    }}</span>
+                    <span>
+                      {{orderSummary.total.toFixed(2)}}
+                      {{companyData.currency}}
+                    </span>
                   </template>
                 </dd>
               </div>
@@ -485,8 +482,8 @@
                       >
                         <div 
                           :class="[
-                            checked ? 'border-indigo-500 bg-indigo-50 shadow-md' : 'border-gray-300 bg-white hover:border-gray-400',
-                            active && !disabled ? 'ring-2 ring-indigo-500 ring-opacity-20' : '',
+                            checked ? 'btn-primary-outline shadow-md' : 'border-gray-300 bg-white hover:border-gray-400',
+                            active && !disabled ? 'ring-2 ring-[var(--btn-primary-outline-border-color)] ring-opacity-20' : '',
                             disabled
                               ? 'opacity-60 cursor-not-allowed bg-gray-50'
                               : 'cursor-pointer transition-all duration-200',
@@ -499,22 +496,21 @@
                               <span
                                 :class="[
                                   'block text-sm font-medium transition-colors duration-200',
-                                  checked ? 'text-indigo-900' : 'text-gray-900'
+                                  checked ? 'text-[var(--btn-primary-outline-color)]' : 'text-gray-900'
                                 ]"
                                 >{{ method.title }}</span
                               >
                               <span
                                 :class="[
                                   'mt-1 flex items-center text-sm transition-colors duration-200',
-                                  checked ? 'text-indigo-700' : 'text-gray-500'
+                                  checked ? 'text-[var(--btn-primary-outline-color)]' : 'text-gray-500'
                                 ]"
-                                >{{ method.turnaround }}</span
-                              >
+                                >{{ method.turnaround }}</span>
                             </span>
                           </span>
                           <CheckCircleIcon
                             v-if="checked"
-                            class="absolute top-4 right-4 h-5 w-5 text-indigo-600"
+                            class="absolute top-4 right-4 h-5 w-5 text-[var(--btn-primary-outline-color)]"
                             aria-hidden="true"
                           />
                           <div
@@ -526,7 +522,7 @@
                             :class="[
                               active && !disabled ? 'border' : 'border-2',
                               checked
-                                ? 'border-indigo-500'
+                                ? 'border-[var(--btn-primary-outline-border-color)]'
                                 : 'border-transparent',
                               'pointer-events-none absolute -inset-px rounded-lg',
                             ]"
@@ -553,10 +549,9 @@
                   @click="validateForm"
                   :disabled="isSubmitting"
                   :class="[
-                    'shake-animation flex justify-center w-full rounded-md lg:rounded-lg border border-transparent px-3 sm:px-4 py-3 text-base font-medium text-white shadow-xs focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden',
-                    isSubmitting 
-                      ? 'bg-gray-400 cursor-not-allowed' 
-                      : 'bg-indigo-600 hover:bg-indigo-700'
+                    'shake-animation btn-primary-solid flex justify-center w-full px-3 sm:px-4 py-3 text-base font-medium shadow-xs',
+                    isSubmitting && '!bg-gray-400 !border-gray-400 !cursor-not-allowed' 
+                   
                   ]"
                 >
                   <div v-if="isSubmitting" class="flex items-center">
@@ -601,6 +596,7 @@ import { useRouter } from "vue-router";
 import { TicketCheck } from "lucide-vue-next";
 import axios from "axios";
 import {handleClearCart} from "@/composables/services/cartService"
+import { createAbandonnedOrder } from "~/composables/services/orderService";
 
 const { companyData } = useCompanyData();
 const cart = ref(null);
@@ -614,6 +610,16 @@ const breadcrumbItems = [
   { label: "Checkout", url: "/checkout" },
 ];
 
+const facebookNameTags = {
+  name : "name",
+  gouv : "city",
+  code : "code_postal",
+  city : "ville",
+  address : "street_address",
+  phone : "phone",
+  email : "email",
+  country: "country"
+};
 // Form data and validation
 const formData = ref({});
 const errors = ref({});
@@ -791,6 +797,10 @@ watchEffect(() => {
 
 // Load cart data from localStorage
 onMounted(() => {
+   eventBus.on('createOrderAbandonned_checkout', async () => {
+    await createAbandonnedOrder(null, formData.value); 
+
+  });
   // Client-side only code
   cart.value = getCartFromStorage();
 
@@ -1215,7 +1225,9 @@ const createOrder = async () => {
       },
       promo_code: cart.value ? (cart.value.promoCode === "autopromo" ? "" : cart.value.promoCode || "") : "",
       company: companyData.value.id,
-      create_account: formData.value.create_account || false
+      create_account: formData.value.create_account || false,
+      source: "SITE V2",
+      meta_data: JSON.parse(localStorage.getItem('visit_source'))
     };
 
     // Create headers

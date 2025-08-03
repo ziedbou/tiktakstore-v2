@@ -12,7 +12,7 @@
         alt="Your Company"
       />
       <h2
-        class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900"
+        class="mt-10 text-center text-2xl/9 font-medium tracking-tight text-gray-900"
       >
         Connectez-vous à votre compte
       </h2>
@@ -42,7 +42,7 @@
               v-model="loginForm.email"
               autocomplete="email"
               required=""
-              class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color-hover)] sm:text-sm/6"
             />
           </div>
         </div>
@@ -61,7 +61,7 @@
               v-model="loginForm.password"
               autocomplete="current-password"
               required=""
-              class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+              class="block w-full rounded-md bg-white px-3 py-2.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--btn-primary-outline-border-color-hover)] sm:text-sm/6"
             />
           </div>
         </div>
@@ -69,7 +69,7 @@
           <div class="text-sm">
             <NuxtLink
               to="/forget-password"
-              class="font-semibold text-indigo-600 hover:text-indigo-500"
+              class="font-medium text-[var(--btn-primary-outline-color)] hover:text-[var(--btn-primary-outline-color-hover)]"
               >Mot de passe oublié?</NuxtLink
             >
           </div>
@@ -78,7 +78,7 @@
           <button
             type="submit"
             :disabled="isLoading"
-            class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-400 disabled:cursor-not-allowed"
+            class="flex w-full justify-center px-3 py-2.5 text-sm/6 font-medium shadow-xs btn-primary-solid disabled:cursor-not-allowed"
           >
             <span v-if="isLoading" class="flex items-center">
               <svg
@@ -112,8 +112,8 @@
         Vous n'êtes pas membre ?
         <NuxtLink
           to="/register"
-          class="font-semibold text-indigo-600 hover:text-indigo-500"
-          >S'inscrire</NuxtLink
+          class="font-medium text-[var(--btn-primary-outline-color)] hover:text-[var(--btn-primary-outline-color-hover)]"
+          >S'inscrire</NuxtLink 
         >
       </p>
     </div>
@@ -155,6 +155,27 @@ const loginForm = ref({
   password: "",
 });
 
+const seo = {
+  title: 'Page de connexion ' + companyData.value?.name,
+  description: '',
+  image: '',
+  url: useFullUrl(),
+};
+
+useHead({
+  title: seo.title,
+  meta: [
+    { name: 'description', content: seo.description },
+    { property: 'og:title', content: seo.title },
+    { property: 'og:description', content: seo.description },
+    { property: 'og:image', content: seo.image },
+    { property: 'og:url', content: seo.url },
+    { name: 'twitter:title', content: seo.title },
+
+  ]
+});
+
+
 const login = async () => {
   isLoading.value = true;
   loginForm.value.username = `${loginForm.value.email}_${companyId.value}`;
@@ -177,6 +198,11 @@ const login = async () => {
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("user_id", user.id);
       localStorage.setItem("_token", token);
+      
+      // Sync wishlist from API after login
+      const { syncWishlistFromApi } = useWishlist()
+      await syncWishlistFromApi()
+      
       router.push("/account");
     }
   } catch (error) {

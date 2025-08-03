@@ -1,4 +1,4 @@
-import { getPriceOfProduct, getDeliveryPrice } from '@/composables/services/helpers.js';
+import { getPriceOfProduct, getDeliveryPrice, calculateStock } from '@/composables/services/helpers.js';
 import eventBus from '@/composables/eventBus.js';
 import axios from 'axios';
 
@@ -24,9 +24,24 @@ export function initializeCart() {
 /**
  * Ajoute un produit au panier ou met à jour la quantité si le produit existe
  */
-export function addToCart(product, quantity = 1, options = null, companySlug = null,openCart = true) {
+
+export function addToCart(product, quantity = 1, options = null, companySlug = null, openCart = true) {
+  // const totalStock = calculateStock(product);
+  // const { showWarning } = useCustomToast()
+  // if (totalStock < 1) {
+  //   showWarning("Produit épuisé");
+  //   return
+  // }
+  const { trackAddToCart } = useTracking();
   const cart = getCartFromStorage();
-  const existingItem = cart._details.find(item => item.product_id === product.id);
+
+  const optionsKey = options ? JSON.stringify(options) : 'null';
+
+  const existingItem = cart._details.find(
+    item => item.product_id === product.id && (item.options ? JSON.stringify(item.options) : 'null') === optionsKey
+  );
+
+  trackAddToCart(product);
 
   if (existingItem) {
     existingItem.quantity += quantity;
@@ -60,7 +75,7 @@ export function addToCart(product, quantity = 1, options = null, companySlug = n
     cart._details.push(detail);
   }
 
-  updateCart(cart,openCart);
+  updateCart(cart, openCart);
   if (companySlug) {
     applyAutoDiscount(companySlug);
   }
@@ -80,13 +95,18 @@ export function updateCartItemQuantity(productId, quantity, companySlug = null) 
 /**
  * Supprime un produit du panier
  */
-export function removeFromCart(productId, companySlug = null) {
-  // Ensure _details is an array
+export function removeFromCart(productId, options = null, companySlug = null) {
   const cart = getCartFromStorage();
   if (!Array.isArray(cart._details)) {
     cart._details = [];
   }
-  cart._details = cart._details.filter(item => item.product_id !== productId);
+
+  const optionsKey = options ? JSON.stringify(options) : 'null';
+
+  cart._details = cart._details.filter(
+    item => !(item.product_id === productId && (item.options ? JSON.stringify(item.options) : 'null') === optionsKey)
+  );
+
   updateCart(cart, false);
   if (companySlug) {
     applyAutoDiscount(companySlug);
@@ -154,6 +174,7 @@ export function saveCart(cart,openCart = true) {
   localStorage.setItem('cart', JSON.stringify(cart));
   eventBus.emit('cart-updated');
   if (openCart) {
+    // console.log('HELLO6');
     eventBus.emit('open-cart');
   }
 }

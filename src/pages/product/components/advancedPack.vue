@@ -1,8 +1,8 @@
 <template>
-    <div class="mt-4">
+    <div class="mt-4" v-if="features.length > 0">
         <div v-if="loading">Chargement...</div>
         <div v-else-if="error" class="text-red-500">{{ error }}</div>
-        <div v-else-if="productPack.declinaisons?.length">
+        <div v-else-if="productPack">
         <CustomSelectDropdown
             v-for="(feature, index) in features"
             :key="index"
@@ -16,16 +16,44 @@
         <div class="flex flex-col gap-4 mt-6">
      
             <button
-            class="w-full py-3 bg-transparent hover:bg-indigo-600 text-indigo-600 border cursor-pointer border-indigo-600 hover:text-white font-semibold rounded-lg transition-colors flex items-center justify-center"
+            class="w-full py-3 cursor-pointer font-semibold rounded-lg flex items-center justify-center btn-primary-solid"
             @click="handleAddToCart"
             >
-                <ShoppingCart class="h-5 w-5 mr-2 text-inherit" />
-                <span>Ajouter au panier</span>
-                </button>
+              <ShoppingCart class="h-5 w-5 mr-2 text-inherit" />
+              <span>Ajouter le pack au panier</span>
+            </button>
                 
-            </div>
         </div>
-        <div v-else>Aucune déclinaison disponible.</div>
+        </div>
+        <div v-else-if="productPackWithoutDeclinaison" class="flex flex-col gap-2">
+         <div
+          v-for="product in productPackWithoutDeclinaison"
+          :key="product.id"
+          class="rounded-lg shadow p-2 flex flex-row items-center bg-gray-200"
+        >
+          <img
+            :src="imghttps(product.photo_thumb || product.photo)"
+            :alt="product.name"
+            class="w-15 h-15 object-cover rounded "
+          />
+          <div class="flex flex-col text-left ml-4">
+            <div class="font-semibold text-md mb-1">{{ product.name }}</div>
+            <div class="text-indigo-600 font-bold text-md mb-2">{{ product.price }} TND</div>
+          </div>
+          <!-- Add more product info or actions here if needed -->
+        </div>
+        <div class="flex flex-col gap-4 mt-6">
+     
+            <button
+            class="w-full py-3 cursor-pointer font-semibold rounded-lg flex items-center justify-center btn-primary-solid"
+            @click="handleAddToCart"
+            >
+              <ShoppingCart class="h-5 w-5 mr-2 text-inherit" />
+              <span>Ajouter le pack au panier</span>
+          </button>
+        </div>
+      </div>
+        <div v-else class="text-gray-500">Aucun produit trouvé.</div>
     </div>
   </template>
   
@@ -34,6 +62,7 @@
   import CustomSelectDropdown from './packComponents/CustomSelectDropdown.vue'
   import { ShoppingCart } from 'lucide-vue-next';
   import { addToCart } from '~/composables/services/cartService';
+import { imghttps } from '~/composables/services/helpers';
   
   const { product } = defineProps({
     product: {
@@ -47,7 +76,8 @@
   })
   
   // Reactive state
-  const productPack = ref({})
+  const productPack = ref(null)
+  const productPackWithoutDeclinaison = ref(null)
   const selectedDeclinaisons = ref([]) // Array to store selected declinaisons
   const selectedOptions = ref([]) // Array to store selected declinaisons
   const loading = ref(true)
@@ -63,6 +93,16 @@
   const handleAddToCart = () => {
     if (selectedDeclinaisons.value && !(Object.keys(selectedDeclinaisons.value).length < features.value.length)) {
         addToCart(product, quantity.value, selectedDeclinaisons.value);
+    }
+    else if (productPackWithoutDeclinaison.value && productPackWithoutDeclinaison.value.length > 0) {
+        let options = productPackWithoutDeclinaison.value.map(prod => ({
+            product_name: prod.name,
+            quantity: 1,
+            product_id: prod.id,
+            photo_thumb: prod.photo_thumb }));
+
+        addToCart(product, quantity.value, options);
+        // console.log('productPackWithoutDeclinaison.value', productPackWithoutDeclinaison.value)
     }
     else {
        showWarning("Veuillez sélectionner toutes les déclinaisons avant d'ajouter au panier.");
@@ -81,13 +121,19 @@
           }
         }
       )
+      // console.log("responsebaseURL", baseURL + 'products-read/?page=1&active=true&ids_in=' + idsIn + '&company=' + companyId.value + '&size=10')
       if (!response.ok) {
         throw new Error(`Erreur HTTP ${response.status}`)
       }
       const data = await response.json()
-      productPack.value = data.results[0] || {}
-      console.log("datares", data.results[0])
-      label.value = data.results[0].declinaisons[0].name
+      if (data.results[0].declinaisons.length == 0) {
+        productPackWithoutDeclinaison.value = data.results
+      }
+      else {
+        productPack.value = data.results[0]
+        label.value = data.results[0].declinaisons[0]?.name
+      }
+      // console.log("datares", data.results[0])
     } catch (err) {
       error.value = `Erreur lors du chargement des données: ${err.message}`
     } finally {
@@ -114,7 +160,7 @@
     })) || []
   })
   
-  console.log("options", options.value)
+  // console.log("options", options.value)
   
   // Determine displaytype
   const attributeDisplayType = computed(() => {
@@ -123,7 +169,7 @@
   
   // Handle declinaison change and update the array
   const handleDeclinaisonChange = (option, index) => {
-    console.log('Selected declinaison:', option, 'at index:', index)
+    // console.log('Selected declinaison:', option, 'at index:', index)
     // Update or add the selected declinaison to the array
     selectedDeclinaisons.value[index] = {
         product_name: option.product_name,
@@ -134,9 +180,12 @@
     }
     selectedOptions.value[index] = option
 
-      console.log('Selected declinaisons array:', selectedDeclinaisons.value)
+      // console.log('Selected declinaisons array:', selectedDeclinaisons.value)
   }
   
   // Fetch data on component mount
-  fetchProduct()
+  if (features.value.length > 0) {
+    fetchProduct()
+  }
+  // console.log("productPack", product)
   </script>

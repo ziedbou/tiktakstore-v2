@@ -28,9 +28,10 @@
           @click="resetFilters"
           class="reset-button text-sm flex items-center gap-2 p-2 rounded-md transition-all duration-300 relative overflow-hidden"
           :class="[
+            'text-[var(--btn-primary-outline-color)]',
             hasActiveFilters 
-              ? 'text-blue-600 hover:bg-blue-50' 
-              : 'text-gray-400 !cursor-not-allowed opacity-60'
+              ? 'hover:bg-[var(--btn-primary-outline-background-hover)]' 
+              : '!cursor-not-allowed opacity-60'
           ]"
         >
           <span class="relative z-10 flex items-center gap-2">
@@ -74,7 +75,7 @@
             @click="toggleFilter('subcategories')"
             class="flex items-center justify-between cursor-pointer py-4"
           >
-            <h3 class="text-lg">Sous Catégories</h3>
+            <h3 class="text-base">Sous Catégories</h3>
             <div v-if="isFilterOpen('subcategories')">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -177,7 +178,7 @@
             @click="toggleFilter(filter.option_slug)"
             class="flex items-center justify-between cursor-pointer py-4"
           >
-            <h3 class="text-lg">{{ filter.option_name }}</h3>
+            <h3 class="text-base">{{ filter.option_name }}</h3>
             <div v-if="isFilterOpen(filter.option_slug)">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -314,7 +315,7 @@
             @click="toggleFilter('price')"
             class="flex items-center justify-between cursor-pointer py-4"
           >
-            <h3 class="text-lg">Prix</h3>
+            <h3 class="text-base">Prix</h3>
             <div v-if="isFilterOpen('price')">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -393,16 +394,19 @@ const props = defineProps({
     required: true,
   },
   companyId: {
-    type: [String],
+    type: String,
     required: true,
   },
 });
+
+// console.log("companyId", props.companyId);
 
 const emit = defineEmits([
   "update:filterSelections",
   "update:priceRange",
   "filter-change",
   "reset-filters",
+  "update:has-filters",
 ]);
 
 // Reactive state
@@ -418,140 +422,34 @@ const loading = ref(true);
 const error = ref(null);
 const subcategoriesData = ref([]); // This stores the subcategories from API
 const selectedSubcategories = ref([]);
-
 const config = useRuntimeConfig()
 const baseURL = config.public.baseURL
 // Use subcategories from the reactive state
 const subcategories = computed(() => subcategoriesData.value);
 
-// Parse selected filters from URL
-const parseSelectedFiltersFromUrl = () => {
-  const attributesParam = route.query.has_attributs;
-  if (!attributesParam) {
-    selectedFilters.value = {};
-    emit("update:filterSelections", []); // Emit empty array when no filters
+// Fetch subcategories based on category ID
+const fetchSubcategories = async () => {
+  // Guard: Don't fetch if categoryId is not available
+  if (!props.categoryId) {
+    subcategoriesData.value = [];
     return;
   }
-
-  const attributeIds = attributesParam
-    .split(",")
-    .map((id) => parseInt(id, 10));
-    
-  // Emit the attribute IDs for ProductList component
-  emit("update:filterSelections", attributeIds);
-
-  // Group selected values by their filter
-  filters.value.forEach((filter) => {
-    const selectedValues = filter.values
-      .filter((value) => attributeIds.includes(value.id))
-      .map((value) => value.id);
-    
-    if (selectedValues.length > 0) {
-      selectedFilters.value[filter.option_slug] = selectedValues;
+  
+  try {
+    const response = await fetch(
+      `https://api.tiktak.space/api/v1/categories-read/${props.categoryId}`
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch subcategories");
     }
-  });
-};
 
-// Parse price range from URL query parameters
-const parsePriceRangeFromUrl = () => {
-  // Always set allowed range to 0 and 1000
-  minPrice.value = 0;
-  maxPrice.value = 1000;
-
-  // Get filter values from URL
-  const minPriceParam = parseInt(route.query.price_gte);
-  const maxPriceParam = parseInt(route.query.price_lte);
-
-  priceRange.value = [
-    !isNaN(minPriceParam) ? minPriceParam : minPrice.value,
-    !isNaN(maxPriceParam) ? maxPriceParam : maxPrice.value
-  ];
-
-  // Emit updated price range
-  emit("update:priceRange", priceRange.value);
-};
-
-// Parse subcategories from URL
-const parseSubcategoriesFromUrl = () => {
-  const subcategoriesParam = route.query.has_category;
-  if (!subcategoriesParam) {
-    selectedSubcategories.value = [];
-    return;
-  }
-
-  selectedSubcategories.value = subcategoriesParam
-    .split(",")
-    .map((id) => parseInt(id, 10))
-    .filter(id => !isNaN(id));
-};
-
-// Fetch subcategories at top level for proper SSR
-const { data: subcategoriesResponse, error: subcategoriesError } = await useFetch(
-  () => `${baseURL}categories-read/${props.categoryId}`,
-  {
-    key: `subcategories-${props.categoryId}`,
-    fresh: false,
-    transform: (data) => data.subcategories || []
-  }
-);
-
-// Fetch filters at top level for proper SSR  
-const { data: filtersResponse, status: filtersStatus, error: filtersError } = await useFetch(
-  () => `${baseURL}category-filters/${props.categoryId}/${props.companyId}`,
-  {
-    key: `filters-${props.categoryId}-${props.companyId}`,
-    fresh: false,
-    server: false
-  }
-);
-
-// Watch for subcategories data changes
-watch(subcategoriesResponse, (newData) => {
-  if (newData) {
-    subcategoriesData.value = newData;
-  }
-}, { immediate: true });
-
-// Watch for filters data changes
-watch(filtersResponse, (newData) => {
-  if (newData) {
-    filters.value = newData;
-    
-    // After fetching filters, parse any URL parameters
-    parseSelectedFiltersFromUrl();
-    parsePriceRangeFromUrl();
-    parseSubcategoriesFromUrl();
-    
-    // Set all filters to open by default after they're loaded
-    filters.value.forEach((filter) => {
-      openFilters.value[filter.option_slug] = true;
-    });
-    // Set price filter to open by default
-    openFilters.value["price"] = true;
-    // Set subcategories filter to open by default
-    openFilters.value["subcategories"] = true;
-  }
-}, { immediate: true });
-
-// Watch for loading state
-watch(filtersStatus, (status) => {
-  loading.value = status === 'pending';
-}, { immediate: true });
-
-// Watch for errors
-watch([subcategoriesError, filtersError], ([subError, filterError]) => {
-  if (subError) {
-    console.error("Error fetching subcategories:", subError);
+    const data = await response.json();
+    subcategoriesData.value = data.subcategories || [];
+  } catch (err) {
+    console.error("Error fetching subcategories:", err);
     subcategoriesData.value = [];
   }
-  if (filterError) {
-    console.error("Error fetching filters:", filterError);
-    error.value = "Failed to load filters. Please try again later.";
-    filters.value = [];
-  } else {
-    error.value = null;
-  }
-}, { immediate: true });
+};
 
 // Toggle filter section
 function toggleFilter(filterSlug) {
@@ -609,6 +507,119 @@ const updateUrlWithFilters = () => {
 
   router.replace({ query });
   emit("filter-change");
+};
+
+// Parse selected filters from URL
+const parseSelectedFiltersFromUrl = () => {
+  const attributesParam = route.query.has_attributs;
+  if (!attributesParam) {
+    selectedFilters.value = {};
+    emit("update:filterSelections", []); // Emit empty array when no filters
+    return;
+  }
+
+  const attributeIds = attributesParam
+    .split(",")
+    .map((id) => parseInt(id, 10));
+    
+  // Emit the attribute IDs for ProductList component
+  emit("update:filterSelections", attributeIds);
+
+  // Group selected values by their filter
+  filters.value.forEach((filter) => {
+    const selectedValues = filter.values
+      .filter((value) => attributeIds.includes(value.id))
+      .map((value) => value.id);
+    
+    if (selectedValues.length > 0) {
+      selectedFilters.value[filter.option_slug] = selectedValues;
+    }
+  });
+};
+
+// Parse price range from URL query parameters
+const parsePriceRangeFromUrl = () => {
+  // Always set allowed range to 0 and 1000
+  minPrice.value = 0;
+  maxPrice.value = 1000;
+
+  // Get filter values from URL
+  const minPriceParam = parseInt(route.query.price_gte);
+  const maxPriceParam = parseInt(route.query.price_lte);
+
+  priceRange.value = [
+    !isNaN(minPriceParam) ? minPriceParam : minPrice.value,
+    !isNaN(maxPriceParam) ? maxPriceParam : maxPrice.value
+  ];
+
+  // Emit updated price range
+  emit("update:priceRange", priceRange.value);
+};
+
+// Fetch filters based on category ID
+const fetchFilters = async () => {
+  // Guard: Don't fetch if required props are not available
+  if (!props.categoryId || !props.companyId) {
+    loading.value = false;
+    error.value = null;
+    filters.value = [];
+    subcategoriesData.value = [];
+    return;
+  }
+  
+  loading.value = true;
+  error.value = null;
+
+  try {
+    // Fetch filters
+    const response = await fetch(
+      `${baseURL}category-filters/${props.categoryId}/${props.companyId}`
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch filters");
+    }
+
+    const data = await response.json();
+    filters.value = data;
+
+    // Fetch subcategories
+    await fetchSubcategories();
+
+    // After fetching filters, parse any URL parameters
+    parseSelectedFiltersFromUrl();
+    parsePriceRangeFromUrl();
+    parseSubcategoriesFromUrl();
+    
+    // Set all filters to open by default after they're loaded
+    filters.value.forEach((filter) => {
+      openFilters.value[filter.option_slug] = true;
+    });
+    // Set price filter to open by default
+    openFilters.value["price"] = true;
+    // Set subcategories filter to open by default
+    openFilters.value["subcategories"] = true;
+    
+  } catch (err) {
+    console.error("Error fetching filters:", err);
+    error.value = "Failed to load filters. Please try again later.";
+    filters.value = [];
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Parse subcategories from URL
+const parseSubcategoriesFromUrl = () => {
+  const subcategoriesParam = route.query.has_category;
+  if (!subcategoriesParam) {
+    selectedSubcategories.value = [];
+    return;
+  }
+
+  selectedSubcategories.value = subcategoriesParam
+    .split(",")
+    .map((id) => parseInt(id, 10))
+    .filter(id => !isNaN(id));
 };
 
 // Toggle subcategory selection
@@ -733,6 +744,16 @@ watch(
   { deep: true }
 );
 
+// Watch for category ID changes to reload filters
+watch(
+  () => props.categoryId,
+  (newCategoryId, oldCategoryId) => {
+    if (newCategoryId !== oldCategoryId && newCategoryId) {
+      fetchFilters();
+    }
+  }
+);
+
 // Apply price filter
 function applyPriceFilter() {
   const query = { ...route.query };
@@ -752,6 +773,17 @@ function applyPriceFilter() {
   emit("filter-change");
 }
 
+// Initialize filter state
+onMounted(() => {
+  // Initialize with empty filters object
+  openFilters.value = {}; 
+  
+  // Only fetch filters if we have valid props
+  if (props.categoryId && props.companyId) {
+    fetchFilters();
+  }
+});
+
 // Add computed property to check if there are any filters available
 const availableFilters = computed(() => {
   return filters.value.filter(filter => filter.values && filter.values.length > 0);
@@ -761,6 +793,11 @@ const availableFilters = computed(() => {
 const hasFilters = computed(() => {
   return loading.value || error.value || availableFilters.value.length > 0;
 });
+
+// Watch hasFilters and emit to parent component
+watch(hasFilters, (newValue) => {
+  emit("update:has-filters", newValue);
+}, { immediate: true });
 </script>
 
 <style scoped>

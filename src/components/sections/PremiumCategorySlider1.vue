@@ -38,7 +38,7 @@
         <div class="category-card">
           <div class="category-image-wrapper">
             <a :href="child.link" class="category-link">
-              <img :src="child.image.image" alt="Category Image" class="category-image" width="137" height="137" />
+              <img :src="imghttps(child.image.image)" alt="Category Image" class="category-image" width="137" height="137" />
             </a>
           </div>
           <div class="category-content">
@@ -56,6 +56,7 @@
 <script setup>
 import { register } from 'swiper/element/bundle';
 import 'swiper/css';
+import { imghttps } from '~/composables/services/helpers';
 
 register();
 

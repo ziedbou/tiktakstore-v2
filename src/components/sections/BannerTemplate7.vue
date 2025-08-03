@@ -25,7 +25,7 @@
         <div class="banner-overlay"></div>
         <div
           class="banner-bg"
-          :style="{ backgroundImage: 'url(' + data.values.image_1.image + ')' }"
+          :style="{ backgroundImage: 'url(' + imghttps(data.values.image_1.image) + ')' }"
         ></div>
         <div class="banner-content text-center">
           <p class="banner-subtitle text-sm md:text-base mb-4">
@@ -49,7 +49,7 @@
         <div class="banner-overlay"></div>
         <div
           class="banner-bg"
-          :style="{ backgroundImage: 'url(' + data.values.image_2.image + ')' }"
+          :style="{ backgroundImage: 'url(' + imghttps(data.values.image_2.image) + ')' }"
         ></div>
         <div class="banner-content text-center">
           <p class="banner-subtitle text-sm md:text-base mb-4">
@@ -78,7 +78,7 @@
         <div class="banner-overlay"></div>
         <div
           class="banner-bg"
-          :style="{ backgroundImage: 'url(' + data.values.image_3.image + ')' }"
+          :style="{ backgroundImage: 'url(' + imghttps(data.values.image_3.image) + ')' }"
         ></div>
         <div class="banner-content banner-small-content-right space-y-2 md:space-y-0 lg:space-y-0 xl:space-y-3">
           <p class="banner-subtitle text-sm md:text-base">
@@ -102,7 +102,7 @@
         <div class="banner-overlay"></div>
         <div
           class="banner-bg"
-          :style="{ backgroundImage: 'url(' + data.values.image_4.image + ')' }"
+          :style="{ backgroundImage: 'url(' + imghttps(data.values.image_4.image) + ')' }"
         ></div>
         <div class="banner-content banner-small-content-left space-y-2 md:space-y-0 lg:space-y-0 xl:space-y-3">
           <p class="banner-subtitle text-sm md:text-base">
@@ -126,7 +126,7 @@
         <div class="banner-overlay"></div>
         <div
           class="banner-bg"
-          :style="{ backgroundImage: 'url(' + data.values.image_5.image + ')' }"
+          :style="{ backgroundImage: 'url(' + imghttps(data.values.image_5.image) + ')' }"
         ></div>
         <div class="banner-content banner-small-content-right space-y-2 md:space-y-0 lg:space-y-0 xl:space-y-3">
           <p class="banner-subtitle text-sm md:text-base">
@@ -146,6 +146,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

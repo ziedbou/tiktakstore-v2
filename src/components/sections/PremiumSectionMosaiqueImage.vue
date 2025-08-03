@@ -17,13 +17,13 @@
     <!-- Colonne 1 -->
     <div class="best-selling-col-1 flex flex-col items-start justify-center max-w-[630px] flex-1">
       <div class="product-image_pbs flex-1 w-full text-center overflow-hidden" :style="{ borderRadius: 'var(--img-border-radius)' }">
-        <a :href="data.values.link_1">
-          <img :src="data.values.image_1.image" alt="Product Image" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
-        </a>
+        <NuxtLink :href="data.values.link_1">
+          <NuxtImg :src="imghttps(data.values?.image_1.image)" alt="Product Image" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+        </NuxtLink>
       </div>
       <h2 class="text-base my-6" :style="{ color: 'var(--sub-title-color)' }">{{ data.values.sub_title_1 }}</h2>
       <h3 class="text-4xl font-normal my-0" :style="{ color: 'var(--title-color)' }">{{ data.values.title_1 }}</h3>
-      <a
+      <NuxtLink
         :href="data.values.link_1"
         class="discover-more_pbs px-6 py-3 my-8 no-underline transition-all duration-300 ease-in-out"
         :style="{
@@ -36,14 +36,14 @@
         @mouseleave="hoverBtn(false, $event)"
       >
         {{ data.values.btn_text_1 }}
-      </a>
+      </NuxtLink>
     </div>
 
     <!-- Colonne 2 -->
     <div class="best-selling-col-1-col-2 flex flex-col items-start justify-center max-w-[630px] flex-1">
       <h2 class="text-base my-6" :style="{ color: 'var(--sub-title-color)' }">{{ data.values.sub_title_2 }}</h2>
       <h3 class="text-4xl font-normal my-0" :style="{ color: 'var(--title-color)' }">{{ data.values.title_2 }}</h3>
-      <a
+      <NuxtLink
         :href="data.values.link_2"
         class="discover-more_pbs px-6 py-3 my-8 no-underline transition-all duration-300 ease-in-out"
         :style="{
@@ -56,17 +56,20 @@
         @mouseleave="hoverBtn(false, $event)"
       >
         {{ data.values.btn_text_1 }}
-      </a>
+      </NuxtLink>
       <div class="product-image_pbs flex-1 w-full text-center overflow-hidden" :style="{ borderRadius: 'var(--img-border-radius)' }">
-        <a :href="data.values.link_2">
-          <img :src="data.values.image_2.image" alt="Product Image" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
-        </a>
+        <NuxtLink :href="data.values.link_2">
+          <NuxtImg :src="imghttps(data.values?.image_2.image)" alt="Product Image" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" />
+        </NuxtLink>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+
+import { imghttps } from '~/composables/services/helpers';
+
 export default {
   props: {
     data: {

@@ -1,33 +1,27 @@
 <template>
-  <div class="product_tags">
+  <div class="product_tags"
+    :style="{ margin: isRelative ? '8px 0' : '0', 
+    display:  isRelative ? 'flex' : 'block'
+  , flexDirection:  isRelative ? 'column' : 'initial'
+  , gap:  isRelative ? '5px' : '0'  }"
+  >
     <!-- stock message -->
-    <span
-      v-if="product.total_stock < 1  && !product.order_without_stock"
-      class="product-card-tag tag-out-of-stock z-1"
-      :class="outOfStockTagClass"
-    >
-      En rupture de stock
-    </span>
+    <OutOfStockTag 
+      :product="product" 
+      :extra-class="outOfStockTagClass"
+    />
     <!-- discount message -->
-    <span
-      v-if="product.discount > 0"
-      class="product-card-tag tag tag-promo z-1"
-      :class="promoTagClass"
-    >
-      <template v-if="true" xv-if="usePromoTagStyle">
-        <template v-if="product.discount_type === 'percent'"
-          >{{ Math.floor(product.discount) }}% de réduction</template
-        >
-        <template v-if="product.discount_type === 'fixed_amount'"
-          >{{ product.discount }} TND {{ currency }} de réduction</template
-        >
-      </template>
-      <template v-else> En promotion </template>
-    </span>
+    <PromoTag 
+      :product="product" 
+      :extra-class="promoTagClass"
+    />
   </div>
 </template>
 
 <script setup>
+import OutOfStockTag from "./OutOfStockTag.vue";
+import PromoTag from "./PromoTag.vue";
+
 defineProps({
   product: {
     type: Object,
@@ -35,13 +29,14 @@ defineProps({
   },
   outOfStockTagClass: {
     type: String,
-    required: false,
-    default: '',
   },
   promoTagClass: {
     type: String,
+  },
+  isRelative: {
+    type: Boolean,
     required: false,
-    default: '',
+    default: false,
   },
 });
 </script>
@@ -49,31 +44,10 @@ defineProps({
 <style scoped>
 .product_tags {
   z-index: 11;
-}
-
-.product-card-tag {
-  border-radius: 15px;
-  height: fit-content;
-  font-size: 11px;
-  padding: 6px 10px;
-  width: fit-content;
-  border-radius: 2px !important;
   position: absolute;
+  inset: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
-
-.tag-out-of-stock {
-  color: var(--product-block-tag-color, #fff);
-  background-color: var(--product-block-tag-background, #666666);
-}
-
-.tag-promo {
-  color: var(--product-block-tag-color, #fff);
-  background-color: var(--product-block-tag-background, #00dc82);
-}
-
-/*@media (max-width: 1280px) {
-  .product_tags {
-    top: 105px;
-  }
-}*/
 </style>

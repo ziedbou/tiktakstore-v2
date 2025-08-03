@@ -1,200 +1,42 @@
-// Modern Header Design Configuration Object
-const getHeaderDesignConfig = () => {
-  
-  // 🎨 THEME 1: Modern Blue (CURRENTLY ACTIVE)
-  return {
-    'header-top-bg': '#f8fafc',
-    'header-top-color': '#64748b', 
-    'header-top-color-hover': '#3b82f6',
-    'header-middle-bg': '#ffffff',
-    'header-middle-color': '#1e293b',
-    'header-middle-color-hover': '#3b82f6',
-    'header-bottom-bg': '#1e293b',
-    'header-bottom-color': '#f1f5f9',
-    'header-bottom-hover': '#3b82f6',
-    'header-badge-bg': '#ef4444',
-    'header-badge-color': '#ffffff',
-    'header-submenu-link-color': '#475569',
-    'header-submenu-link-color-hover': '#3b82f6'
-  }
-
-  // 🟣 THEME 2: Purple Elegance (Uncomment to use)
-  /*
-  return {
-    'header-top-bg': '#faf5ff',
-    'header-top-color': '#7c3aed', 
-    'header-top-color-hover': '#8b5cf6',
-    'header-middle-bg': '#ffffff',
-    'header-middle-color': '#1f2937',
-    'header-middle-color-hover': '#7c3aed',
-    'header-bottom-bg': '#581c87',
-    'header-bottom-color': '#f3e8ff',
-    'header-bottom-hover': '#8b5cf6',
-    'header-badge-bg': '#dc2626',
-    'header-badge-color': '#ffffff',
-    'header-submenu-link-color': '#6b7280',
-    'header-submenu-link-color-hover': '#7c3aed'
-  }
-  */
-
-  // 🟢 THEME 3: Fresh Green (Uncomment to use)
-  /*
-  return {
-    'header-top-bg': '#f0fdf4',
-    'header-top-color': '#15803d', 
-    'header-top-color-hover': '#16a34a',
-    'header-middle-bg': '#ffffff',
-    'header-middle-color': '#111827',
-    'header-middle-color-hover': '#15803d',
-    'header-bottom-bg': '#14532d',
-    'header-bottom-color': '#dcfce7',
-    'header-bottom-hover': '#16a34a',
-    'header-badge-bg': '#ea580c',
-    'header-badge-color': '#ffffff',
-    'header-submenu-link-color': '#4b5563',
-    'header-submenu-link-color-hover': '#15803d'
-  }
-  */
-
-  // ⚫ THEME 4: Monochrome Professional (Uncomment to use)
-  /*
-  return {
-    'header-top-bg': '#f9fafb',
-    'header-top-color': '#374151', 
-    'header-top-color-hover': '#111827',
-    'header-middle-bg': '#ffffff',
-    'header-middle-color': '#111827',
-    'header-middle-color-hover': '#374151',
-    'header-bottom-bg': '#111827',
-    'header-bottom-color': '#f9fafb',
-    'header-bottom-hover': '#6b7280',
-    'header-badge-bg': '#dc2626',
-    'header-badge-color': '#ffffff',
-    'header-submenu-link-color': '#6b7280',
-    'header-submenu-link-color-hover': '#111827'
-  }
-  */
-
-  // 🔥 THEME 5: Warm Orange (Uncomment to use)
-  /*
-  return {
-    'header-top-bg': '#fff7ed',
-    'header-top-color': '#c2410c', 
-    'header-top-color-hover': '#ea580c',
-    'header-middle-bg': '#ffffff',
-    'header-middle-color': '#1f2937',
-    'header-middle-color-hover': '#c2410c',
-    'header-bottom-bg': '#9a3412',
-    'header-bottom-color': '#fed7aa',
-    'header-bottom-hover': '#ea580c',
-    'header-badge-bg': '#dc2626',
-    'header-badge-color': '#ffffff',
-    'header-submenu-link-color': '#6b7280',
-    'header-submenu-link-color-hover': '#c2410c'
-  }
-  */
-
-  // 💙 THEME 6: Ocean Blue (Uncomment to use)
-  /*
-  return {
-    'header-top-bg': '#f0f9ff',
-    'header-top-color': '#0369a1', 
-    'header-top-color-hover': '#0284c7',
-    'header-middle-bg': '#ffffff',
-    'header-middle-color': '#0f172a',
-    'header-middle-color-hover': '#0369a1',
-    'header-bottom-bg': '#0c4a6e',
-    'header-bottom-color': '#e0f2fe',
-    'header-bottom-hover': '#0284c7',
-    'header-badge-bg': '#e11d48',
-    'header-badge-color': '#ffffff',
-    'header-submenu-link-color': '#475569',
-    'header-submenu-link-color-hover': '#0369a1'
-  }
-  */
-
-  // 🌸 THEME 7: Rose Gold (Uncomment to use)
-  /*
-  return {
-    'header-top-bg': '#fdf2f8',
-    'header-top-color': '#be185d', 
-    'header-top-color-hover': '#e11d48',
-    'header-middle-bg': '#ffffff',
-    'header-middle-color': '#1f2937',
-    'header-middle-color-hover': '#be185d',
-    'header-bottom-bg': '#881337',
-    'header-bottom-color': '#fce7f3',
-    'header-bottom-hover': '#e11d48',
-    'header-badge-bg': '#dc2626',
-    'header-badge-color': '#ffffff',
-    'header-submenu-link-color': '#6b7280',
-    'header-submenu-link-color-hover': '#be185d'
-  }
-  */
-
-  // 🌟 THEME 8: Gold Luxury (Uncomment to use)
-  /*
-  return {
-    'header-top-bg': '#fffbeb',
-    'header-top-color': '#d97706', 
-    'header-top-color-hover': '#f59e0b',
-    'header-middle-bg': '#ffffff',
-    'header-middle-color': '#1c1917',
-    'header-middle-color-hover': '#d97706',
-    'header-bottom-bg': '#92400e',
-    'header-bottom-color': '#fef3c7',
-    'header-bottom-hover': '#f59e0b',
-    'header-badge-bg': '#dc2626',
-    'header-badge-color': '#ffffff',
-    'header-submenu-link-color': '#57534e',
-    'header-submenu-link-color-hover': '#d97706'
-  }
-  */
-
-  // 🌙 THEME 9: Dark Mode (Uncomment to use)
-  /*
-  return {
-    'header-top-bg': '#1f2937',
-    'header-top-color': '#9ca3af', 
-    'header-top-color-hover': '#f3f4f6',
-    'header-middle-bg': '#111827',
-    'header-middle-color': '#f9fafb',
-    'header-middle-color-hover': '#60a5fa',
-    'header-bottom-bg': '#030712',
-    'header-bottom-color': '#e5e7eb',
-    'header-bottom-hover': '#60a5fa',
-    'header-badge-bg': '#ef4444',
-    'header-badge-color': '#ffffff',
-    'header-submenu-link-color': '#d1d5db',
-    'header-submenu-link-color-hover': '#60a5fa'
-  }
-  */
-
-  // 🍃 THEME 10: Nature Green (Uncomment to use)
-  /*
-  return {
-    'header-top-bg': '#f0fdf4',
-    'header-top-color': '#166534', 
-    'header-top-color-hover': '#22c55e',
-    'header-middle-bg': '#ffffff',
-    'header-middle-color': '#052e16',
-    'header-middle-color-hover': '#166534',
-    'header-bottom-bg': '#052e16',
-    'header-bottom-color': '#bbf7d0',
-    'header-bottom-hover': '#22c55e',
-    'header-badge-bg': '#f97316',
-    'header-badge-color': '#ffffff',
-    'header-submenu-link-color': '#374151',
-    'header-submenu-link-color-hover': '#166534'
-  }
-  */
-}
-
-export function generateHeadData({ storeInfo, companyData, baseURL }) {
+export function generateHeadData({ storeInfo, companyData, baseURL, cdnURL }) {
   // Generate CSS variables from css_settings
   const generateCSSVariables = () => {
     const cssVars = [];
-    const cssSettings = storeInfo.css_settings;
+    const cssSettings = storeInfo.css_settings||{};
+    const cssNavSettings = cssSettings.navbar||{
+      'header_top_bg': '#f8fafc',
+      'header_top_color': '#64748b', 
+      'header_top_color_hover': '#3b82f6',
+      'header_middle_bg': '#ffffff',
+      'header_middle_color': '#1e293b',
+      'header_middle_color_hover': '#3b82f6',
+  
+      'header_bottom_bg': '#1e293b',
+      'header_bottom_color': '#f1f5f9',
+      'header_bottom_hover': '#3b82f6',
+  
+      'header_badge_bg': '#ef4444',
+      'header_badge_color': '#ffffff',
+  
+      'header_submenu_link_color': '#475569',
+      'header_submenu_link_color_hover': '#3b82f6'
+    };
+    const cssBtnSettings = cssSettings.buttons||{
+       //primary button solid
+    'btn_primary_solid_background': '#4f39f6',
+    'btn_primary_solid_background_hover': '#432dd7',
+    'btn_primary_solid_color': '#ffffff',
+    'btn_primary_solid_color_hover': '#ffffff',
+    'btn_primary_solid_border_radius': '6px',
+    //primary button outline
+    'btn_primary_outline_background': 'rgba(0, 0, 0, 0)',
+    'btn_primary_outline_background_hover': '#eef2ff',
+    'btn_primary_outline_border_color': '#4f39f6',
+    'btn_primary_outline_border_color_hover': '#432dd7',
+    'btn_primary_outline_color': '#4f39f6',
+    'btn_primary_outline_color_hover': '#432dd7',
+    'btn_primary_outline_border_radius': '6px',
+    };
 
     // Add font family as CSS variable
     if (cssSettings.font?.css) {
@@ -212,10 +54,17 @@ export function generateHeadData({ storeInfo, companyData, baseURL }) {
       }
     });
 
-    // Dynamically push header design configuration to cssVars
-    Object.entries(getHeaderDesignConfig()).forEach(([key, value]) => {
-      cssVars.push(`--${key}: ${value};`);
+     // Dynamically push header design configuration to cssVars
+    Object.entries(cssNavSettings).forEach(([key, value]) => {
+      const cssVarName = key.replace(/_/g, '-');
+      cssVars.push(`--${cssVarName}: ${value};`);
     });
+  
+    // Dynamically push Buttons design configuration to cssVars
+       Object.entries(cssBtnSettings).forEach(([key, value]) => {
+        const cssVarName = key.replace(/_/g, '-');
+        cssVars.push(`--${cssVarName}: ${value};`);
+      });
 
     return `
       @layer base {
@@ -242,7 +91,7 @@ export function generateHeadData({ storeInfo, companyData, baseURL }) {
   };
 
   // Meta description is just the description
-  const metaDescription = storeInfo?.seo_settings?.description || 'Welcome to our store';
+  const metaDescription = storeInfo?.seo_settings?.description || 'Bienvenue dans notre boutique';
 
   // Full title for social media
   const fullTitle = generateTitle();
@@ -256,7 +105,7 @@ export function generateHeadData({ storeInfo, companyData, baseURL }) {
       },
       {
         name: 'keywords',
-        content: storeInfo?.seo_settings?.keywords || 'Welcome to our store'
+        content: storeInfo?.seo_settings?.keywords || 'Bienvenue dans notre boutique'
       },
       {
         name: 'author',
@@ -298,8 +147,13 @@ export function generateHeadData({ storeInfo, companyData, baseURL }) {
       // Company-specific CSS
       {
         rel: 'stylesheet',
-        href: `${baseURL}website/main.css/?slug=${companyData.slug}`,
-        key: `${companyData.slug}-custom-css`
+        href: `${baseURL}website/main.css/?slug=${companyData?.slug}`,
+        key: `${companyData?.slug}-custom-css`
+      },
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: `${cdnURL}website/favicon.ico/?slug=${companyData?.slug}`,
       },
     ],
     style: [
@@ -311,5 +165,3 @@ export function generateHeadData({ storeInfo, companyData, baseURL }) {
   };
 }
 
-// Export the header design configuration for use in other components
-export { getHeaderDesignConfig };

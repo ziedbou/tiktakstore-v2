@@ -2,7 +2,7 @@
   <div class="swiper-container">
     <div class="swiper-wrapper">
       <div class="swiper-slide" v-for="(slide, index) in slides" :key="index">
-        <img :src="slide.image" :alt="slide.alt" class="slide-image" />
+        <img :src="imghttps(slide.image)" :alt="slide.alt" class="slide-image" />
         <div class="slide-content">
           <h3>{{ slide.title }}</h3>
           <p>{{ slide.description }}</p>
@@ -21,6 +21,7 @@
 <script>
 import Swiper from 'swiper';
 import 'swiper/swiper-bundle.css'; // Importez les styles de Swiper
+import { imghttps } from '~/composables/services/helpers';
 
 export default {
   props: {

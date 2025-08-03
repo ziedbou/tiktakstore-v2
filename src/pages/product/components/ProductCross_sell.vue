@@ -1,43 +1,49 @@
 <template>
-  <div class="bg-white rounded-lg shadow-md p-6 max-w-2xl w-full mx-auto">
+  <div class="bg-white rounded-lg max-w-2xl w-full mx-auto py-6">
     <h1 class="text-2xl font-bold text-center text-blue-900 mb-6">Bundle & Save</h1>
-    <div v-if="bundle" class="flex flex-col gap-6 mb-6">
-      <div v-for="(row, rowIndex) in chunkedProducts" :key="rowIndex" class="flex flex-wrap gap-4">
+    <div v-if="bundle" class="flex flex-row flex-wrap gap-y-5 justify-center mb-6">
         <div
-          v-for="(product, colIndex) in row"
-          :key="product.id"
-          class="flex items-center w-full sm:w-[calc(50%-0.5rem)]"
+        v-for="(product, index) in bundle?.bundles_product"
+        :key="product.id"
+        class="flex flex-row  "
         >
-          <div class="border rounded-lg p-4 flex-1 min-w-0 flex flex-col items-center h-64">
-            <div class="flex justify-center mb-4">
-              <div class="bg-gray-100 rounded-lg p-2 w-24 h-24 flex items-center justify-center">
-                <img :src="product.photo_thumb" :alt="product.name" class="max-w-full max-h-full object-contain" />
+          <div
+          class="flex items-center w-full max-w-[150px]"
+        >
+          <div class=" bg-gray-200 border border-gray-300 border-2 rounded-lg flex-1 min-w-0 flex flex-col items-center h-64">
+            <div class="flex mb-4 min-w-full">
+              <div class="bg-red-300 rounded-lg w-full h-32 flex items-center justify-center ">
+                <img :src="imghttps(product.photo_thumb)" :alt="product.name" class="w-full rounded-t-md h-full object-cover" />
               </div>
             </div>
-            <h2 class="text-center font-medium mb-1 text-sm line-clamp-2 overflow-hidden">{{ product.name }}</h2>
-            <p class="text-center font-semibold mt-auto">{{ product.price }} TND</p>
-          </div>
-          <div
-            v-if="colIndex < row.length - 1"
-            class="flex items-center justify-center mx-4"
-          >
-            <span class="text-3xl text-gray-400">+</span>
+            <div class="px-2">
+              <h2 class="text-center font-medium mb-1 text-sm line-clamp-3 overflow-hidden">{{ product.name }}</h2>
+              <p class="text-center font-semibold mt-auto text-[#da252e]">{{ product.price }} TND</p>
+            </div>
           </div>
         </div>
-      </div>
-      
+        <div
+          v-if="index < bundle?.bundles_product?.length - 1"
+          class="flex items-center  justify-center mx-4"
+        >
+          <span class="text-3xl text-gray-700">+</span>
+        </div>
+        </div>
     </div>
-    <div v-if="bundle" class="flex justify-between items-center mb-6">
-      <div class="flex items-baseline">
-        <span class="font-semibold mr-2">Total:</span>
-        <span class="text-gray-500 line-through text-sm mr-2">{{ bundle.price }} TND</span>
-        <span class="text-indigo-600 font-bold text-2xl">{{ bundle.price - bundle.discount }} TND</span>
-      </div>
-      <div class="bg-white border border-gray-300 rounded-full py-1 px-4">
-        <span class="text-gray-800">Gagner {{ bundle.discount }} TND</span>
-      </div>
-    </div>
-    <button class="w-full bg-indigo-600 text-white rounded-lg py-3 font-semibold hover:bg-indigo-700 transition">
+    
+    <div v-if="bundle" class="flex flex-col items-center mb-6 text-center space-y-2">
+  <div class="text-gray-400 line-through text-lg animate-bounce">
+    {{ bundle.price }} TND
+  </div>
+  <div class="text-4xl font-bold text-[#da252e] animate-bounce animation-delay-100">
+    {{ bundle.price - bundle.discount }} TND
+  </div>
+  <div class="bg-green-500 text-white px-4 py-1 rounded-full text-sm font-medium inline-block animate-bounce animation-delay-200">
+    Gagner {{ bundle.discount }} TND
+  </div>
+</div>
+
+    <button @click="handleAddBundleProduct" class="w-full bg-[#da252e] text-white rounded-lg py-4 font-semibold hover:bg-[#c32028] transition">
       Ajouter tout à la carte
     </button>
     <div v-if="error" class="text-red-500 text-center mt-4">{{ error }}</div>
@@ -46,8 +52,14 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
+import { addToCart } from '~/composables/services/cartService';
+import { imghttps } from '~/composables/services/helpers';
 
 const props = defineProps({
+  product: {
+    type: Object,
+    default: () => ({}),
+  },
   extra: {
     type: Object,
     required: true,
@@ -82,6 +94,22 @@ const fetchBundle = async () => {
     console.error('Error fetching bundle data:', err);
     error.value = 'Failed to load bundle data.';
   }
+};
+
+const handleAddBundleProduct = async () => {
+  if (!bundle.value || !bundle.value.bundles_product || bundle.value.bundles_product.length === 0) {
+    error.value = 'No products available in this bundle.';
+    return;
+  }
+
+  let options = bundle.value.bundles_product.map(product => ({
+    product_name: product.name,
+    quantity: 1,
+    product_id: product.id,
+    photo_thumb: product.photo_thumb,
+    attrs: ""
+  }));
+  addToCart(props.product, 1, options);
 };
 
 onMounted(() => {

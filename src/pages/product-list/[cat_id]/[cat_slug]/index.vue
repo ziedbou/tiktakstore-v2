@@ -1,10 +1,10 @@
 <template>
-  <div class="product-list-page">
+  <div class="min-h-[80vh]">
     <div
-      class="page-header text-center"
+      class="py-10 bg-gray-200 bg-[url('@/assets/images/page-header-bg.jpg')] bg-cover bg-center bg-no-repeat mb-8 text-center"
     >
       <div class="container">
-        <h1 class="text-gray-700 font-bold text-2xl md:text-4xl">{{ categoryName }}</h1>
+        <h1 class="text-gray-700 font-semibold text-2xl tracking-widest mb-0 uppercase">{{ categoryName }}</h1>
       </div>
     </div>
 
@@ -20,31 +20,30 @@
 
       <div v-else class="container-medium">
         <Breadcrumb :items="breadcrumbItems" />
-        <div class="grid grid-cols-1 lg:grid-cols-24 gap-8 my-8">
-          <!-- Left sidebar (30%) - Only show if filters are available -->
-          <div v-if="hasFilters" class="lg:col-span-5">
-            <CategorieFilter 
-              :categoryId="categoryId" 
-              :companyId="companyId"
-              v-model:filterSelections="filterSelections"
-              v-model:priceRange="priceRange"
-              @reset-filters="resetFilters"
-              @update:has-filters="handleFilterAvailability"
-            />
-          </div>
+                 <div :class="hasFilters ? 'flex flex-col lg:flex-row gap-8 my-8' : 'my-8'">
+           <!-- Left sidebar (20.83%) - Only show if filters are available -->
+           <div v-if="hasFilters" class="lg:basis-5/24 lg:flex-shrink-0 lg:sticky lg:bottom-4 lg:self-end lgsss:max-h-[calc(100vh-2rem)] lgsss:overflow-y-auto">
+             <CategorieFilter 
+               :categoryId="categoryId" 
+               :companyId="companyId"
+               v-model:filterSelections="filterSelections"
+               v-model:priceRange="priceRange"
+               @reset-filters="resetFilters"
+               @update:has-filters="handleFilterAvailability"
+             />
+           </div>
 
-          <!-- Right content area - Adjust width based on filter availability -->
-          <div :class="hasFilters ? 'lg:col-span-19' : 'lg:col-span-24'">
-            <ProductList
-              :categoryId="categoryId"
-              :companyId="companyId"
-              :filterSelections="filterSelections"
-              :priceRange="priceRange"
-              v-model:breadcrumbItems="breadcrumbItems"
-              @reset-filters="resetFilters"
-            />
-          </div>
-        </div>
+           <!-- Right content area - Takes remaining space when filters exist, full width when no filters -->
+           <div :class="hasFilters ? 'lg:flex-1' : 'w-full'">
+             <ProductList
+               :categoryId="categoryId"
+               :companyId="companyId"
+               :filterSelections="filterSelections"
+               :priceRange="priceRange"
+               @reset-filters="resetFilters"
+             />
+           </div>
+         </div>
       </div>
     </div>
     
@@ -69,9 +68,8 @@ import ScrollToTop from "@/components/ScrollToTop.vue";
 import { useCompanyData } from "@/composables/useCompanyData";
 
 const {companyId} = useCompanyData();
+
 // Add state to track if filters are available
-
-
 const hasFilters = ref(true);
 
 const route = useRoute();
@@ -91,8 +89,7 @@ const filterSelections = ref([]);
 const priceRange = ref([0, 1000]);
 const minPrice = ref(0);
 const maxPrice = ref(1000);
-const config = useRuntimeConfig()
-const baseURL = config.public.baseURL
+
 // Extract the category ID and slug from the route parameters
 const categoryId = computed(() => route.params.cat_id);
 
@@ -124,7 +121,7 @@ async function fetchCategoryDetails() {
   if (!categoryId.value) return;
     
   try {
-    const response = await fetch( baseURL + `categories-read/${categoryId.value}/`);
+    const response = await fetch(`https://api.tiktak.space/api/v1/categories-read/${categoryId.value}/`);
     if (response.ok) {
       const data = await response.json();
       
@@ -231,28 +228,3 @@ function handleFilterAvailability(isAvailable) {
   hasFilters.value = isAvailable;
 }
 </script>
-
-<style scoped>
-.product-list-page {
-  min-height: 80vh;
-}
-
-/* Add styles for the page header */
-.page-header {
-  padding: 4rem 0;
-  background-color: #ebebeb;
-  background-image: url('/images/page-header-bg.jpg');
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  margin-bottom: 2rem;
-}
-
-.page-title {
-  font-size: 3rem;
-  font-weight: 600;
-  letter-spacing: -0.025em;
-  margin-bottom: 0;
-  text-transform: uppercase;
-}
-</style>

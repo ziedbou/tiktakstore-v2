@@ -13,7 +13,7 @@
     <div class="section-settings">
       <div class="hero-bg">
         <video
-          :src="data.values.video_link"
+          :src="imghttps(data.values.video_link)"
           muted
           autoplay
           playsinline
@@ -155,6 +155,7 @@ import { register } from "swiper/element/bundle";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
+import { imghttps } from "~/composables/services/helpers";
 
 // Register Swiper custom elements
 register();

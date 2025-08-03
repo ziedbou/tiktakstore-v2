@@ -55,7 +55,7 @@
           </div>
         </div>
         <div class="grid-media">
-          <img :src="data.values.image.image" alt="" loading="lazy">
+          <img :src="imghttps(data.values.image.image)" alt="" loading="lazy">
         </div>
       </div>
     </div>
@@ -64,6 +64,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { imghttps } from '~/composables/services/helpers';
 
 defineProps({
   data: {

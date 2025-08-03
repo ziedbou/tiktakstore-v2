@@ -1,10 +1,8 @@
 <template>
-  <div 
-    class="root"
-    :style="{
+  <div :style="{
       '--banner-1-bg': data.values.banner_1_bg,
       '--banner-border-radius': data.values.banner_border_radius + 'px',
-      '--image-1': `url('${data.values.image_1.image}')`,
+      '--image-1': `url('${imghttps(data.values.image_1.image)}')`,
       '--subtitle-1-color': data.values.subtitle_1_color,
       '--title-1-color': data.values.title_1_color,
       '--text-1-color': data.values.text_1_color,
@@ -14,7 +12,7 @@
       '--button-1-bg-hover': data.values.button_1_bg_hover,
       '--btn-1-color-hover': data.values.btn_1_color_hover,
       '--banner-2-bg': data.values.banner_2_bg,
-      '--image-2': `url('${data.values.image_2.image}')`,
+      '--image-2': `url('${imghttps(data.values.image_2.image)}')`,
       '--subtitle-2-bg': data.values.subtitle_2_bg,
       '--subtitle-2-color': data.values.subtitle_2_color,
       '--subtitle-2-border-radius': data.values.subtitle_2_border_radius + 'px',
@@ -44,6 +42,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

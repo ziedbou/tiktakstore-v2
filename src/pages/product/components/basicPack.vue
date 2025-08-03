@@ -1,8 +1,7 @@
 <template>
   <div class="max-md:px-4">
-    <div class="mb-8">
+    <div class="mb-4 max-md:mt-4">
       <ProductTitle :extra="extra" :product="product" />
-      <div class="-mb-5"></div>
       <ProductPrice :extra="extra" :product="product" />
       <h1 class="text-lg text-center font-md text-gray-800 mt-4">Choisissez vos produits</h1>
     </div>
@@ -19,38 +18,38 @@
           >
             <div class="aspect-square bg-gray-100 p-4 flex items-center justify-center">
               <img
-                :src="product?.photo"
+                :src="imghttps(product?.photo)"
                 alt="Product Image"
                 class="w-full h-full object-cover"
               />
             </div>
             <div class="p-4">
-              <h3 class="text-lg font-semibold text-gray-800 mb-3 text-center">{{ product.name }}</h3>
+              <h3 class="text-base font-semibold text-gray-800 mb-3 text-center">{{ product.name }}</h3>
               <div
                 v-if="getQuantity(product.id) > 0"
                 class="flex items-center justify-center gap-3 mb-4"
               >
                 <button
                   @click="decrementQuantity(product.id)"
-                  class="w-8 h-8 bg-black text-white rounded flex items-center justify-center hover:bg-gray-800 transition-colors"
+                  class="w-8 h-8 rounded flex items-center justify-center bg-[var(--btn-primary-solid-background)] hover:bg-[var(--btn-primary-solid-background-hover)] text-[var(--btn-primary-solid-color)] hover:text-[var(--btn-primary-solid-color-hover)] transition-colors"
                   :disabled="getQuantity(product.id) <= 0"
                 >
-                  <span class="text-lg">−</span>
+                  <span class="text-base">−</span>
                 </button>
-                <span class="text-xl font-semibold min-w-[2rem] text-center text-blue-600">
+                <span class="text-xl font-semibold min-w-[2rem] text-center text-[var(--btn-primary-outline-color)]">
                   {{ getQuantity(product.id) }}
                 </span>
                 <button
                   @click="incrementQuantity(product.id)"
-                  class="w-8 h-8 bg-black text-white rounded flex items-center justify-center hover:bg-gray-800 transition-colors"
+                  class="w-8 h-8 bg-[var(--btn-primary-solid-background)] hover:bg-[var(--btn-primary-solid-background-hover)] text-[var(--btn-primary-solid-color)] hover:text-[var(--btn-primary-solid-color-hover)] rounded flex items-center justify-center transition-colors"
                 >
-                  <span class="text-lg">+</span>
+                  <span class="text-base">+</span>
                 </button>
               </div>
               <button
                 v-else
                 @click="addToPack(product)"
-                class="w-full py-2 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                class="w-full py-2 text-base px-4 btn-primary-outline"
               >
                 Ajouter au pack
               </button>
@@ -61,19 +60,19 @@
           <button
             @click="previousPage"
             :disabled="currentPage === 1"
-            class="px-4 py-2 text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            class="px-4 py-2 text-base text-[var(--btn-primary-outline-color)] hover:text-[var(--btn-primary-outline-color-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <span class="text-lg">←</span> précédant
+            <span>←</span> précédant
           </button>
           <div class="flex items-center gap-2">
-            <span class="text-sm text-gray-600">{{ currentPage }} sur {{ totalPages }}</span>
+            <span class="text-base text-gray-600">{{ currentPage }} sur {{ totalPages }}</span>
           </div>
           <button
             @click="nextPage"
             :disabled="currentPage === totalPages"
-            class="px-4 py-2 text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            class="px-4 py-2 text-base text-[var(--btn-primary-outline-color)] hover:text-[var(--btn-primary-outline-color-hover)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            suivant <span class="text-lg">→</span>
+            suivant <span>→</span>
           </button>
         </div>
       </div>
@@ -85,17 +84,17 @@
             @click="toggleCart"
           >
             <div class="flex items-center gap-3">
-              <div class="flex md:hidden w-8 h-8 bg-black rounded items-center justify-center">
+              <div class="flex md:hidden w-8 h-8 bg-[var(--btn-primary-solid-background)] text-[var(--btn-primary-solid-color)] rounded items-center justify-center">
                 <span
-                  class="text-white text-lg transition-transform"
+                  class="text-white text-base transition-transform"
                   :class="{ 'rotate-180': isCartExpanded }"
                 >
                   ↑
                 </span>
               </div>
-              <span class="font-semibold text-gray-800">Votre pack</span>
+              <span class="font-semibold text-base text-gray-800">Votre pack</span>
             </div>
-            <span class="text-gray-500 text-lg font-bold ">{{ cartTotalQuantity }} / {{ product?.stock }} </span>
+            <span class="text-gray-500 text-base font-bold ">{{ cartTotalQuantity }} / {{ product?.stock }} </span>
           </div>
 
           <div v-if="isCartExpanded || !isMobile" class="space-y-4 mb-6 max-md:max-h-56 overflow-y-auto ">
@@ -108,7 +107,7 @@
                 class="w-12 h-12 rounded flex items-center justify-center"
               >
                 <img
-                  :src="item?.photo_thumb"
+                  :src="imghttps(item?.photo_thumb)"
                   alt="Product Image"
                   class="w-full h-full object-cover rounded"
                 />
@@ -119,14 +118,14 @@
               <div class="flex items-center gap-2">
                 <button
                   @click="decrementQuantity(item.product_id)"
-                  class="w-6 h-6 bg-gray-300 text-gray-600 rounded flex items-center justify-center text-sm hover:bg-gray-400 transition-colors"
+                  class="w-6 h-6 bg-[var(--btn-primary-solid-background)] hover:bg-[var(--btn-primary-solid-background-hover)] text-[var(--btn-primary-solid-color)] hover:text-[var(--btn-primary-solid-color-hover)] rounded flex items-center justify-center text-sm transition-colors"
                 >
                   −
                 </button>
-                <span class="text-sm font-semibold min-w-[1.5rem] text-center">{{ item.quantity }}</span>
+                <span class="text-sm font-semibold min-w-[1.5rem] text-center text-[var(--btn-primary-outline-color)]">{{ item.quantity }}</span>
                 <button
                   @click="incrementQuantity(item.product_id)"
-                  class="w-6 h-6 bg-gray-300 text-gray-600 rounded flex items-center justify-center text-sm hover:bg-gray-400 transition-colors"
+                  class="w-6 h-6 rounded flex items-center justify-center text-sm bg-[var(--btn-primary-solid-background)] hover:bg-[var(--btn-primary-solid-background-hover)] text-[var(--btn-primary-solid-color)] hover:text-[var(--btn-primary-solid-color-hover)] transition-colors"
                 >
                   +
                 </button>
@@ -137,7 +136,7 @@
           <button
             v-if="isCartExpanded || !isMobile"
             @click="handleAddToCart"
-            class="w-full py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors max-md:mb-0 mb-4"
+            class="w-full py-3 text-base font-medium max-md:mb-0 mb-4 btn-primary-solid"
           >
             Ajouter le pack au panier
           </button>
@@ -145,7 +144,7 @@
           <div v-if="isCartExpanded || !isMobile" class="text-center">
             <button
               @click="emptyCart"
-              class="text-blue-600 hover:text-blue-800 text-sm underline transition-colors"
+              class="text-[var(--btn-primary-outline-color)] hover:text-[var(--btn-primary-outline-color-hover)] text-base underline transition-colors"
             >
               Vider le box
             </button>
@@ -161,6 +160,7 @@ import { ref, computed, toRaw } from 'vue'
 import { addToCart } from '~/composables/services/cartService';
 import ProductPrice from './ProductPrice.vue';
 import ProductTitle from './ProductTitle.vue';
+import { imghttps } from '~/composables/services/helpers';
 
 const { product } = defineProps({
   product: {
@@ -185,7 +185,6 @@ const config = useRuntimeConfig()
 const baseURL = config.public.baseURL
 const cartItems = ref([])
 const { companyId } = useCompanyData()
-const { trackAddToCart } = useTracking()
 
 const incrementQuantity = (id) => {
   if (cartTotalQuantity.value < product?.stock) {
@@ -231,7 +230,6 @@ const toggleCart = () => {
 
 const handleAddToCart = () => {
   if (cartItems.value &&  (cartTotalQuantity.value == product?.stock)) {
-    trackAddToCart(product)
     addToCart(product, 1, cartItems.value)
   } else {
     showWarning("Veuillez sélectionner toutes les packs avant d'ajouter au panier.")

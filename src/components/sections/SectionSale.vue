@@ -37,7 +37,7 @@
         <div v-for="collection in collections" :key="collection.name" class="group relative h-96 rounded-lg bg-white shadow-xl sm:aspect-4/5 sm:h-auto">
           <div aria-hidden="true" class="absolute inset-0 overflow-hidden rounded-lg">
             <div class="absolute inset-0 overflow-hidden group-hover:opacity-75">
-              <img :src="collection.imageSrc" :alt="collection.imageAlt" class="size-full object-cover" />
+              <img :src="imghttps(collection.imageSrc)" :alt="collection.imageAlt" class="size-full object-cover" />
             </div>
             <div class="absolute inset-0 bg-linear-to-b from-transparent to-black opacity-50" />
           </div>
@@ -59,6 +59,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 const collections = [
   {
     name: "Women's",

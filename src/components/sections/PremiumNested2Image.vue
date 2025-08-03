@@ -14,8 +14,8 @@
        }">
     <div class="flex flex-wrap section-container">
       <div class="images w-full md:w-full lg:w-1/2 xl:w-1/2 relative">
-        <img :src="data.values.image_1.image" alt="" class="image image-1">
-        <img :src="data.values.image_2.image" alt="" class="image image-2">
+        <img :src="imghttps(data.values.image_1.image)" alt="" class="image image-1">
+        <img :src="imghttps(data.values.image_2.image)" alt="" class="image image-2">
       </div>
       <div class="w-full md:w-full lg:w-1/2 xl:w-1/2">
         <div class="content">
@@ -35,6 +35,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

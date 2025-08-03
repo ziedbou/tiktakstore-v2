@@ -6,21 +6,16 @@
     
     <button
       @click="toggleDropdown"
-      class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-left shadow-sm hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+      class="w-full bg-white border border-gray-300 rounded-lg px-4 py-3 text-left shadow-sm hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-[var(--btn-primary-outline-border-color-hover)]  focus:border-[var(--btn-primary-outline-border-color-hover)] transition-colors"
     >
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-3">
           <template v-if="selectedOption">
-            <span
-              v-if="displaytype === 'colors' || (displaytype != 'images' && selectedOption.is_color)"
-              class="w-8 h-8 rounded-full"
-              :style="{ backgroundColor: selectedOption.value }"
-            ></span>
+           
             <img
-              v-else-if="displaytype === 'images' && selectedOption.image"
-              :src="selectedOption.image"
+              :src="imghttps(selectedOption.image)"
               :alt="selectedOption.name"
-              class="w-8 h-8 rounded-full object-cover"
+              class="w-10 h-10 rounded-full object-cover"
             />
             <span class="text-gray-700">{{ selectedOption.name }}</span>
           </template>
@@ -55,27 +50,21 @@
           v-for="option in options"
           :key="option.id"
           type="button"
-          class="w-full px-4 py-3 text-left hover:bg-blue-50 focus:outline-none focus:bg-blue-50 flex items-center space-x-3 transition-colors"
+          class="group w-full hover:bg-[var(--btn-primary-solid-background)] px-4 py-3 text-left focus:outline-none focus:bg-blue-50 flex items-center space-x-3 transition-colors"
           :class="{
-            'bg-blue-100 text-blue-700': selectedOption?.id === option.id,
+            'bg-[var(--btn-primary-outline-background-hover)] text-[var(--btn-primary-outline-color)] ': selectedOption?.id === option.id,
             'text-gray-700': selectedOption?.id !== option.id,
             'opacity-50 cursor-not-allowed': !isOptionAvailable(option)
           }"
           :disabled="!isOptionAvailable(option)"
           @click="selectOption(option)"
         >
-          <span
-            v-if="displaytype === 'colors' || (displaytype != 'images' && option.is_color)"
-            class="w-8 h-8 rounded-full"
-            :style="{ backgroundColor: option.value }"
-          ></span>
           <img
-            v-else-if="displaytype === 'images' && option.image"
-            :src="option.image"
+            :src="imghttps(option.image)"
             :alt="option.name"
-            class="w-8 h-8 rounded-full object-cover"
+            class="w-10 h-10 rounded-full object-cover"
           />
-          <span>{{ option.name }}</span>
+          <span class="group-hover:text-[var(--btn-primary-solid-color-hover)]">{{ option.name }}</span>
           <span v-if="!isOptionAvailable(option)" class="ml-auto text-red-500 text-sm">Out of stock</span>
         </button>
       </div>
@@ -85,6 +74,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { imghttps } from '~/composables/services/helpers'
 
 // Props
 const props = defineProps({

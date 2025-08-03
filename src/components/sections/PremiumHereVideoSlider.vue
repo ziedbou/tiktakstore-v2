@@ -23,7 +23,7 @@
             
             <div class="premium-here-video-slider__product" v-if="data.values.product_title">
               <div class="premium-here-video-slider__product-image">
-                <img :src="data.values.image.image" :alt="data.values.product_title">
+                <img :src="imghttps(data.values.image.image)" :alt="data.values.product_title">
               </div>
               <div class="premium-here-video-slider__product-content">
                 <p class="premium-here-video-slider__product-title">{{ data.values.product_title }}</p>
@@ -97,7 +97,7 @@
                   ></progress>
                   
                   <video 
-                    :src="vid.vid_link" 
+                    :src="imghttps(vid.vid_link)" 
                     muted 
                     playsinline 
                     @ended="handleVideoEnded"
@@ -136,6 +136,7 @@
 import { ref, onMounted, nextTick } from 'vue';
 import { register } from "swiper/element/bundle";
 import "swiper/css";
+import { imghttps } from '~/composables/services/helpers';
 
 // Register Swiper custom elements
 register();

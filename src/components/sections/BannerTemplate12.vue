@@ -14,9 +14,9 @@
       }"
     >
       <!-- Left Banner (Large) -->
-      <a :href="data.values.link_1" class="banner banner-large p-4 md:p-8 hover:shadow-md overflow-hidden aspect-[10/11] md:aspect-auto relative">
+      <NuxtLink :to="data.values.link_1" class="banner banner-large p-4 md:p-8 hover:shadow-md overflow-hidden aspect-[10/11] md:aspect-auto relative">
         <div class="banner-overlay"></div>
-        <div class="banner-bg" :style="{ backgroundImage: 'url(' + data.values.image_1.image + ')' }"></div>
+        <div class="banner-bg" :style="{ backgroundImage: 'url(' + imghttps(data.values.image_1.image) + ')' }"></div>
         <div class="banner-content text-left pl-8 md:pl-12">
           <p class="banner-subtitle text-sm md:text-base mb-1">{{ data.values.subtitle_1 }}</p>
           <h3 class="banner-title text-2xl md:text-4xl text-gray-800 mb-3 md:mb-4 max-w-64">{{ data.values.title_1 }}</h3>
@@ -25,14 +25,14 @@
             <span class="banner-arrow">→</span>
           </span>
         </div>
-      </a>
+      </NuxtLink>
 
       <!-- Right Column (Two Banners) -->
       <div class="flex flex-col gap-3 md:gap-5">
         <!-- Top Right Banner -->
-        <a :href="data.values.link_2" class="banner p-4 md:p-8 hover:shadow-md overflow-hidden h-[240px] md:h-[290px] relative">
+        <NuxtLink :to="data.values.link_2" class="banner p-4 md:p-8 hover:shadow-md overflow-hidden h-[240px] md:h-[290px] relative">
           <div class="banner-overlay"></div>
-          <div class="banner-bg" :style="{ backgroundImage: 'url(' + data.values.image_2.image + ')' }"></div>
+          <div class="banner-bg" :style="{ backgroundImage: 'url(' + imghttps(data.values.image_2.image) + ')' }"></div>
           <div class="banner-content text-left pl-8">
             <p class="banner-subtitle text-sm md:text-base mb-1">{{ data.values.subtitle_2 }}</p>
             <h3 class="banner-title text-xl md:text-2xl text-gray-800 mb-2 md:mb-3 max-w-64">{{data.values.title_2}}</h3>
@@ -41,12 +41,12 @@
               <span class="banner-arrow">→</span>
             </span>
           </div>
-        </a>
+        </NuxtLink>
         
         <!-- Bottom Right Banner -->
-        <a :href="data.values.link_3" class="banner p-4 md:p-8 hover:shadow-md overflow-hidden h-[240px] md:h-[290px] relative">
+        <NuxtLink :to="data.values.link_3" class="banner p-4 md:p-8 hover:shadow-md overflow-hidden h-[240px] md:h-[290px] relative">
           <div class="banner-overlay"></div>
-          <div class="banner-bg" :style="{ backgroundImage: 'url(' + data.values.image_3.image + ')' }"></div>
+          <div class="banner-bg" :style="{ backgroundImage: 'url(' + imghttps(data.values.image_3.image) + ')' }"></div>
           <div class="banner-content text-left pl-8">
             <p class="banner-subtitle text-sm md:text-base mb-1">{{ data.values.subtitle_3 }}</p>
             <h3 class="banner-title text-xl md:text-2xl text-gray-800 mb-2 md:mb-3 max-w-64">{{data.values.title_3}}</h3>
@@ -55,13 +55,15 @@
               <span class="banner-arrow">→</span>
             </span>
           </div>
-        </a>
+        </NuxtLink>
       </div>
     </div>
 
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

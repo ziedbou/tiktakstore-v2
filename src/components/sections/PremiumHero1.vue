@@ -37,7 +37,7 @@
               :key="index"
               class="hero-image"
             >
-              <img :src="child.image" alt="" loading="lazy">
+              <img :src="imghttps(child.image)" alt="" loading="lazy">
             </div>
           </div>
         </div>
@@ -48,7 +48,7 @@
               :key="index"
               class="hero-image"
             >
-              <img :src="child.image" alt="" loading="lazy">
+              <img :src="imghttps(child.image)" alt="" loading="lazy">
             </div>
           </div>
         </div>
@@ -59,6 +59,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 const props = defineProps({
   data: {
     type: Object,

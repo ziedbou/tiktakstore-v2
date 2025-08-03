@@ -1,18 +1,18 @@
 <template>
-  <div class="flex flex-col gap-4 mt-6">
-    <div class="flex items-center gap-4 flex-row">
+  <div class="flex flex-col gap-2 mt-6">
+    <div class="flex items-center gap-4 flex-row mb-2">
       Quantity: <QuantitySelector />
     </div>
     <button
-      class="w-full py-3 bg-transparent hover:bg-indigo-600 text-indigo-600 border cursor-pointer border-indigo-600 hover:text-white font-semibold rounded-lg transition-colors flex items-center justify-center"
+      class="w-full py-3 cursor-pointer font-medium rounded-lg transition-colors flex items-center justify-center btn-primary-solid"
       @click="handleAddToCart"
     >
-      <ShoppingCart class="h-5 w-5 mr-2 text-inherit" />
-      <span>Ajouter au panier</span>
+      <ShoppingCart class="h-5 w-5 mr-2 " />
+      <span >Ajouter au panier</span>
     </button>
     <button
       @click="handleAchatRapide"
-      class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer font-semibold rounded-lg transition-colors"
+      class="w-full py-3 cursor-pointer font-medium btn-primary-outline"
     >
       Acheter maintenant
     </button>
@@ -35,7 +35,6 @@ const { product } = defineProps({
   },
 });
 
-const { trackAddToCart } = useTracking()
 const router = useRouter();
 
 
@@ -49,7 +48,6 @@ const handleAddToCart = () => {
     }
 
     if (product.declinaison == false || (product.declinaisons?.length ?? 0) <= 0 ) {
-      trackAddToCart(product)
       addToCart(product, quantity.value);
       return
     }
@@ -57,7 +55,6 @@ const handleAddToCart = () => {
   if (quantity.value  == 1 ) {
 
     if (isSelectedByUser.value && product.declinaison == true && product.declinaisons.length > 0 ) {
-      trackAddToCart(product)
       addToCart(selectedVariant.value);
       return
     }
@@ -67,7 +64,6 @@ const handleAddToCart = () => {
       return
     }
     if (product.declinaison == false || (product.declinaisons?.length ?? 0) <= 0 ) {
-      trackAddToCart(product)
       addToCart(product);
       return
     }

@@ -7,7 +7,7 @@
       
       <!-- Mobile image display -->
       <div class="feature-image feature-image-mobile">
-        <img :src="data.values.image.image" alt="" loading="lazy">
+        <img :src="imghttps(data.values.image.image)" alt="" loading="lazy">
       </div>
       
       <!-- Mobile features grid display -->
@@ -15,7 +15,7 @@
         <div class="feature-items">
           <div class="feature-item" v-for="n in 6" :key="`mobile-item-${n}`">
             <div class="feature-icon">
-              <img :src="data.values[`icon_${n}`].image" alt="" />
+              <img :src="imghttps(data.values[`icon_${n}`].image)" alt="" />
             </div>
             <p class="feature-title">{{ data.values[`title_${n}`] }}</p>
             <p class="feature-text">{{ data.values[`text_${n}`] }}</p>
@@ -26,7 +26,7 @@
         <div class="feature-left">
           <div class="feature-item" v-for="n in 3" :key="`left-item-${n}`">
             <div class="feature-icon">
-              <img :src="data.values[`icon_${n}`].image" alt="" />
+              <img :src="imghttps(data.values[`icon_${n}`].image)" alt="" />
             </div>
             <p class="feature-title">{{ data.values[`title_${n}`] }}</p>
             <p class="feature-text">{{ data.values[`text_${n}`] }}</p>
@@ -35,14 +35,14 @@
         
         <!-- Desktop center image display -->
         <div class="feature-image feature-image-desktop">
-          <img :src="data.values.image.image" alt="" loading="lazy">
+          <img :src="imghttps(data.values.image.image)" alt="" loading="lazy">
         </div>
         
         <!-- Desktop right column features -->
         <div class="feature-right">
           <div class="feature-item" v-for="n in 3" :key="`right-item-${n}`">
             <div class="feature-icon">
-              <img :src="data.values[`icon_${n+3}`].image" alt="" />
+              <img :src="imghttps(data.values[`icon_${n+3}`].image)" alt="" />
             </div>
             <p class="feature-title">{{ data.values[`title_${n+3}`] }}</p>
             <p class="feature-text">{{ data.values[`text_${n+3}`] }}</p>
@@ -54,6 +54,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

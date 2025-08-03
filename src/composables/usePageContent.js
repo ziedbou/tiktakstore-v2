@@ -72,18 +72,13 @@ function getPageContent(pageTypeOrId, isTypePage, options = {}) {
     url = `${baseURL}website/page-read/${pageTypeOrId}/`
     cacheKey = `page-id-${pageTypeOrId}`
   }
-
   const defaultOptions = {
     key: cacheKey,
-    // Different default values based on request type
-    default: () => isTypePage ? { results: [] } : {},
     server: true,
     lazy: false,
     fresh: false,
-    getCachedData: (key) => {
-      const nuxtApp = useNuxtApp()
-      return nuxtApp.payload.data[key] || nuxtApp.static.data[key]
-    }
+    getCachedData: (key, nuxtApp) =>  nuxtApp.payload.data[key] || nuxtApp.static.data[key]
+
   }
 
   return useFetch(url, { ...defaultOptions, ...options })

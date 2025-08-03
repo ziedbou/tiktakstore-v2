@@ -30,7 +30,7 @@
         <template v-for="i in 2">
           <swiper-slide v-for="(child, index) in data.values.children" :key="`${i}-${index}`" class="partner-slide">
             <a :href="child.link" class="brand">
-              <img :src="child.image.image" alt="Partner Logo" />
+              <img :src="imghttps(child.image.image)" alt="Partner Logo" />
             </a>
           </swiper-slide>
         </template>
@@ -42,6 +42,7 @@
 <script setup>
 import { register } from "swiper/element/bundle";
 import "swiper/css";
+import { imghttps } from "~/composables/services/helpers";
 
 register();
 

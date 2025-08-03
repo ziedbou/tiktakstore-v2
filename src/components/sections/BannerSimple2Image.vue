@@ -9,20 +9,20 @@
     '--cta-color': data.values.cta_color || '#eea287',
     '--cta-bg-hover': data.values.cta_bg_hover || '#eea287',
   }">
-    <a :href="data.values.link_1 || '#'" class="banner-simple relative overflow-hidden group aspect-[16/9]">
+    <NuxtLink :href="data.values.link_1 || '#'" class="banner-simple relative overflow-hidden group aspect-[16/9]">
       <div class="banner-bg h-full w-full"
-        :style="{ backgroundImage: 'url(' + data.values.img_1.image + ')' }"></div>
+        :style="{ backgroundImage: 'url(' + imghttps(data.values.img_1.image) + ')' }"></div>
       <div class="banner-overlay opacity-0 group-hover:opacity-100"></div>
       <div class="banner-content absolute inset-0 flex flex-col justify-center p-8 z-10 space-y-5">
         <p class="banner-subtitle uppercase tracking-wide w-fit text-sm">
-          {{ data.values.subtitle_1 || "NEW ARRIVALS" }}
+          {{ data.values.subtitle_1 }}
         </p>
         <h3 class="banner-title text-2xl w-fit md:text-3xl font-semibold">
-          {{ data.values.title_1 || "WOMEN'S" }}
+          {{ data.values.title_1 }}
         </h3>
-        <div class="banner-cta mt-2">
+        <div v-if="data.values.cta_text_1" class="banner-cta mt-2">
           <span class="cta-button">
-            <p class="mt-0.5">{{ data.values.cta_text_1 || "SHOP NOW" }}</p>
+            <p class="mt-0.5">{{ data.values.cta_text_1 }}</p>
             <svg class="banner-arrow" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
               viewBox="0 0 16 16">
               <path fill-rule="evenodd"
@@ -32,22 +32,22 @@
           </span>
         </div>
       </div>
-    </a>
+    </NuxtLink>
 
-    <a :href="data.values.link_2 || '#'" class="banner-simple relative overflow-hidden group  aspect-[16/9]">
+    <NuxtLink :href="data.values.link_2 || '#'" class="banner-simple relative overflow-hidden group  aspect-[16/9]">
       <div class="banner-bg w-full h-full"
-        :style="{ backgroundImage: 'url(' + data.values.img_2.image + ')' }"></div>
+        :style="{ backgroundImage: 'url(' + imghttps(data.values.img_2.image) + ')' }"></div>
       <div class="banner-overlay opacity-0 group-hover:opacity-100"></div>
       <div class="banner-content absolute inset-0 flex flex-col justify-center p-8 z-10 space-y-5">
         <p class="banner-subtitle uppercase tracking-wide w-fit text-sm">
-          {{ data.values.subtitle_2 || "NEW ARRIVALS" }}
+          {{ data.values.subtitle_2 }}
         </p>
         <h3 class="banner-title text-2xl w-fit md:text-3xl font-semibold">
-          {{ data.values.title_2 || "MEN'S" }}
+          {{ data.values.title_2 }}
         </h3>
-        <div class="banner-cta mt-2">
+        <div v-if="data.values.cta_text_2" class="banner-cta mt-2">
           <span class="cta-button">
-            <p class="mt-0.5">{{ data.values.cta_text_2 || "SHOP NOW" }}</p>
+            <p class="mt-0.5">{{ data.values.cta_text_2 }}</p>
 
             <svg class="banner-arrow" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
               viewBox="0 0 16 16">
@@ -58,11 +58,13 @@
           </span>
         </div>
       </div>
-    </a>
+    </NuxtLink>
   </div>
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

@@ -26,7 +26,7 @@
           :data-id="`item_${index + 1}`"
           :to="child.link"
         >
-          <img :alt="child.title || ''" :src="child.image_1.image" />
+          <img :alt="child.title || ''" :src="imghttps(child.image_1.image)" />
         </NuxtLink>
       </div>
     </div>
@@ -39,7 +39,7 @@
             class="video-image-slide swiper-slide"
             :id="`item_${index + 1}`"
           >
-            <img :alt="child.title || ''" :src="child.image_2.image" />
+            <img :alt="child.title || ''" :src="imghttps(child.image_2.image)" />
           </div>
         </div>
       </div>
@@ -69,6 +69,7 @@ import { EffectFade, Thumbs } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/thumbs";
+import { imghttps } from "~/composables/services/helpers";
 
 const props = defineProps({
   data: {

@@ -11,7 +11,7 @@
               :style="{ borderRadius: '400px', border: '0px solid #000000' }"
             >
               <NuxtLink :to="child.link">
-                <img :alt="child.text || ''" loading="lazy" :src="child.image.image" />
+                <img :alt="child.text || ''" loading="lazy" :src="imghttps(child.image.image)" />
               </NuxtLink>
             </div>
           </div>
@@ -22,6 +22,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

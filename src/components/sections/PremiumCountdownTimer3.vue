@@ -51,7 +51,7 @@
         }}</a>
       </div>
       <div class="countdown-image">
-        <img :src="data.values.image.image" alt="" loading="lazy" />
+        <img :src="imghttps(data.values.image.image)" alt="" loading="lazy" />
       </div>
     </div>
   
@@ -59,6 +59,7 @@
 
 <script setup>
 import { onMounted } from "vue";
+import { imghttps } from "~/composables/services/helpers";
 
 const props = defineProps({
   data: {

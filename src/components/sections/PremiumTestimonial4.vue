@@ -45,7 +45,7 @@
       >
         <template v-if="isImageSlide(card)">
           <div class="image">
-            <img :src="card.bg.image" alt="" />
+            <img :src="imghttps(card.bg.image)" alt="" />
           </div>
         </template>
         <template v-else>
@@ -72,7 +72,7 @@
             </div>
 
             <div v-if="card.avatar && card.avatar.image" class="author-image">
-              <img :src="card.avatar.image" alt="" />
+              <img :src="imghttps(card.avatar.image)" alt="" />
             </div>
 
             <p class="author">{{ card.name }}</p>
@@ -95,6 +95,7 @@
 <script setup>
 import { register } from "swiper/element/bundle";
 import "swiper/css";
+import { imghttps } from "~/composables/services/helpers";
 
 register();
 

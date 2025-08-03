@@ -33,7 +33,7 @@
             </svg>
           </button>
         </div>
-        
+          
         <!-- Product Details -->
         <div class="flex flex-col">
             <NuxtLink :to="getProductLink(product)" class="gap-3 items-center">
@@ -42,11 +42,14 @@
           <span class="text-gray-500 text-sm flex gap-1 mt-1"><StarIcon class="w-4 h-4 text-yellow-500" /> ({{ product.seo_stars }})</span>
 
 
-          <div class="mt-2 flex items-center gap-3">
+          <div class="mt-2 mb-4 flex items-center gap-3">
             <span class="text-xl font-medium text-gray-900">{{ getPrice(product) }} TND</span>
             <span v-if="product.discount" class="text-gray-500 line-through">{{ product.price }} TND</span>
           </div>
           
+          <ProductVariantCompoenent 
+            v-if="full_product_with_declinaisions && full_product_with_declinaisions.declinaison && full_product_with_declinaisions.declinaisons.length > 0"
+            :product="full_product_with_declinaisions"/>
           <div class="mt-4 space-y-4">
             <p v-if="product.seo_description" class="text-gray-700">{{ product.seo_description }}</p>
             
@@ -61,10 +64,11 @@
             </div>
           </div>
           
-          <div class="mt-5 pt-4">
+          <div class="mt-5 pt-4 flex flex-row gap-3">
+            <QuantitySelectorQuickModal />
             <button 
-            @click="addToCart(product)"
-              class="w-full bg-white px-4 py-3 text-sm font-medium text-gray-900 hover:text-white border border-gray-600 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2 transition-all duration-300"
+            @click="handleAddToCartAndClose"
+              class="w-full px-4 py-3 text-sm font-medium btn-primary-solid"
             >
               Ajouter au panier
             </button>
@@ -77,7 +81,7 @@
 <script setup>
 import { StarIcon } from '@heroicons/vue/24/solid';
 import {
-  getProductLink,
+  getProductLink, 
   getCategoryLink,
   getPrice,
   imghttps
@@ -89,6 +93,7 @@ import { Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import ProductVariantCompoenent from './productQuickModalVariant.vue';
 
 const props = defineProps({
   product: {
@@ -125,6 +130,45 @@ const imagesToShow = computed(() => {
     return [];
   }
 });
+
+const {selectedVariant, clearSelectedVariant } = useSelectedQuickModalVariants();
+const {quantity, resetQuantity } = useQuickModalProductQuantity();
+const handleAddToCart = () => {
+  if (quantity.value > 1) {
+    if ((full_product_with_declinaisions.value.declinaison == false && full_product_with_declinaisions.value.declinaisons.length == 0) || (full_product_with_declinaisions.value.declinaison == true && full_product_with_declinaisions.value.declinaisons.length == 0 )) {
+      addToCart(props.product, quantity.value);
+      return
+    }
+    if (full_product_with_declinaisions.value.declinaison == true && full_product_with_declinaisions.value.declinaisons.length > 0) {
+      addToCart(selectedVariant.value, quantity.value);
+      return
+    }
+  }
+  if (quantity.value  == 1 ) {
+    if ((full_product_with_declinaisions.value.declinaison == false && full_product_with_declinaisions.value.declinaisons.length == 0) || (full_product_with_declinaisions.value.declinaison == true && full_product_with_declinaisions.value.declinaisons.length == 0 )) {
+      addToCart(props.product);
+      return
+    }
+
+    if (full_product_with_declinaisions.value.declinaison == true && full_product_with_declinaisions.value.declinaisons.length > 0) {
+      addToCart(selectedVariant.value);
+      return
+    }
+   
+  }
+}
+
+// Combined function to add to cart and close modal
+const handleAddToCartAndClose = () => {
+  try {
+    handleAddToCart();
+  } catch (error) {
+    console.error('Error adding to cart:', error);
+  } finally {
+    // Always close the modal regardless of what happens in addToCart
+    closeQuickView();
+  }
+}
 
 // Initialize or reinitialize Swiper
 const initSwiper = async () => {
@@ -196,13 +240,29 @@ function slideNext() {
   if (swiperInstance) swiperInstance.slideNext();
 }
 
+const full_product_with_declinaisions = ref(null);
+
+const getFullProductDetails = async () => {
+  const { productData, error, fetchProductData, isLoading } = useQuickModalProductData(props.product.id);
+  await fetchProductData();
+  if (error.value) {
+    console.error('Error fetching product declinaisons:', error.value);
+    return;
+  }
+
+  full_product_with_declinaisions.value = productData.value || [];
+}
 // Watch for modal open/close
 watch(() => props.isOpen, async (open) => {
   if (open) {
     // Reset and reinitialize when modal opens
     // Use setTimeout to ensure DOM is fully updated
+      
+    resetQuantity();
+    clearSelectedVariant();
     setTimeout(() => {
-      initSwiper();
+    initSwiper();
+    getFullProductDetails();
     }, 50);
   }
 }, { immediate: true });
@@ -217,7 +277,6 @@ watch(() => props.product, () => {
 }, { deep: true });
 
 onMounted(() => {
-  // Initial setup
   if (props.isOpen) {
     setTimeout(() => {
       initSwiper();

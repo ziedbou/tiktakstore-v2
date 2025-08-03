@@ -28,7 +28,7 @@
               class="testimonials-card"
             >
               <div class="testimonials-image">
-                <img :src="child.img.image" alt="Testimonial Image" />
+                <img :src="imghttps(child.img.image)" alt="Testimonial Image" />
               </div>
               <div class="testimonials-content">
                 <p class="testimonials-title">{{ child.title }}</p>
@@ -63,7 +63,7 @@
               class="testimonials-card"
             >
               <div class="testimonials-image">
-                <img :src="child.img.image" alt="Testimonial Image" />
+                <img :src="imghttps(child.img.image)" alt="Testimonial Image" />
               </div>
               <div class="testimonials-content">
                 <p class="testimonials-title">{{ child.title }}</p>
@@ -104,7 +104,7 @@
               class="testimonials-card"
             >
               <div class="testimonials-image">
-                <img :src="child.img.image" alt="Testimonial Image" />
+                <img :src="imghttps(child.img.image)" alt="Testimonial Image" />
               </div>
               <div class="testimonials-content">
                 <p class="testimonials-title">{{ child.title }}</p>
@@ -139,7 +139,7 @@
               class="testimonials-card"
             >
               <div class="testimonials-image">
-                <img :src="child.img.image" alt="Testimonial Image" />
+                <img :src="imghttps(child.img.image)" alt="Testimonial Image" />
               </div>
               <div class="testimonials-content">
                 <p class="testimonials-title">{{ child.title }}</p>
@@ -175,6 +175,8 @@
 </template>
 
 <script>
+import { imghttps } from '~/composables/services/helpers';
+
 export default {
   props: {
     data: {

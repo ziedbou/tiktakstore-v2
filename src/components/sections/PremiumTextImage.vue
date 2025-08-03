@@ -15,7 +15,7 @@
       <div class="premium-body">
         <div class="image-wrapper">
           <div class="image-container">
-            <img :src="data.values.imageUrl || 'https://section.store/cdn/shop/files/slaapwijsheid-nl-GJW6b9vim1s-unsplash.jpg?v=1725196112'" :alt="data.values.imageAlt || ''" />
+            <img :src="imghttps(data.values.imageUrl) || 'https://section.store/cdn/shop/files/slaapwijsheid-nl-GJW6b9vim1s-unsplash.jpg?v=1725196112'" :alt="data.values.imageAlt || ''" />
           </div>
           <a class="shop-button" :href="data.values.link_widget1736854000230">
             <p class="button-inner">
@@ -44,6 +44,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   key: String,
   data: Object,

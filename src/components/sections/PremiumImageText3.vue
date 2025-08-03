@@ -6,7 +6,7 @@
           <!-- Image Section -->
           <div class="image-with-text__media-item image-with-text__media-item--50 grid__item">
             <div class="image-with-text__media image-with-text__media--adapt global-media-settings media">
-              <img :src="data.values.image.image" alt="" loading="lazy">
+              <img :src="imghttps(data.values.image.image)" alt="" loading="lazy">
             </div>
           </div>
           
@@ -31,6 +31,8 @@
 </template>
 
 <script setup>
+import { imghttps } from '~/composables/services/helpers';
+
 defineProps({
   data: {
     type: Object,

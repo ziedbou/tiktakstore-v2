@@ -10,53 +10,99 @@
     }"
   >
     <!-- Container for content -->
-    <div class="header-container py-6">
-      <div class="bg-white/95 backdrop-blur-md rounded-lg shadow-2xl p-6 mx-4">
+    <div class="header-container py-6 h-full">
+      <div class="bg-white/95 backdrop-blur-md rounded-lg shadow-2xl h-full flex flex-col relative overflow-hidden">
+      
       <!-- Loading State -->
-      <div v-if="isLoading" class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-        <div v-for="i in 4" :key="i" class="animate-pulse">
-          <div class="aspect-square w-full rounded-lg bg-gray-200"></div>
-          <div class="mt-2 h-4 bg-gray-200 rounded"></div>
-          <div class="mt-1 h-4 bg-gray-200 rounded w-1/2"></div>
+      <div v-if="isLoading" class="p-6">
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          <div v-for="i in 4" :key="i" class="animate-pulse">
+            <div class="aspect-square w-full rounded-lg bg-gray-200"></div>
+            <div class="mt-2 h-4 bg-gray-200 rounded"></div>
+            <div class="mt-1 h-4 bg-gray-200 rounded w-1/2"></div>
+          </div>
         </div>
       </div>
 
       <!-- Search Results -->
-      <div
-        v-else-if="searchResults.length > 0"
-        class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
-      >
-        <button
-          v-for="(product, index) in searchResults.slice(0, 8)"
-          :key="index"
-          @click="selectProduct(product)"
-          class="product-card group bg-white/90 backdrop-blur-sm p-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/30"
-        >
-          <img
-            :src="getProductImage(product)"
-            :alt="product.name"
-            class="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 transition-opacity duration-300"
-          />
-          <h3 class="mt-2 text-sm text-gray-700 line-clamp-2">{{ product.name }}</h3>
-          <p class="mt-1 text-lg font-medium text-gray-900">
-            {{ product.price }} {{ companyData.currency }}
-          </p>
-        </button>
+      <div v-else-if="searchResults.length > 0" class="flex flex-col h-full">
+        <!-- Search Results Header - Fixed height, no scroll -->
+        <div class="flex-shrink-0 bg-white border-b border-gray-100 px-4 py-3 sm:px-6 sm:py-4">
+          <!-- Mobile Layout -->
+          <div class="block sm:hidden">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center space-x-2">
+                <Icon name="ph:magnifying-glass" class="w-4 h-4 text-gray-500" />
+                <span class="text-sm font-medium text-gray-700">Recherche</span>
+              </div>
+              <div class="flex items-center space-x-1">
+                <span class="text-sm font-bold text-gray-900">{{ searchResults.length }}</span>
+                <span class="text-sm text-gray-500">{{ searchResults.length > 1 ? 'résultats' : 'résultat' }}</span>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="px-2 py-1 bg-blue-100 text-blue-700 rounded-md text-sm font-medium">{{ searchQuery }}</span>
+            </div>
+          </div>
+
+          <!-- Desktop Layout -->
+          <div class="hidden sm:flex items-center space-x-4 text-sm">
+            <div class="flex items-center space-x-2">
+              <Icon name="ph:magnifying-glass" class="w-4 h-4 text-gray-400" />
+              <span class="text-gray-600">Résultats de recherche pour le terme</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="px-2 py-1 bg-blue-50 text-blue-700 rounded-md font-medium">{{ searchQuery }}</span>
+            </div>
+            <div class="text-gray-400">•</div>
+            <div class="flex items-center space-x-1">
+              <span class="font-medium text-gray-900">{{ searchResults.length }}</span>
+              <span class="text-gray-600">résultat{{ searchResults.length > 1 ? 's' : '' }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Products Grid - Only this section scrolls -->
+        <div class="flex-1 overflow-y-auto scrollbar-modern p-6">
+          <div class="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-5">
+            <NuxtLink
+              v-for="(product, index) in searchResults"
+              :key="index"
+              :to="getProductLink(product)"
+              @click="handleProductClick"
+              class="product-card group bg-white rounded-lg p-3 hover:shadow-md transition-shadow duration-200 border border-gray-100 block"
+            >
+                          <NuxtImg
+              :src="imghttps(product.photo)"
+              :alt="product.name"
+              class="aspect-square w-full rounded-md bg-gray-50 object-cover"
+              loading="lazy"
+              placeholder
+            />
+              <h3 class="mt-2 text-sm text-gray-600 line-clamp-2 leading-tight font-medium mb-1">{{ product.name }}</h3>
+              <span  class="mt-1 text-sm font-semibold text-gray-900 new-price">
+                {{ getPrice(product) }} {{ companyData.currency }}
+              </span >
+              <span class="old-price !text-xs mx-2" v-if="product.discount">{{ product.price }} {{ companyData.currency }}</span>
+            </NuxtLink>
+          </div>
+        </div>
       </div>
 
       <!-- No Results -->
-      <div v-else class="text-center py-8">
+      <div v-else class="p-6 text-center py-8">
         <p class="text-gray-500">Aucun produit trouvé pour "{{ searchQuery }}"</p>
       </div>
+      
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { ref, watch, onUnmounted } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
-import { imghttps } from "~/composables/services/helpers"
+import { imghttps,getProductLink,getPrice } from "~/composables/services/helpers"
 import { useCompanyData } from "~/composables/useCompanyData"
 
 const { companyData } = useCompanyData();
@@ -82,7 +128,7 @@ const config = useRuntimeConfig();
 const baseURL = config.public.baseURL
 
 // Emits
-const emits = defineEmits(['product-selected'])
+const emits = defineEmits(['clear-search'])
 
 // Reactive data
 const searchResults = ref([])
@@ -125,12 +171,10 @@ const debouncedSearch = useDebounceFn(async () => {
     )
     searchResults.value = response.results || []
     // For now, just debug - no actual API call
-    console.log(`📡 Would call: ${baseURL}products-read/?company=${companyData.value.id}&search=${encodeURIComponent(query)}`)
     
     // Simulate API delay
     //await new Promise(resolve => setTimeout(resolve, 500))
     
-    console.log('✅ Search completed (debug mode)')
     //searchResults.value = [] // Empty for now
   } catch (error) {
     console.error('❌ Error in search:', error)
@@ -142,26 +186,20 @@ const debouncedSearch = useDebounceFn(async () => {
 }, 1000) // 1 second debounce
 
 // Methods
-const selectProduct = (product) => {
-  emits('product-selected', product)
-}
-
-const getProductImage = (product) => {
-  return imghttps(product.images?.[0]?.image || '')
+const handleProductClick = () => {
+  // Emit event to parent to clear search
+  emits('clear-search')
 }
 
 // Watch searchQuery and trigger debounced search
 watch(() => props.searchQuery, (newQuery, oldQuery) => {
   if (newQuery.length === 0) {
-    console.log('🧹 Clearing search results')
     searchResults.value = []
     isLoading.value = false
     // Unlock body scroll when dropdown closes
     unlockBodyScroll()
     return
   }
-  
-  console.log('👁️ Search query changed to:', newQuery)
   
   // Lock body scroll when dropdown opens (length > 3)
   if (newQuery.length > 3 && (oldQuery?.length <= 3 || !oldQuery)) {
@@ -202,31 +240,44 @@ onUnmounted(() => {
   }
 }
 
-/* Content container glassmorphism */
-.bg-white\/15 {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+
+
+
+/* Minimal product cards */
+.product-card:hover {
+  transform: translateY(-1px);
 }
 
-/* Enhanced product cards */
-.product-card:hover {
-  background: rgba(255, 255, 255, 0.95);
-  transform: translateY(-2px) scale(1.02);
+/* Modern scrollbar styling */
+.scrollbar-modern {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.scrollbar-modern::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-modern::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-modern::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.4);
+  border-radius: 3px;
+  transition: background 0.2s ease;
+}
+
+.scrollbar-modern::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.6);
 }
 
 /* Mobile specific adjustments */
-@media (max-width: 1024px) {
-  .search-dropdown {
-    background: rgba(255, 255, 255, 0.08);
-  }
-  
-  .bg-white\/15 {
-    background: rgba(255, 255, 255, 0.20);
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
 }
 </style>

@@ -82,7 +82,7 @@
                   :srcset="slide.image_mobile?.image"
                 />
                 <img
-                  :src="slide.image?.image"
+                  :src="imghttps(slide.image?.image)"
                   alt="Image Desc"
                   class="w-full h-full object-cover"
                 />
@@ -126,6 +126,7 @@
   import "swiper/css/pagination";
   import { NuxtLink } from "#components";
   import { ChevronRight, ChevronLeft } from 'lucide-vue-next';
+import { imghttps } from "~/composables/services/helpers";
   
   // Dynamic imports map
   const effectImports = {
@@ -165,7 +166,7 @@
   
   // Get current effect
   const currentEffect = computed(() => {
-    return props.data.values?.transition_effect || 'flip';
+    return props.data.values?.transition_effect || 'normal';
   });
   
   // Watch for effect changes and load dynamically

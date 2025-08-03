@@ -32,14 +32,14 @@
       >
         <img
           class="countdown-banner-image countdown-banner-image--desktop"
-          :src="data.values.image.image"
+          :src="imghttps(data.values.image.image)"
           alt=""
           loading="lazy"
         />
 
         <img
           class="countdown-banner-image countdown-banner-image--mobile"
-          :src="data.values.image.image"
+          :src="imghttps(data.values.image.image)"
           loading="lazy"
         />
 
@@ -131,6 +131,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, defineProps } from "vue";
+import { imghttps } from "~/composables/services/helpers";
 
 const props = defineProps({
   data: {

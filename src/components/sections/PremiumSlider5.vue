@@ -85,7 +85,7 @@
                   <img
                     :alt="child.text"
                     loading="lazy"
-                    :src="child.image.image"
+                    :src="imghttps(child.image.image)"
                     style="clip-path: url(#image-shape)"
                   />
                 </div>
@@ -110,6 +110,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { imghttps } from "~/composables/services/helpers";
 
 const props = defineProps({
   data: {

@@ -55,7 +55,7 @@
             :key="index"
             class="premium-slider-7__slide"
           >
-            <img class="premium-slider-7__image" :src="card.img.image" alt="" />
+            <img class="premium-slider-7__image" :src="imghttps(card.img.image)" alt="" />
             <div class="premium-slider-7__title">
               <p>{{ card.nm }}</p>
             </div>
@@ -75,6 +75,7 @@
 <script setup>
 import { register } from "swiper/element/bundle";
 import "swiper/css";
+import { imghttps } from "~/composables/services/helpers";
 
 register();
 

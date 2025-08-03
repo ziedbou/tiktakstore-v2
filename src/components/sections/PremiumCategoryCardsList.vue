@@ -10,7 +10,7 @@
           <div class="relative overflow-hidden mb-0 rounded-lg" :style="{borderRadius: `${data.values.image_border_radius}px`}">
             <NuxtLink :to="child.link" class="block relative">
               <img 
-                :src="child.image.image" 
+                :src="imghttps(child.image.image)" 
                 :alt="child.title"
                 class="w-full h-auto min-h-[250px] object-cover"
                 width="460" 
@@ -57,6 +57,7 @@
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import Swiper from "swiper";
 import "swiper/css";
+import { imghttps } from "~/composables/services/helpers";
 
 const props = defineProps({
   data: {

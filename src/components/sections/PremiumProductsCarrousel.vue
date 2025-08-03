@@ -39,11 +39,11 @@
         </h6>
         <div class="flash-countdown self-center">
           <span class="dd" ref="daysElement">00</span> Days
-          <span>:</span>
+          <span>,</span>
           <span class="hh" ref="hoursElement">00</span> Hours
-          <span>:</span>
+          <span>,</span>
           <span class="mm" ref="minutesElement">00</span> Mins
-          <span>:</span>
+          <span>,</span>
           <span class="ss" ref="secondsElement">00</span> Secs
         </div>
       </div>
@@ -58,7 +58,7 @@
               v-for="product in sectionProducts"
               :key="product.id"
             >
-              <div class="product">
+              <div class="product h-full w-full">
                 <component
                   :is="dynamicComponent"
                   :product="product"
@@ -81,26 +81,23 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
-import { fetchSectionProducts } from "~/composables/services/productService";
+import { useGetProducts } from "~/composables/useGetProducts";
+import { useCompanyData } from "~/composables/useCompanyData";
 import Swiper from "swiper";
 import { Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
+
 const props = defineProps({
   data: {
     type: Object,
     required: true,
   },
-
-  companyId: {
-    type: String,
-    required: true,
-  },
+  index: [String, Number],
 });
-
-const sectionProducts = ref([]);
+const { companyId } = useCompanyData();
 const dynamicComponent = shallowRef(null);
 const productSwiper = ref(null);
 const daysElement = ref(null);
@@ -113,7 +110,7 @@ let swiperInstance = null;
 let countdownInterval = null;
 
 // Load component dynamically
-const loadComponent = async (componentName = "ProductCard_4") => {
+const loadComponent = async (componentName = "ProductCard_14") => {
   try {
     const module = await import(
       `@/components/product-cards/${componentName}.vue`
@@ -124,12 +121,13 @@ const loadComponent = async (componentName = "ProductCard_4") => {
   }
 };
 
-const getSectionProducts = async () => {
-  sectionProducts.value = await fetchSectionProducts({
-    sectionValues: props.data.values,
-    companyId: props.companyId,
-  });
-};
+// Use the new hook to fetch section products with caching
+const { data: sectionProducts, pending } = useGetProducts({
+  type: 'list',
+  cacheKey: `PremiumProductsCarrousel-${props.index}`,
+  companyId: companyId.value,
+  productList: props.data.values.products_widget
+});
 
 const initSwiper = () => {
   if (productSwiper.value) {
@@ -147,17 +145,21 @@ const initSwiper = () => {
         prevEl: ".swiper-button-prev",
       },
       breakpoints: {
-        350: {
+        0: {
           spaceBetween: 10,
-          slidesPerView: 2,
+          slidesPerView: 1.2,
+        },
+        400: {
+          spaceBetween: 10,
+          slidesPerView: props.data.values.items_mobile,
         },
         726: {
           spaceBetween: 10,
-          slidesPerView: 4,
+          slidesPerView: props.data.values.items_tablet,
         },
         1024: {
           spaceBetween: 20,
-          slidesPerView: 5,
+          slidesPerView: props.data.values.items_desktop,
         },
       },
     });
@@ -204,9 +206,7 @@ const startCountdown = () => {
 };
 
 onMounted(async () => {
-  loadComponent(props.data.values.card_type);
-  await getSectionProducts();
-
+  loadComponent(props.data.values.card_typexx);
   // Initialize Swiper and countdown after products are loaded
   setTimeout(() => {
     initSwiper();
@@ -245,6 +245,22 @@ onBeforeUnmount(() => {
   font-size: 1.4rem;
 }
 
+@media screen and (max-width: 770px) {
+  .flash-countdown {
+    font-size: 1rem;
+  padding: 0.5rem 0.3rem;
+
+
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .flash-countdown {
+    font-size: .8rem;
+  }
+}
+
+
 .flash-countdown span {
   display: inline-block;
 }
@@ -262,6 +278,29 @@ onBeforeUnmount(() => {
   margin: 0 0.25rem;
   animation: pulse 1s infinite;
 }
+
+@media screen and (max-width: 770px) {
+
+.flash-countdown .dd,
+.flash-countdown .hh,
+.flash-countdown .mm,
+.flash-countdown .ss {
+   font-size: 1rem;
+  padding: 0.10rem 0.2rem;
+
+  }
+}
+
+@media screen and (max-width: 400) {
+
+.flash-countdown .dd,
+.flash-countdown .hh,
+.flash-countdown .mm,
+.flash-countdown .ss {
+   font-size: .8rem;
+  }
+}
+
 
 @keyframes pulse {
   0% {
@@ -305,24 +344,18 @@ onBeforeUnmount(() => {
   justify-content: center;
   height: auto;
 }
-
-.flash-content .product {
-  max-width: 260px;
-  height: auto;
-  width: 100%;
-}
-
+/*
 .flash-content .product:hover {
   border-color: #ccc;
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
   z-index: 9;
-}
+}*/
 
-.flash-content .product:hover .product-footer {
+/*.flash-content .product:hover .product-footer {
   border-color: #ccc;
   transform: none;
   box-shadow: 0 -1rem 1rem 0 rgba(0, 0, 0, 0.07);
-}
+}*/
 
 /* Swiper navigation styles */
 .swiper-button-next,

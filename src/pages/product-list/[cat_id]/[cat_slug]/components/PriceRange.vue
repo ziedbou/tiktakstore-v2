@@ -9,7 +9,7 @@
         <div class="relative w-10/12 mx-auto h-2 bg-gray-200 rounded-full mb-8 px-7" ref="container">
           <!-- Track Fill -->
           <div
-            class="absolute top-0 h-full bg-blue-500 rounded-full"
+            class="absolute top-0 h-full bg-[var(--btn-primary-solid-background)] rounded-full"
             :style="{
               left: `${((priceMin - minPrice) / (maxPrice - minPrice)) * 100}%`,
               width: `${((priceMax - priceMin) / (maxPrice - minPrice)) * 100}%`
@@ -18,7 +18,7 @@
 
           <!-- Min Handle with Simple Tooltip -->
           <div
-            class="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-white border-2 border-blue-500 rounded-full cursor-pointer shadow handle-container"
+            class="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-white border-2 border-[var(--btn-primary-solid-background)] rounded-full cursor-pointer shadow handle-container"
             :style="{ left: `calc(${((priceMin - minPrice) / (maxPrice - minPrice)) * 100}% - 0.625rem)` }"
             @mousedown.prevent="startDrag('min', $event)"
             @touchstart.prevent="startDrag('min', $event)"
@@ -31,7 +31,7 @@
 
           <!-- Max Handle with Simple Tooltip -->
           <div
-            class="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-white border-2 border-blue-500 rounded-full cursor-pointer shadow handle-container"
+            class="absolute top-1/2 -translate-y-1/2 w-5 h-5 bg-white border-2 border-[var(--btn-primary-solid-background)] rounded-full cursor-pointer shadow handle-container"
             :style="{ left: `calc(${((priceMax - minPrice) / (maxPrice - minPrice)) * 100}% - 0.625rem)` }"
             @mousedown.prevent="startDrag('max', $event)"
             @touchstart.prevent="startDrag('max', $event)"
@@ -47,8 +47,8 @@
       <button
         @click="applyFilter"
         type="button"
-        class="w-full py-2 mt-3 rounded transition-all duration-200"
-        :class="buttonEnabled ? 'bg-blue-600 text-white hover:bg-blue-700 cursor-pointer' : 'bg-gray-300 text-gray-500 !cursor-not-allowed opacity-60'"
+        class="w-full py-2 mt-3 btn-primary-solid"
+        :class="buttonEnabled ? ' cursor-pointer' : '!cursor-not-allowed opacity-30'"
         :disabled="!buttonEnabled"
       >
         Appliquer

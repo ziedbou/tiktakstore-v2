@@ -21,7 +21,7 @@
         <div class="premium-before-after-desktop">
           <div v-if="data.values.icon_img_1" class="premium-before-after-item">
             <div class="premium-before-after-item-icon">
-              <img :src="data.values.icon_img_1.image" alt="" loading="lazy" />
+              <img :src="imghttps(data.values.icon_img_1.image)" alt="" loading="lazy" />
             </div>
             <div class="premium-before-after-item-content">
               <p class="premium-before-after-item-title">
@@ -35,7 +35,7 @@
 
           <div v-if="data.values.icon_img_2" class="premium-before-after-item">
             <div class="premium-before-after-item-icon">
-              <img :src="data.values.icon_img_2.image" alt="" loading="lazy" />
+              <img :src="imghttps(data.values.icon_img_2.image)" alt="" loading="lazy" />
             </div>
             <div class="premium-before-after-item-content">
               <p class="premium-before-after-item-title">
@@ -51,7 +51,7 @@
         <div class="premium-before-after-mobile">
           <div v-if="data.values.icon_img_1" class="premium-before-after-item">
             <div class="premium-before-after-item-icon">
-              <img :src="data.values.icon_img_1.image" alt="" loading="lazy" />
+              <img :src="imghttps(data.values.icon_img_1.image)" alt="" loading="lazy" />
             </div>
             <div class="premium-before-after-item-content">
               <p class="premium-before-after-item-title">
@@ -65,7 +65,7 @@
 
           <div v-if="data.values.icon_img_2" class="premium-before-after-item">
             <div class="premium-before-after-item-icon">
-              <img :src="data.values.icon_img_2.image" alt="" loading="lazy" />
+              <img :src="imghttps(data.values.icon_img_2.image)" alt="" loading="lazy" />
             </div>
             <div class="premium-before-after-item-content">
               <p class="premium-before-after-item-title">
@@ -79,7 +79,7 @@
 
           <div v-if="data.values.icon_img_3" class="premium-before-after-item">
             <div class="premium-before-after-item-icon">
-              <img :src="data.values.icon_img_3.image" alt="" loading="lazy" />
+              <img :src="imghttps(data.values.icon_img_3.image)" alt="" loading="lazy" />
             </div>
             <div class="premium-before-after-item-content">
               <p class="premium-before-after-item-title">
@@ -93,7 +93,7 @@
 
           <div v-if="data.values.icon_img_4" class="premium-before-after-item">
             <div class="premium-before-after-item-icon">
-              <img :src="data.values.icon_img_4.image" alt="" loading="lazy" />
+              <img :src="imghttps(data.values.icon_img_4.image)" alt="" loading="lazy" />
             </div>
             <div class="premium-before-after-item-content">
               <p class="premium-before-after-item-title">
@@ -112,7 +112,7 @@
           <div class="premium-before-after-image-relative">
             <img
               class="premium-before-after-image"
-              :src="data.values.first_image.image"
+              :src="imghttps(data.values.first_image.image)"
               alt=""
               loading="lazy"
               draggable="false"
@@ -126,7 +126,7 @@
           <div class="premium-before-after-image-absolute">
             <img
               class="premium-before-after-image"
-              :src="data.values.second_image.image"
+              :src="imghttps(data.values.second_image.image)"
               alt=""
               loading="lazy"
               draggable="false"
@@ -138,7 +138,7 @@
       <div class="premium-before-after-desktop premium-before-after-right">
         <div v-if="data.values.icon_img_3" class="premium-before-after-item">
           <div class="premium-before-after-item-icon">
-            <img :src="data.values.icon_img_3.image" alt="" loading="lazy" />
+            <img :src="imghttps(data.values.icon_img_3.image)" alt="" loading="lazy" />
           </div>
           <div class="premium-before-after-item-content">
             <p class="premium-before-after-item-title">
@@ -152,7 +152,7 @@
 
         <div v-if="data.values.icon_img_4" class="premium-before-after-item">
           <div class="premium-before-after-item-icon">
-            <img :src="data.values.icon_img_4.image" alt="" loading="lazy" />
+            <img :src="imghttps(data.values.icon_img_4.image)" alt="" loading="lazy" />
           </div>
           <div class="premium-before-after-item-content">
             <p class="premium-before-after-item-title">
@@ -170,6 +170,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+import { imghttps } from "~/composables/services/helpers";
 
 // Component props with a single data object
 const props = defineProps({
@@ -228,9 +229,8 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<style>
 .premium-before-after {
-  --before-after-initial-drag-position: 50%;
   --clip-path-offset: 0px;
 }
 
@@ -393,10 +393,7 @@ onMounted(() => {
 .premium-before-after-image-absolute {
   clip-path: inset(
     0 0 0
-      calc(
-        var(--before-after-initial-drag-position, 50%) +
-          var(--clip-path-offset, 0px)
-      )
+      calc(50% + var(--clip-path-offset, 0px))
   );
   position: absolute;
   top: 0;
@@ -417,9 +414,8 @@ onMounted(() => {
   height: 100%;
   width: max-content;
   touch-action: none;
-  --transform-logical-flip: 1;
   transform: translate(
-    calc(var(--transform-logical-flip) * -50% + var(--clip-path-offset, 0px)),
+    calc( 1 * -50% + var(--clip-path-offset, 0px)),
     -50%
   );
   cursor: grab;
